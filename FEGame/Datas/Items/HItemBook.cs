@@ -111,15 +111,6 @@ namespace FEGame.Datas.Items
                     }
                     itemNameIdDict[hItemConfig.Ename] = hItemConfig.Id;
                 }
-                foreach (var hItemConfig in ConfigData.EquipDict.Values)
-                {
-                    if (itemNameIdDict.ContainsKey(hItemConfig.Ename))
-                    {
-                        NLog.Warn("GetItemId key={0} existed", hItemConfig.Ename);
-                        continue;
-                    }
-                    itemNameIdDict[hItemConfig.Ename] = hItemConfig.Id;
-                }
             }
             return itemNameIdDict[ename];
         }

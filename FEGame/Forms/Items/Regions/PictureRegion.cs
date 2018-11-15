@@ -59,21 +59,6 @@ namespace FEGame.Forms.Items.Regions
                         brush.Dispose();
                     };
                 }
-                else if (type == PictureRegionCellType.CardQual)
-                {
-                    img = HSIcons.GetIconsByEName("gem" + nid);
-                }
-                else if (type == PictureRegionCellType.Job)
-                {
-                    img = HSIcons.GetIconsByEName("job" + nid);
-                    action = () =>
-                    {
-                        var jobConfig = ConfigData.GetJobConfig(nid + JobConfig.Indexer.NewBie);
-                        Pen pen = new Pen(Color.FromName(jobConfig.Color));
-                        g.DrawRectangle(pen, X, Y, Width, Height);
-                        pen.Dispose();
-                    };
-                }
                 else if (type == PictureRegionCellType.SceneQuest)
                 {
                     img = SceneQuestBook.GetSceneQuestImageScene(nid);
@@ -164,14 +149,8 @@ namespace FEGame.Forms.Items.Regions
     internal enum PictureRegionCellType
     {
         Item,
-        Equip,
-        Card,
         Gismo,
-        HeroSkill,
         People,
-        CardQual,
-        Job,
-        Bless,
         SceneQuest,
         DungeonItem,
     }

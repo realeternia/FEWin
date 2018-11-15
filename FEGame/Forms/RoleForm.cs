@@ -57,16 +57,6 @@ namespace FEGame.Forms
 
             if (!show)
                 return;
-
-            var job = UserProfile.InfoBasic.Job;
-            if (UserProfile.InfoDungeon.DungeonId > 0)
-                job = UserProfile.InfoDungeon.JobId;
-
-            JobConfig jobConfig = ConfigDatas.ConfigData.GetJobConfig(job);
-            Image body = PicLoader.Read("Hero", string.Format("{0}.JPG", jobConfig.JobIndex));
-            e.Graphics.DrawImage(body, 12, 40, 305, 405);
-            body.Dispose();
-
             e.Graphics.FillRectangle(Brushes.LightSlateGray, 25-1, 55-1, 52, 52);
             Image head = PicLoader.Read("Player", string.Format("{0}.PNG", UserProfile.InfoBasic.Head));
             e.Graphics.DrawImage(head, 25, 55, 50, 50);
@@ -86,18 +76,6 @@ namespace FEGame.Forms
             e.Graphics.DrawString(expstr, font2, Brushes.White, 130, 300);
             e.Graphics.FillRectangle(Brushes.DimGray, 80, 314, 180, 4);
             e.Graphics.FillRectangle(Brushes.DodgerBlue, 80, 314, Math.Min(UserProfile.InfoBasic.Exp * 179 / ExpTree.GetNextRequired(UserProfile.InfoBasic.Level) + 1, 180), 4);
-
-            e.Graphics.DrawString("职业", font2, Brushes.White, 20, 325);
-            e.Graphics.DrawString(jobConfig.Name, font2, Brushes.White, 80, 325);
-            e.Graphics.DrawString("领导", font2, Brushes.White, 20, 345);
-            e.Graphics.DrawString(jobConfig.EnergyRate[0].ToString(), font2, Brushes.Yellow, 80, 345);
-            e.Graphics.DrawString("力量", font2, Brushes.White, 20+160, 345);
-            e.Graphics.DrawString(jobConfig.EnergyRate[1].ToString(), font2, Brushes.Red, 80+ 160, 345);
-            e.Graphics.DrawString("魔力", font2, Brushes.White, 20, 365);
-            e.Graphics.DrawString(jobConfig.EnergyRate[2].ToString(), font2, Brushes.CornflowerBlue, 80, 365);
-            e.Graphics.DrawString("技能", font2, Brushes.White, 20, 385);
-            if(jobConfig.SkillId > 0)
-                e.Graphics.DrawString(ConfigData.GetSkillConfig(jobConfig.SkillId).Name, font2, Brushes.GreenYellow, 80, 385);
 
             font.Dispose();
             font2.Dispose();

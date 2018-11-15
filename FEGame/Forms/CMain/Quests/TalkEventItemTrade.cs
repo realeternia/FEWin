@@ -158,10 +158,6 @@ namespace FEGame.Forms.CMain.Quests
                         Image image = HItemBook.GetPreview(key);
                         tooltip.Show(image, parent, x, y);
                     }
-                    else if (regionType == PictureRegionCellType.Equip)
-                    {
-                      
-                    }
                 }
             }
             {

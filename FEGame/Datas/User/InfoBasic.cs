@@ -10,19 +10,14 @@ namespace FEGame.Datas.User
     {
         [FieldIndex(Index = 3)] public int Head;
         [FieldIndex(Index = 5)] public uint Dna; //可以影响sq的选项，影响sq的出现概率（未实现）
-        [FieldIndex(Index = 6)] public int Job;
         [FieldIndex(Index = 7)] public byte Level;
         [FieldIndex(Index = 16)] public int Exp;
         [FieldIndex(Index = 17)] public int MapId;
         [FieldIndex(Index = 19)] public int LastLoginTime;
         [FieldIndex(Index = 20)] public uint FoodPoint; //饱腹值
-        [FieldIndex(Index = 21)] public int DungeonRandomSeed;
-        [FieldIndex(Index = 22)] public int LastRival; //上一个peopleview的对手id
         [FieldIndex(Index = 23)] public int Position;
         [FieldIndex(Index = 24)] public uint HealthPoint; //健康度
         [FieldIndex(Index = 25)] public uint MentalPoint; //精神
-        [FieldIndex(Index = 26)] public int MoveCount; //总移动次数
-        [FieldIndex(Index = 27)] public int LastPosition;
 
         public InfoBasic()
         {
@@ -46,7 +41,7 @@ namespace FEGame.Datas.User
                 MainForm.Instance.RefreshView();
             }
 
-            TalePlayer.C2SSender.UpdateLevelExp(Job, Level, Exp);
+            TalePlayer.C2SSender.UpdateLevelExp(0, Level, Exp);
         }
 
         public void AddFood(uint val)

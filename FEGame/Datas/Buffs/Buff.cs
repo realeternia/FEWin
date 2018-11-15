@@ -24,10 +24,5 @@ namespace FEGame.Datas.Buffs
             Level = newLevel;
         }
 
-        public string Descript
-        {
-            get { return BuffConfig.GetDescript(Level); }
-        }
-
     }
 }

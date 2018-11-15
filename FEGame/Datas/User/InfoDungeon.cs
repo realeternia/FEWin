@@ -54,14 +54,11 @@ namespace FEGame.Datas.User
             PercAddon = 0;
             EnduAddon = 0;
 
-            CheckStoryOnEnter();
             RecalculateAttr();
         }
 
         public void Leave()
         {
-            CheckStoryOnLeave();
-
             DungeonId = 0;
             Items.Clear();
         }
@@ -176,7 +173,6 @@ namespace FEGame.Datas.User
             Intl = dungeonConfig.Intl;
             Perc = dungeonConfig.Perc;
             Endu = dungeonConfig.Endu;
-            CheckStoryAttr();
 
             Str += StrAddon; //加成属性，一般来自sq
             Agi += AgiAddon;
@@ -273,61 +269,5 @@ namespace FEGame.Datas.User
                 }
             }
         }
-
-        #region 故事相关
-        public void GenStoryId(int dungeonId)
-        {
-            List<int> storyList = new List<int>();
-            List<float> rateList = new List<float>();
-            foreach (var storyConfig in ConfigData.DungeonStoryDict.Values)
-            {
-                if (storyConfig.DungeonId != dungeonId)
-                    continue;
-                if (storyConfig.NeedLevel > 0 && UserProfile.InfoBasic.Level < storyConfig.NeedLevel)
-                    continue;
-                if (storyConfig.NeedGismoId > 0 && !UserProfile.InfoGismo.GetGismo(storyConfig.NeedGismoId))
-                    continue;
-                storyList.Add(storyConfig.Id);
-                rateList.Add(storyConfig.Rate);
-            }
-            StoryId = NLRandomPicker<int>.RandomPickN(storyList.ToArray(), rateList.ToArray(), 1)[0];
-        }
-
-        public void CheckStoryAttr()
-        {
-            if (StoryId <= 0)
-                return;
-
-            var storyConfig = ConfigData.GetDungeonStoryConfig(StoryId);
-            if (!string.IsNullOrEmpty(storyConfig.AttrType))
-            {
-                switch (storyConfig.AttrType)
-                {
-                    case "str": Str += storyConfig.AttrBias; break;
-                    case "agi": Agi += storyConfig.AttrBias; break;
-                    case "intl": Intl += storyConfig.AttrBias; break;
-                    case "perc": Perc += storyConfig.AttrBias; break;
-                    case "endu": Endu += storyConfig.AttrBias; break;
-                }
-            }
-        }
-
-        public void CheckStoryOnEnter()
-        {
-            if (StoryId <= 0)
-                return;
-
-            var storyConfig = ConfigData.GetDungeonStoryConfig(StoryId);
-        }
-
-        public void CheckStoryOnLeave()
-        {
-            if (StoryId <= 0)
-                return;
-
-            var storyConfig = ConfigData.GetDungeonStoryConfig(StoryId);
-        }
-
-        #endregion
     }
 }

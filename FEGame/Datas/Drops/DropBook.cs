@@ -44,8 +44,6 @@ namespace FEGame.Datas.Drops
                     DropItems(dropConfig.Items, dropConfig.ItemRate, items);
                 else if(dropConfig.MaterialRate.Length > 0)
                     DropMaterials(dropConfig.MaterialRate, items);
-                else if (dropConfig.DropEquip > 0)
-                    DropEquips(dropConfig.DropEquip, items);
             }
             return items;
         }
@@ -85,11 +83,6 @@ namespace FEGame.Datas.Drops
             }
 
             items.Add(HItemBook.GetRandRareItemIdWithGroup(HItemRandomGroups.Fight, rare));
-        }
-
-        private static void DropEquips(double rate, List<int> items)
-        {
-
         }
 
         /// <summary>

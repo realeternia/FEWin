@@ -33,7 +33,6 @@ namespace FEGame.Datas.User
         public void OnCreate(string name, uint dna, int headId)
         {
             Name = name;
-            InfoBasic.Job = JobConfig.Indexer.NewBie;
             InfoBasic.Dna = dna;
             InfoBasic.Head = headId;
             InfoBasic.Level = 1;

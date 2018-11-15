@@ -116,38 +116,18 @@
         Gem
     }
 
-    internal enum EquipAttrs
-    {
-        AtkRate = 1,
-        HpRate,
-        Spd,
-        Range,
-        Def,
-        Mag,
-        Hit,
-        Dhit,
-        Crt,
-        Luk
-    }
-    internal enum BlessTypes
-    {
-        None = 0,
-        Active = 1,
-        Negative = 2,
-        Quest = 3,
-    }
-
-
     internal enum SceneFreshReason
     {
         Load,
         Warp,
         Reset
     }
+
     internal enum ToolBarItemTypes
     {
         Normal, Time, Limit
     }
+
     internal enum SceneCellTypes
     {
         None, Tile, Quest, Warp
