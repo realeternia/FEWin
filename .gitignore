@@ -1,0 +1,96 @@
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk
+
+# =========================
+# Operating System Files
+# =========================
+
+# OSX
+# =========================
+
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+/ControlPlus/bin
+/ControlPlus/obj
+obj
+bin
+obj
+bin
+obj
+obj
+/ConfigData/ConfigData
+/Tool/ExcelToCsv/bin/Debug/ExcelToCsv.exe
+/Tool/ExcelToCsv/bin/Debug/ExcelToCsv.pdb
+/Tool/ExcelToCsv/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+/Tool/ExcelToCsv/obj/Debug/ExcelToCsv.csprojResolveAssemblyReference.cache
+/Tool/ExcelToCsv/obj/Debug/ExcelToCsv.exe
+/Tool/ExcelToCsv/obj/Debug/ExcelToCsv.pdb
+/Tool/ExcelToCsv/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+/Tool/ExcelToCsv/obj/Debug/ExcelToCsv.csprojResolveAssemblyReference.cache
+/Tool/ExcelToCsv/obj/Debug/ExcelToCsv.exe
+/Tool/ExcelToCsv/obj/Debug/ExcelToCsv.pdb
+/Tool/ExcelToCsv/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+/Tool/ExcelToCsv/obj/Debug/ExcelToCsv.csprojResolveAssemblyReference.cache
+/Tool/ExcelToCsv/obj/Debug/ExcelToCsv.exe
+/Tool/ExcelToCsv/obj/Debug/ExcelToCsv.pdb
+/Tool/ExcelToCsv/bin/Debug/ExcelToCsv.exe
+/Tool/ExcelToCsv/bin/Debug/ExcelToCsv.pdb
+/bin/Debug/Save
+/Tool/DeckManager/bin
+/Tool/DeckManager/obj
+/Tool/ExcelToCsv/obj
+/.vs/TaleofMonsters2/v14/.suo
+/TaleofMonsters2.sln.docstates.suo
+/TaleofMonsters2.suo
+/Tool/ExcelToCsv/ExcelToCsv.sln.docstates.suo
+/Tool/ExcelToCsv/ExcelToCsv.suo
+/Tool/SceneMaker/.vs
+/Tool/EffectPlayer/.vs/EffectPlayer/v14/.suo
+/Tool/EffectPlayer/EffectPlayer.suo
+/bin/Debug/TaleofMonsters2.vshost.exe
+/bin/Debug/TaleofMonsters2.vshost.exe.manifest
+/Tool/ExcelToCsv/bin
+/Tool/NLVFS/NLVFS/obj
+/Tool/NLVFS/NLVFS/bin
+/Tool/NLVFS/Packager/bin
+/Tool/NLVFS/Packager/obj
+/Tool/NLVFS/VFSViewer/bin
+/Tool/NLVFS/VFSViewer/obj
+/Tool/BattleSceneEditor/.vs/BattleSceneEditor/v14/.suo
+/Tool/CardAttrStat/.vs/CardAttrStat/v14/.suo
+/Tool/Md5Checker/.vs/Md5Checker/v14/.suo

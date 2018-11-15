@@ -1,0 +1,527 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{65E35A87-EE43-42E7-AD01-743008B6EAFE}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FEGame</RootNamespace>
+    <AssemblyName>FEGame</AssemblyName>
+    <ApplicationIcon>icon2.ico</ApplicationIcon>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>http://localhost/TaleofMonsters2/</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>..\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AltSerialize">
+      <HintPath>Lib\AltSerialize.dll</HintPath>
+    </Reference>
+    <Reference Include="ConfigData, Version=2.0.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\ConfigData.dll</HintPath>
+    </Reference>
+    <Reference Include="ControlPlus">
+      <HintPath>Lib\ControlPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="NarlonLib">
+      <HintPath>Lib\NarlonLib.dll</HintPath>
+    </Reference>
+    <Reference Include="NetSocket">
+      <HintPath>Lib\NetSocket.dll</HintPath>
+    </Reference>
+    <Reference Include="NLVFS">
+      <HintPath>Lib\NLVFS.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Core\Config\Config.cs" />
+    <Compile Include="Datas\Effects\Facts\BaseEffect.cs" />
+    <Compile Include="Datas\Effects\Facts\MovingUIEffect.cs" />
+    <Compile Include="Controler\GM\GMCommand.cs" />
+    <Compile Include="Forms\ChangeAccountForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ChangeAccountForm.Designer.cs">
+      <DependentUpon>ChangeAccountForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Items\Regions\VirtualRegionMoveMediator.cs" />
+    <Compile Include="Rpc\NetDataCache.cs" />
+    <Compile Include="Tools\ImageManager.cs" />
+    <Compile Include="Rpc\S2CImplement.cs" />
+    <Compile Include="Rpc\C2SSender.cs" />
+    <Compile Include="Rpc\TalePlayer.cs" />
+    <Compile Include="Controler\World\TimeManager.cs" />
+    <Compile Include="Controler\World\WorldInfoManager.cs" />
+    <Compile Include="Datas\Drops\DropBook.cs" />
+    <Compile Include="Datas\Others\DnaBook.cs" />
+    <Compile Include="Datas\Quests\QuestBook.cs" />
+    <Compile Include="Datas\Scenes\DungeonBook.cs" />
+    <Compile Include="Datas\Scenes\SceneQuestBook.cs" />
+    <Compile Include="Datas\User\Db\DbGismoState.cs" />
+    <Compile Include="Datas\User\Db\DbQuestData.cs" />
+    <Compile Include="Datas\User\InfoDungeon.cs" />
+    <Compile Include="Forms\Items\Regions\Decorators\RegionImageDecorator.cs" />
+    <Compile Include="Forms\MinigameForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\MinigameForm.Designer.cs">
+      <DependentUpon>MinigameForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Items\Regions\ComplexRegion.cs" />
+    <Compile Include="Forms\Items\Regions\Decorators\RegionCoverDecorator.cs" />
+    <Compile Include="Forms\Items\Regions\ImageRegion.cs" />
+    <Compile Include="Forms\MiniGame\MGBase.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\MiniGame\MGBase.Designer.cs">
+      <DependentUpon>MGBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\MiniGame\MGTwentyOne.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\MiniGame\MGTwentyOne.Designer.cs">
+      <DependentUpon>MGTwentyOne.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\MiniGame\MGVoting.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\MiniGame\MGVoting.Designer.cs">
+      <DependentUpon>MGVoting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\MiniGame\MGRussiaBlock.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\MiniGame\MGRussiaBlock.Designer.cs">
+      <DependentUpon>MGRussiaBlock.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\MiniGame\MGLinkGame.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\MiniGame\MGLinkGame.Designer.cs">
+      <DependentUpon>MGLinkGame.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\MiniGame\MGOvercome.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\MiniGame\MGOvercome.Designer.cs">
+      <DependentUpon>MGOvercome.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\MiniGame\MGRacing.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\MiniGame\MGRacing.Designer.cs">
+      <DependentUpon>MGRacing.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\CMain\MainFlowController.cs" />
+    <Compile Include="Forms\CMain\Quests\TalkEventItem.cs" />
+    <Compile Include="Forms\CMain\Quests\TalkEventItemEnd.cs" />
+    <Compile Include="Forms\CMain\Quests\TalkEventItemGame.cs" />
+    <Compile Include="Forms\CMain\Quests\TalkEventItemNpc.cs" />
+    <Compile Include="Forms\CMain\Quests\TalkEventItemChoose.cs" />
+    <Compile Include="Forms\CMain\Quests\TalkEventItemPunish.cs" />
+    <Compile Include="Forms\CMain\Quests\TalkEventItemPay.cs" />
+    <Compile Include="Forms\CMain\Quests\TalkEventItemRewardQuest.cs" />
+    <Compile Include="Forms\CMain\Quests\TalkEventItemTest.cs" />
+    <Compile Include="Forms\CMain\Quests\TalkEventItemRoll.cs" />
+    <Compile Include="Forms\CMain\Quests\SceneQuests\SceneQuestEvent.cs" />
+    <Compile Include="Forms\CMain\Quests\SceneQuests\SceneQuestRollItem.cs" />
+    <Compile Include="Forms\CMain\Quests\SceneQuests\SceneQuestAnswer.cs" />
+    <Compile Include="Forms\CMain\Quests\SceneQuests\SceneQuestSay.cs" />
+    <Compile Include="Forms\CMain\Quests\SceneQuests\SceneQuestBlock.cs" />
+    <Compile Include="Forms\CMain\Quests\TalkEventItemFight.cs" />
+    <Compile Include="Forms\CMain\Quests\TalkEventItemReward.cs" />
+    <Compile Include="Forms\CMain\Quests\TalkEventItemAction.cs" />
+    <Compile Include="Forms\CMain\Quests\TalkEventItemTrade.cs" />
+    <Compile Include="Controler\GM\GMCodeZone.cs" />
+    <Compile Include="Forms\CMain\SystemSetup.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\CMain\SystemSetup.Designer.cs">
+      <DependentUpon>SystemSetup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ThirdParty\fmod.cs" />
+    <Compile Include="Datas\CustomTypes.cs" />
+    <Compile Include="Core\DbSerializer.cs" />
+    <Compile Include="Core\HSImageAttributes.cs" />
+    <Compile Include="Core\Interface\IRegionDecorator.cs" />
+    <Compile Include="Core\IntPair.cs" />
+    <Compile Include="Core\SoundManager.cs" />
+    <Compile Include="Core\GameConstants.cs" />
+    <Compile Include="Core\HSErrors.cs" />
+    <Compile Include="Datas\Effects\Facts\StaticUIEffect.cs" />
+    <Compile Include="Datas\Items\Consumer.cs" />
+    <Compile Include="Datas\Formulas\FormulaBook.cs" />
+    <Compile Include="Datas\Others\GameResourceBook.cs" />
+    <Compile Include="Datas\User\InfoGismo.cs" />
+    <Compile Include="Datas\User\InfoBag.cs" />
+    <Compile Include="Datas\User\InfoBasic.cs" />
+    <Compile Include="Datas\User\InfoQuest.cs" />
+    <Compile Include="Datas\User\InfoRecord.cs" />
+    <Compile Include="Forms\Items\MiniItemViewItem.cs" />
+    <Compile Include="Forms\Items\Core\RiverFlow.cs" />
+    <Compile Include="Forms\Items\GameShopItem.cs" />
+    <Compile Include="Forms\Items\Regions\ButtonRegion.cs" />
+    <Compile Include="Forms\Items\Regions\Decorators\RegionTextDecorator.cs" />
+    <Compile Include="Forms\Items\Regions\Decorators\RegionBorderDecorator.cs" />
+    <Compile Include="Forms\Items\Regions\PictureAnimRegion.cs" />
+    <Compile Include="Forms\MiniGame\MGThreeBody.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\MiniGame\MGThreeBody.Designer.cs">
+      <DependentUpon>MGThreeBody.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\MiniGame\MGSeven.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\MiniGame\MGSeven.Designer.cs">
+      <DependentUpon>MGSeven.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Datas\Others\RankData.cs" />
+    <Compile Include="Datas\User\InfoWorld.cs" />
+    <Compile Include="Forms\Items\Core\BorderPainter.cs" />
+    <Compile Include="Forms\Items\Regions\SubVirtualRegion.cs" />
+    <Compile Include="Forms\Items\Regions\VirtualRegion.cs" />
+    <Compile Include="Forms\Items\Core\ColorWordRegion.cs" />
+    <Compile Include="Forms\Items\Regions\PictureRegion.cs" />
+    <Compile Include="Forms\MiniGame\MGIconsCatch.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\MiniGame\MGIconsCatch.Designer.cs">
+      <DependentUpon>MGIconsCatch.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\MiniGame\MGUpToNumber.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\MiniGame\MGUpToNumber.Designer.cs">
+      <DependentUpon>MGUpToNumber.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\BasePanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\MiniGame\MGBattleRobot.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\MiniGame\MGBattleRobot.Designer.cs">
+      <DependentUpon>MGBattleRobot.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\RoleForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\RoleForm.Designer.cs">
+      <DependentUpon>RoleForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\CreatePlayerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\CreatePlayerForm.Designer.cs">
+      <DependentUpon>CreatePlayerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Datas\Effects\EffectFrame.cs" />
+    <Compile Include="Datas\Others\ExpTree.cs" />
+    <Compile Include="Datas\Others\GameResource.cs" />
+    <Compile Include="Datas\Items\HItemBook.cs" />
+    <Compile Include="Forms\ConnectForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\ConnectForm.Designer.cs">
+      <DependentUpon>ConnectForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Pops\PopBuyProduct.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Pops\PopBuyProduct.Designer.cs">
+      <DependentUpon>PopBuyProduct.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\BlackWallForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\BlackWallForm.Designer.cs">
+      <DependentUpon>BlackWallForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\CMain\MainTipManager.cs" />
+    <Compile Include="Forms\CMain\PanelManager.cs" />
+    <Compile Include="Forms\CMain\SystemMenu.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\CMain\SystemMenu.Designer.cs">
+      <DependentUpon>SystemMenu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Datas\Peoples\PeopleBook.cs" />
+    <Compile Include="Datas\User\Profile.cs" />
+    <Compile Include="Datas\Buffs\Buff.cs" />
+    <Compile Include="Tools\PaintTool.cs" />
+    <Compile Include="Core\HSCursor.cs" />
+    <Compile Include="Core\HSIcons.cs" />
+    <Compile Include="Core\HSTypes.cs" />
+    <Compile Include="Core\Loader\PicLoader.cs" />
+    <Compile Include="Forms\CMain\SystemMenuManager.cs" />
+    <Compile Include="Forms\CMain\SystemToolTip.cs" />
+    <Compile Include="Forms\CMain\PopMenuBase.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\CMain\PopMenuBase.Designer.cs">
+      <DependentUpon>PopMenuBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\CMain\PopMenuItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\CMain\PopMenuItem.Designer.cs">
+      <DependentUpon>PopMenuItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ThirdParty\fmod_dsp.cs" />
+    <Compile Include="ThirdParty\fmod_errors.cs" />
+    <Compile Include="Tools\NameChecker.cs" />
+    <EmbeddedResource Include="Forms\ChangeAccountForm.resx">
+      <DependentUpon>ChangeAccountForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MinigameForm.resx">
+      <DependentUpon>MinigameForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\BasePanel.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>BasePanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\RoleForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>RoleForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\CreatePlayerForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CreatePlayerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MiniGame\MGIconsCatch.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MGIconsCatch.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MiniGame\MGBase.resx">
+      <DependentUpon>MGBase.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MiniGame\MGTwentyOne.resx">
+      <DependentUpon>MGTwentyOne.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MiniGame\MGVoting.resx">
+      <DependentUpon>MGVoting.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MiniGame\MGRussiaBlock.resx">
+      <DependentUpon>MGRussiaBlock.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MiniGame\MGOvercome.resx">
+      <DependentUpon>MGOvercome.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MiniGame\MGRacing.resx">
+      <DependentUpon>MGRacing.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MiniGame\MGUpToNumber.resx">
+      <DependentUpon>MGUpToNumber.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MiniGame\MGBattleRobot.resx">
+      <DependentUpon>MGBattleRobot.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MiniGame\MGThreeBody.resx">
+      <DependentUpon>MGThreeBody.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MiniGame\MGSeven.resx">
+      <DependentUpon>MGSeven.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MiniGame\MGLinkGame.resx">
+      <DependentUpon>MGLinkGame.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ConnectForm.resx">
+      <DependentUpon>ConnectForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Pops\PopBuyProduct.resx">
+      <DependentUpon>PopBuyProduct.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\BlackWallForm.resx">
+      <DependentUpon>BlackWallForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\CMain\SystemSetup.resx">
+      <DependentUpon>SystemSetup.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\CMain\SystemMenu.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SystemMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\CMain\PopMenuBase.resx">
+      <DependentUpon>PopMenuBase.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\CMain\PopMenuItem.resx">
+      <DependentUpon>PopMenuItem.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\NpcTalkForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>NpcTalkForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ItemForm.resx">
+      <DependentUpon>ItemForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Datas\Effects\Effect.cs" />
+    <Compile Include="Datas\Effects\EffectBook.cs" />
+    <Compile Include="Datas\Buffs\BuffBook.cs" />
+    <Compile Include="Forms\NpcTalkForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\NpcTalkForm.Designer.cs">
+      <DependentUpon>NpcTalkForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Datas\User\UserProfile.cs" />
+    <Compile Include="Core\Loader\DataLoader.cs" />
+    <Compile Include="Forms\ItemForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\ItemForm.Designer.cs">
+      <DependentUpon>ItemForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\CMain\ToolBarItemData.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BaseType\BaseType.csproj">
+      <Project>{A155D12F-B9E0-425F-A840-959CB8ABE826}</Project>
+      <Name>BaseType</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="icon2.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

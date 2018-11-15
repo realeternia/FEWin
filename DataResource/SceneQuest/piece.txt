@@ -1,0 +1,5 @@
+﻿syellow.upd|“这可是附近最齐全的素材商店拉”||，商人大声吆喝道。
+	a进去看看
+		enpc|buypiece
+	a转身离开
+		end
