@@ -1,13 +1,5 @@
 ﻿namespace FEGame.Datas
 {
-    internal enum CardTypes
-    {
-        Null = 0,
-        Monster = 1,
-        Weapon = 2,
-        Spell = 3,
-    }
-
     internal enum HItemTypes
     {
         Common = 1, //用于type
@@ -64,25 +56,6 @@
         Sale
     }
 
-    internal enum RegionTypes
-    {
-        None = 0,
-        Row = 1,
-        RowForward = 2, //本行前方
-        Column = 3,
-        Circle = 4,
-        Cross = 5,
-        MultiColumn = 6,
-        Grid = 7,
-        All = 9,
-    }
-
-    public enum QuestStates
-    {
-        Receive = 1,
-        Accomplish = 2,
-        Finish = 3
-    }
 
     internal enum GameResourceType
     {

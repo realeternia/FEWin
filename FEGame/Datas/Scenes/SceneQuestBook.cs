@@ -6,7 +6,6 @@ using System.Windows.Forms;
 using ConfigDatas;
 using FEGame.Core.Loader;
 using FEGame.Datas.Others;
-using FEGame.Datas.Quests;
 using FEGame.Datas.User;
 using FEGame.Forms.CMain.Quests.SceneQuests;
 using FEGame.Tools;
@@ -78,15 +77,6 @@ namespace FEGame.Datas.Scenes
 
         private static bool IsQuestFlagAvail(SceneQuestConfig questConfig)
         {
-            if (!string.IsNullOrEmpty(questConfig.TriggerQuestNotReceive))
-                return UserProfile.InfoQuest.IsQuestNotReceive(QuestBook.GetQuestIdByName(questConfig.TriggerQuestNotReceive));
-            if (!string.IsNullOrEmpty(questConfig.TriggerQuestReceived))
-                return UserProfile.InfoQuest.IsQuestCanProgress(QuestBook.GetQuestIdByName(questConfig.TriggerQuestReceived));
-            if (!string.IsNullOrEmpty(questConfig.TriggerQuestFinished))
-            {
-                var qid = QuestBook.GetQuestIdByName(questConfig.TriggerQuestFinished);
-                return UserProfile.InfoQuest.IsQuestFinish(qid) || UserProfile.InfoQuest.IsQuestCanReward(qid);
-            }
             if (questConfig.TriggerLimitInDungeon > 0 && UserProfile.InfoDungeon.DungeonId > 0)
                 return UserProfile.InfoDungeon.GetQuestCount(questConfig.Id) < questConfig.TriggerLimitInDungeon;
             return true;

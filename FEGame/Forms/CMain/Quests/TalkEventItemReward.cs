@@ -50,7 +50,6 @@ namespace FEGame.Forms.CMain.Quests
                 result = evt.Children[0];//应该是一个say
             }
 
-            UserProfile.InfoQuest.OnSceneQuestSuccess(config.Ename, IsPartialSuccess());
             inited = true;
         }
 
@@ -61,16 +60,6 @@ namespace FEGame.Forms.CMain.Quests
                 for (int i = 0; i < times; i++)
                     action(ref index);
             }
-        }
-
-        public bool IsPartialSuccess()
-        {
-            foreach (var item in evt.ParamList)
-            {
-                if (item != "x2" || item != "x3")
-                    return true;
-            }
-            return false;
         }
 
         private bool IsBonusAvail(string tp)

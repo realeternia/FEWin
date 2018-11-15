@@ -65,8 +65,6 @@ namespace FEGame.Controler.GM
                         PanelManager.DealPanel(sw); break;
                     case "cure": UserProfile.InfoBasic.MentalPoint=100; UserProfile.InfoBasic.HealthPoint=100;
                         UserProfile.InfoBasic.FoodPoint = 100;break;
-                    case "qst":if (data.Length == 2)
-                        UserProfile.InfoQuest.SetQuestState(int.Parse(data[1]), QuestStates.Receive); break;
                 }
             }
             catch (FormatException) { }

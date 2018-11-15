@@ -81,7 +81,6 @@ namespace FEGame.Core
             register.Register(typeof(IntPair), 3);
             register.Register(typeof(InfoBag), 4);
             register.Register(typeof(InfoGismo), 6);
-            register.Register(typeof(InfoQuest), 11);
             register.Register(typeof(InfoDungeon), 12);
             register.Register(typeof(DbQuestData), 15);
             register.Register(typeof(DbGismoState), 17);

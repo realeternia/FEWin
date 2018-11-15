@@ -24,7 +24,6 @@ namespace FEGame.Forms.CMain.Quests
                 case "fight": return new TalkEventItemFight(eventId, level, r, e);
                 case "game": return new TalkEventItemGame(eventId, level, r, e);
                 case "reward": return new TalkEventItemReward(eventId, level, c, r, e);
-                case "rewardq": return new TalkEventItemRewardQuest(eventId, level, c, r, e);
                 case "trade": return new TalkEventItemTrade(eventId, level, c, r, e); 
                 case "punish": return new TalkEventItemPunish(eventId, level, c, r, e);
                 case "test": return new TalkEventItemTest(eventId, level, r, e);

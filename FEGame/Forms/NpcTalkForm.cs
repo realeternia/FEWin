@@ -9,7 +9,6 @@ using FEGame.Core.Loader;
 using FEGame.Datas;
 using FEGame.Datas.Others;
 using FEGame.Datas.Peoples;
-using FEGame.Datas.Quests;
 using FEGame.Datas.Scenes;
 using FEGame.Datas.User;
 using FEGame.Forms.CMain;
@@ -216,38 +215,6 @@ namespace FEGame.Forms
 
             if (interactBlock != null && interactBlock.Depth == 0)
             {//额外的任务目标
-                foreach (var questConfig in ConfigData.QuestDict.Values)
-                {
-                    if (questConfig.StartNpcId == EventId)
-                    {
-                        if (UserProfile.InfoQuest.IsQuestCanReceive(questConfig.Id))
-                        {
-                            var questBlock = SceneQuestBook.GetQuestData(this, EventId, eventLevel, "blockquest");
-                            questBlock.SetScript(string.Format("|icon.npc1||【{0}】{1}", questConfig.TypeR == 0 ? "主线" : "支线", questConfig.Name));
-                            questBlock.Children[0].SetScript(string.Format( "{0}$$|报酬:{1}" , questConfig.Descript, QuestBook.GetRewardStr(questConfig.Id, eventLevel)));
-                            (questBlock.Children[0].Children[0].Children[0] as SceneQuestEvent).ParamList[0] = questConfig.Id.ToString();
-                            AddBlockAnswer(questBlock);
-                        }
-                    }
-                    if (questConfig.EndNpcId == EventId || questConfig.EndNpcId == 0 && questConfig.StartNpcId == EventId) //如果end=0，则使用startnpc作为奖励npc
-                    {
-                        if (UserProfile.InfoQuest.IsQuestCanReward(questConfig.Id))
-                        {
-                            var questBlock = SceneQuestBook.GetQuestData(this, EventId, eventLevel, "blockquestfin");
-                            questBlock.SetScript(string.Format("|icon.npc3||{0}|lime|(提交)", questConfig.Name));
-                            (questBlock.Children[0] as SceneQuestEvent).ParamList[0] = questConfig.Id.ToString();
-                            AddBlockAnswer(questBlock);
-                        }
-                    }
-                    if (questConfig.CheckSceneQuest == config.Ename && UserProfile.InfoQuest.IsQuestCanProgress(questConfig.Id))
-                    {//增加一个选项的任务
-                        var questBlock = SceneQuestBook.GetQuestData(this, EventId, eventLevel, questConfig.QuestScript);
-                        questBlock.SetScript(string.Format("|icon.npc5||{0}", questConfig.QuestScript));
-                        ModifyQuestState(questBlock, questConfig);
-                        AddBlockAnswer(questBlock);
-                    }
-                }
-
                 if (!string.IsNullOrEmpty(config.EnemyName))
                 {
                     var peopleId = PeopleBook.GetPeopleId(config.EnemyName);
@@ -297,16 +264,6 @@ namespace FEGame.Forms
                     return false;
                 }
             }
-            else if (!string.IsNullOrEmpty(peopleConfig.RivalQuest))
-            {
-                var questId = QuestBook.GetQuestIdByName(peopleConfig.RivalQuest);
-                if (!UserProfile.InfoQuest.IsQuestFinish(questId))
-                {
-                    var questConfig = ConfigData.GetQuestConfig(questId);
-                    reason = string.Format("(前置任务{0})", questConfig.Name);
-                    return false;
-                }
-            }
             else if (peopleConfig.RivalRecordId > 0)
             {
                 var myVal = UserProfile.InfoRecord.GetRecordById(peopleConfig.RivalRecordId);
@@ -317,18 +274,6 @@ namespace FEGame.Forms
                 }
             }
             return true;
-        }
-
-        private void ModifyQuestState(SceneQuestBlock sb, QuestConfig questConfig)
-        {
-            var event1 = sb as SceneQuestEvent; 
-            if (event1 != null && event1.Type == "questp")
-            {
-                event1.ParamList[0] = questConfig.Id.ToString();
-                event1.ParamList[1] = questConfig.ProgressAdd.ToString();
-            }
-            foreach (var child in sb.Children)
-                ModifyQuestState(child, questConfig);
         }
 
         private void NpcTalkForm_MouseMove(object sender, MouseEventArgs e)

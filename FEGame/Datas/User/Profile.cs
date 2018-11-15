@@ -14,7 +14,6 @@ namespace FEGame.Datas.User
         [FieldIndex(Index = 3)] public InfoBasic InfoBasic;
         [FieldIndex(Index = 4)] public InfoBag InfoBag;
         [FieldIndex(Index = 6)] public InfoDungeon InfoDungeon;
-        [FieldIndex(Index = 11)] public InfoQuest InfoQuest;
         [FieldIndex(Index = 12)] public InfoRecord InfoRecord;
         [FieldIndex(Index = 13)] public InfoGismo InfoGismo;
         [FieldIndex(Index = 14)] public InfoWorld InfoWorld;
@@ -24,7 +23,6 @@ namespace FEGame.Datas.User
             InfoBasic = new InfoBasic();
             InfoBag = new InfoBag();
             InfoDungeon = new InfoDungeon();
-            InfoQuest = new InfoQuest();
             InfoRecord = new InfoRecord();
             InfoGismo = new InfoGismo();
             InfoWorld = new InfoWorld();
@@ -44,27 +42,6 @@ namespace FEGame.Datas.User
             InfoBag.BagCount = GameConstants.BagInitCount;
         }
 
-        public void OnKillMonster(int tlevel, int trace, int tattr)
-        {
-            InfoRecord.AddRecordById(RecordInfoConfig.Indexer.TotalKillAttr + tattr, 1);
-            InfoRecord.AddRecordById(RecordInfoConfig.Indexer.TotalKillRace + trace, 1);
-            InfoRecord.AddRecordById(RecordInfoConfig.Indexer.TotalKill, 1);
-        }
-
-        internal void OnUseCard(CardTypes type, int tlevel, int trace, int tattr)
-        {
-            InfoRecord.AddRecordById(RecordInfoConfig.Indexer.TotalUseAttr + tattr, 1);
-            if (type == CardTypes.Monster)
-            {
-                InfoRecord.AddRecordById(RecordInfoConfig.Indexer.TotalUseRace + trace, 1);
-                InfoRecord.AddRecordById(RecordInfoConfig.Indexer.TotalSummon, 1);
-            }
-            if (type == CardTypes.Weapon)
-                InfoRecord.AddRecordById(RecordInfoConfig.Indexer.TotalWeapon, 1);
-            else
-                InfoRecord.AddRecordById(RecordInfoConfig.Indexer.TotalSpell, 1);
-        }
-
         public void OnLogin()
         {
             if (TimeManager.IsDifferDay(InfoBasic.LastLoginTime, TimeTool.DateTimeToUnixTime(DateTime.Now)))
@@ -75,12 +52,10 @@ namespace FEGame.Datas.User
         public void OnLogout()
         {
             InfoBasic.LastLoginTime = TimeTool.DateTimeToUnixTime(DateTime.Now);
-            InfoQuest.OnLogout();
         }
 
         public void OnSwitchScene(bool isWarp)
         {
-            InfoQuest.OnSwitchScene(isWarp);
             if(isWarp)
                 TalePlayer.Save();//每次切场景存个档
         }

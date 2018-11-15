@@ -118,7 +118,6 @@
     <Compile Include="Controler\World\WorldInfoManager.cs" />
     <Compile Include="Datas\Drops\DropBook.cs" />
     <Compile Include="Datas\Others\DnaBook.cs" />
-    <Compile Include="Datas\Quests\QuestBook.cs" />
     <Compile Include="Datas\Scenes\DungeonBook.cs" />
     <Compile Include="Datas\Scenes\SceneQuestBook.cs" />
     <Compile Include="Datas\User\Db\DbGismoState.cs" />
@@ -184,7 +183,6 @@
     <Compile Include="Forms\CMain\Quests\TalkEventItemChoose.cs" />
     <Compile Include="Forms\CMain\Quests\TalkEventItemPunish.cs" />
     <Compile Include="Forms\CMain\Quests\TalkEventItemPay.cs" />
-    <Compile Include="Forms\CMain\Quests\TalkEventItemRewardQuest.cs" />
     <Compile Include="Forms\CMain\Quests\TalkEventItemTest.cs" />
     <Compile Include="Forms\CMain\Quests\TalkEventItemRoll.cs" />
     <Compile Include="Forms\CMain\Quests\SceneQuests\SceneQuestEvent.cs" />
@@ -219,7 +217,6 @@
     <Compile Include="Datas\User\InfoGismo.cs" />
     <Compile Include="Datas\User\InfoBag.cs" />
     <Compile Include="Datas\User\InfoBasic.cs" />
-    <Compile Include="Datas\User\InfoQuest.cs" />
     <Compile Include="Datas\User\InfoRecord.cs" />
     <Compile Include="Forms\Items\MiniItemViewItem.cs" />
     <Compile Include="Forms\Items\Core\RiverFlow.cs" />

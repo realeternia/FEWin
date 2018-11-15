@@ -21,8 +21,6 @@ namespace FEGame.Forms.CMain.Quests
             base.Init();
             switch (evt.Type)
             {
-                case "quest": UserProfile.InfoQuest.SetQuestState(int.Parse(evt.ParamList[0]), QuestStates.Receive); break;
-                case "questp": UserProfile.InfoQuest.AddQuestProgress(int.Parse(evt.ParamList[0]), byte.Parse(evt.ParamList[1])); break;
                 case "removeditem": var itemId = DungeonBook.GetDungeonItemId(config.NeedDungeonItemId);
                     UserProfile.InfoDungeon.RemoveDungeonItem(itemId, config.NeedDungeonItemCount); break;
             }
