@@ -2,11 +2,11 @@
 using System.Drawing;
 using System.Windows.Forms;
 using ConfigDatas;
-using FEGame.Datas;
-using FEGame.Datas.Drops;
-using FEGame.Datas.Others;
-using FEGame.Datas.Scenes;
-using FEGame.Datas.User;
+using FEGame.DataType;
+using FEGame.DataType.Drops;
+using FEGame.DataType.Others;
+using FEGame.DataType.Scenes;
+using FEGame.DataType.User;
 using FEGame.Forms.Items.Core;
 using NarlonLib.Math;
 

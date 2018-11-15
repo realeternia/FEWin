@@ -4,8 +4,8 @@ using System.Windows.Forms;
 using ConfigDatas;
 using FEGame.Core;
 using FEGame.Core.Loader;
-using FEGame.Datas;
-using FEGame.Datas.User;
+using FEGame.DataType;
+using FEGame.DataType.User;
 using NarlonLib.Tools;
 
 namespace FEGame.Forms.CMain

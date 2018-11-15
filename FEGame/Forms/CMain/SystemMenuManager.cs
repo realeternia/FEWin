@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using ConfigDatas;
 using FEGame.Controler.GM;
-using FEGame.Datas.User;
+using FEGame.DataType.User;
 using FEGame.Forms.Items.Core;
 
 namespace FEGame.Forms.CMain 

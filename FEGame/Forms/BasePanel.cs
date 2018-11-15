@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using FEGame.Core;
-using FEGame.Datas.Effects.Facts;
+using FEGame.DataType.Effects.Facts;
 using FEGame.Forms.CMain;
 using NarlonLib.Tools;
 

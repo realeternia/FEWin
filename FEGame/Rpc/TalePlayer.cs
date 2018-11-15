@@ -2,7 +2,7 @@
 using System.Collections;
 using FEGame.Controler.World;
 using FEGame.Core;
-using FEGame.Datas.User;
+using FEGame.DataType.User;
 using JLM.NetSocket;
 using NarlonLib.Core;
 using NarlonLib.Log;

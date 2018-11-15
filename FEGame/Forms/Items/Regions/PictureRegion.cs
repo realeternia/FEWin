@@ -5,9 +5,9 @@ using ControlPlus;
 using ControlPlus.Drawing;
 using FEGame.Core;
 using FEGame.Core.Interface;
-using FEGame.Datas.Items;
-using FEGame.Datas.Peoples;
-using FEGame.Datas.Scenes;
+using FEGame.DataType.Items;
+using FEGame.DataType.Peoples;
+using FEGame.DataType.Scenes;
 
 namespace FEGame.Forms.Items.Regions
 {

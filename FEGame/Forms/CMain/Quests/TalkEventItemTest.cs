@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using FEGame.Datas.User;
+using FEGame.DataType.User;
 using FEGame.Forms.CMain.Quests.SceneQuests;
 using NarlonLib.Math;
 

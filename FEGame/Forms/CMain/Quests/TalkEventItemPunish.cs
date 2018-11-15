@@ -1,9 +1,9 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 using ControlPlus;
-using FEGame.Datas;
-using FEGame.Datas.Others;
-using FEGame.Datas.User;
+using FEGame.DataType;
+using FEGame.DataType.Others;
+using FEGame.DataType.User;
 using FEGame.Forms.CMain.Quests.SceneQuests;
 using FEGame.Forms.Items.Regions;
 

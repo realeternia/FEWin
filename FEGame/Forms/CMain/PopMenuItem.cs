@@ -1,5 +1,5 @@
-using FEGame.Datas;
-using FEGame.Datas.User;
+using FEGame.DataType;
+using FEGame.DataType.User;
 
 namespace FEGame.Forms.CMain
 {

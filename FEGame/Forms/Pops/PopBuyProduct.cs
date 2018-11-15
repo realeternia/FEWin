@@ -5,8 +5,8 @@ using ConfigDatas;
 using ControlPlus;
 using FEGame.Core;
 using FEGame.Core.Loader;
-using FEGame.Datas.Items;
-using FEGame.Datas.User;
+using FEGame.DataType.Items;
+using FEGame.DataType.User;
 using FEGame.Forms.CMain;
 using FEGame.Forms.Items.Regions;
 

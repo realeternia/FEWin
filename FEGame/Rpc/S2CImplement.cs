@@ -1,5 +1,5 @@
 ﻿using FEGame.Core;
-using FEGame.Datas.User;
+using FEGame.DataType.User;
 using JLM.NetSocket;
 
 namespace FEGame.Rpc

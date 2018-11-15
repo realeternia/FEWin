@@ -1,7 +1,6 @@
 ﻿using System.Drawing;
-using FEGame.Datas;
-using FEGame.Datas.Scenes;
-using FEGame.Datas.User;
+using FEGame.DataType.Scenes;
+using FEGame.DataType.User;
 using FEGame.Forms.CMain.Quests.SceneQuests;
 
 namespace FEGame.Forms.CMain.Quests

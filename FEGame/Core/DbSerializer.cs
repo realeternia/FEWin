@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Reflection;
 using AltSerialize;
-using FEGame.Datas.Others;
-using FEGame.Datas.User;
-using FEGame.Datas.User.Db;
+using FEGame.DataType.Others;
+using FEGame.DataType.User;
+using FEGame.DataType.User.Db;
 
 namespace FEGame.Core
 {

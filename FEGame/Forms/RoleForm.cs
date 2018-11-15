@@ -3,8 +3,8 @@ using System.Drawing;
 using System.Windows.Forms;
 using ConfigDatas;
 using FEGame.Core.Loader;
-using FEGame.Datas.Others;
-using FEGame.Datas.User;
+using FEGame.DataType.Others;
+using FEGame.DataType.User;
 using FEGame.Forms.Items.Core;
 
 namespace FEGame.Forms

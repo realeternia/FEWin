@@ -2,8 +2,8 @@
 using System.Drawing;
 using System.Windows.Forms;
 using ConfigDatas;
-using FEGame.Datas.Others;
-using FEGame.Datas.User;
+using FEGame.DataType.Others;
+using FEGame.DataType.User;
 using FEGame.Forms.CMain.Quests.SceneQuests;
 
 namespace FEGame.Forms.CMain.Quests

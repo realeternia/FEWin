@@ -9,7 +9,7 @@ using FEGame.Controler.GM;
 using FEGame.Controler.World;
 using FEGame.Core;
 using FEGame.Core.Loader;
-using FEGame.Datas.User;
+using FEGame.DataType.User;
 using FEGame.Forms;
 using FEGame.Forms.CMain;
 using FEGame.Rpc;

@@ -1,5 +1,5 @@
 ﻿using System.Drawing;
-using FEGame.Datas.User;
+using FEGame.DataType.User;
 using FEGame.Forms.CMain.Quests.SceneQuests;
 using FEGame.Forms.Items.Regions;
 

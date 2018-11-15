@@ -1,7 +1,7 @@
 ﻿using System;
-using FEGame.Datas;
-using FEGame.Datas.Scenes;
-using FEGame.Datas.User;
+using FEGame.DataType;
+using FEGame.DataType.Scenes;
+using FEGame.DataType.User;
 using FEGame.Forms;
 using FEGame.Forms.CMain;
 
