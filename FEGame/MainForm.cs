@@ -60,6 +60,7 @@ namespace FEGame
                         return;
                 }
                 MainTipManager.Refresh();
+                SystemMenuManager.Reload();
                 UserProfile.Profile.OnLogin();
 
                 page = 1;

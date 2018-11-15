@@ -37,7 +37,7 @@ namespace FEGame.Forms.CMain
                 menuItemList.Add(new ToolBarItemData(mainIconConfig.Id, width, height));
         }
 
-        private static void Reload()
+        public static void Reload()
         {
             foreach (var riverFlow in flowList)
             {
