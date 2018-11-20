@@ -1,4 +1,5 @@
 ﻿using ControlPlus;
+using System.Windows.Forms;
 
 namespace FEGame.Forms
 {
@@ -31,6 +32,7 @@ namespace FEGame.Forms
         private void InitializeComponent()
         {
             this.bitmapButtonClose = new ControlPlus.BitmapButton();
+            this.doubleBuffedPanel1 = new ControlPlus.DoubleBuffedPanel();
             this.SuspendLayout();
             // 
             // bitmapButtonClose
@@ -51,20 +53,30 @@ namespace FEGame.Forms
             this.bitmapButtonClose.UseVisualStyleBackColor = true;
             this.bitmapButtonClose.Click += new System.EventHandler(this.buttonClose_Click);
             // 
+            // doubleBuffedPanel1
+            // 
+            this.doubleBuffedPanel1.Location = new System.Drawing.Point(25, 38);
+            this.doubleBuffedPanel1.Name = "doubleBuffedPanel1";
+            this.doubleBuffedPanel1.Size = new System.Drawing.Size(950, 650);
+            this.doubleBuffedPanel1.TabIndex = 28;
+            this.doubleBuffedPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.doubleBuffedPanel1_Paint);
+            this.doubleBuffedPanel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.WorldMapViewForm_MouseDown);
+            this.doubleBuffedPanel1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.WorldMapViewForm_MouseMove);
+            this.doubleBuffedPanel1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.WorldMapViewForm_MouseUp);
+            // 
             // BattleForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.Black;
+            this.Controls.Add(this.doubleBuffedPanel1);
             this.Controls.Add(this.bitmapButtonClose);
             this.DoubleBuffered = true;
             this.Name = "BattleForm";
-            this.Size = new System.Drawing.Size(1000, 750);
+            this.Size = new System.Drawing.Size(1000, 700);
             this.Click += new System.EventHandler(this.WorldMapViewForm_Click);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.WorldMapViewForm_Paint);
-            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.WorldMapViewForm_MouseDown);
-            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.WorldMapViewForm_MouseMove);
-            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.WorldMapViewForm_MouseUp);
             this.Controls.SetChildIndex(this.bitmapButtonClose, 0);
+            this.Controls.SetChildIndex(this.doubleBuffedPanel1, 0);
             this.ResumeLayout(false);
 
         }
@@ -72,5 +84,6 @@ namespace FEGame.Forms
         #endregion
 
         private BitmapButton bitmapButtonClose;
+        private DoubleBuffedPanel doubleBuffedPanel1;
     }
 }

@@ -2,6 +2,6 @@
 {
     public static class Config
     {
-        public static bool ShowImage = false;
+        public static bool ShowImage = true;
     }
 }

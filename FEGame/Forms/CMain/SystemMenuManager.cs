@@ -121,6 +121,9 @@ namespace FEGame.Forms.CMain
                     return;
             }
 
+            PanelManager.DealPanel(new BattleForm()); //test
+            return;
+
             switch (id)
             {
                 case SystemMenuIds.SystemMenu:

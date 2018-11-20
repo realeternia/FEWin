@@ -92,7 +92,7 @@ namespace FEGame
         private void MainForm_Load(object sender, EventArgs e)
         {
             string version = FileVersionInfo.GetVersionInfo(Application.ExecutablePath).FileVersion;
-            Text = string.Format("幻兽传说卡片版 v{0}", version);
+            Text = string.Format("风月传说 v{0}", version);
           
             try
             {
@@ -108,7 +108,7 @@ namespace FEGame
                 Close();
             }
 
-            tabPageLogin.BackgroundImage = PicLoader.Read("System", "LogBack.jpg");
+            tabPageLogin.BackgroundImage = PicLoader.Read("System", "logback.jpg");
             passport = WorldInfoManager.LastAccountName;
             labelAccount.Text = string.Format("账户 {0}", passport);
             ChangePage(0);

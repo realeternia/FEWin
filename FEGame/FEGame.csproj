@@ -102,6 +102,12 @@
     <Compile Include="DataType\Effects\Facts\BaseEffect.cs" />
     <Compile Include="DataType\Effects\Facts\MovingUIEffect.cs" />
     <Compile Include="Controler\GM\GMCommand.cs" />
+    <Compile Include="Forms\BattleForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\BattleForm.designer.cs">
+      <DependentUpon>BattleForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\ChangeAccountForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -109,12 +115,6 @@
       <DependentUpon>ChangeAccountForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Items\Regions\VirtualRegionMoveMediator.cs" />
-    <Compile Include="Forms\BattleForm.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\BattleForm.designer.cs">
-      <DependentUpon>BattleForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Rpc\NetDataCache.cs" />
     <Compile Include="Tools\ImageManager.cs" />
     <Compile Include="Rpc\S2CImplement.cs" />
@@ -345,6 +345,9 @@
     <Compile Include="ThirdParty\fmod_dsp.cs" />
     <Compile Include="ThirdParty\fmod_errors.cs" />
     <Compile Include="Tools\NameChecker.cs" />
+    <EmbeddedResource Include="Forms\BattleForm.resx">
+      <DependentUpon>BattleForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\ChangeAccountForm.resx">
       <DependentUpon>ChangeAccountForm.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -424,9 +427,6 @@
     <EmbeddedResource Include="Forms\BlackWallForm.resx">
       <DependentUpon>BlackWallForm.cs</DependentUpon>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\BattleForm.resx">
-      <DependentUpon>BattleForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <SubType>Designer</SubType>

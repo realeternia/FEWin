@@ -62,46 +62,5 @@ namespace FEGame.DataType.Drops
             }
         }
 
-        /// <summary>
-        /// 按概率获得采集道具列表
-        /// </summary>
-        public static int[] GetCollectItems(int type, int sceneId)
-        {
-            List<int> itemList = new List<int>();
-            List<float> rateList = new List<float>();
-            var sceneConfig = ConfigData.GetSceneConfig(sceneId);
-            foreach (var itemConfig in ConfigData.ItemCollectDict.Values)
-            {
-                if (itemConfig.Type != type)
-                    continue;
-
-                itemList.Add(itemConfig.Id);
-                rateList.Add(GetCollectDropRate(itemConfig, sceneConfig));
-            }
-
-            return NLRandomPicker<int>.RandomPickN(itemList.ToArray(), rateList.ToArray(), 2);
-        }
-
-        private static float GetCollectDropRate(ItemCollectConfig itemCollectConfig, SceneConfig sceneConfig)
-        {
-            var itemConfig = ConfigData.GetHItemConfig(itemCollectConfig.Id);
-            var baseDrop = 100f/itemConfig.Rare;
-
-            int attrDiffer = Math.Abs(itemCollectConfig.Temperature - sceneConfig.Temperature) +
-                             Math.Abs(itemCollectConfig.Humitity - sceneConfig.Humitity) +
-                             Math.Abs(itemCollectConfig.Altitude - sceneConfig.Altitude) + 1;
-
-            if (attrDiffer > 0)
-                baseDrop /= attrDiffer;
-
-            if (itemCollectConfig.Temperature == sceneConfig.Temperature)
-                baseDrop *= 1.5f;
-            if (itemCollectConfig.Humitity == sceneConfig.Humitity)
-                baseDrop *= 1.5f;
-            if (itemCollectConfig.Altitude == sceneConfig.Altitude)
-                baseDrop *= 1.5f;
-
-            return baseDrop;
-        }
     }
 }

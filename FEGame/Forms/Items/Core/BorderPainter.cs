@@ -16,14 +16,14 @@ namespace FEGame.Forms.Items.Core
 
         static BorderPainter()
         {
-            top = PicLoader.Read("Border", "BaseT.png");
-            bottom = PicLoader.Read("Border", "BaseB.png");
-            left = PicLoader.Read("Border", "BaseL.png");
-            right = PicLoader.Read("Border", "BaseR.png");
-            topleft = PicLoader.Read("Border", "BaseTL.png");
-            topright = PicLoader.Read("Border", "BaseTR.png");
-            bottomleft = PicLoader.Read("Border", "BaseBL.png");
-            bottomright = PicLoader.Read("Border", "BaseBR.png");
+            top = PicLoader.Read("Border", "baset.png");
+            bottom = PicLoader.Read("Border", "baseb.png");
+            left = PicLoader.Read("Border", "basel.png");
+            right = PicLoader.Read("Border", "baser.png");
+            topleft = PicLoader.Read("Border", "basetl.png");
+            topright = PicLoader.Read("Border", "basetr.png");
+            bottomleft = PicLoader.Read("Border", "basebl.png");
+            bottomright = PicLoader.Read("Border", "basebr.png");
         }
 
         public static void Draw(Graphics g, string head, int width, int height)

@@ -37,8 +37,8 @@ namespace FEGame.Forms
         public ItemForm()
         {
             InitializeComponent();
-            this.bitmapButtonClose.ImageNormal = PicLoader.Read("Button.Panel", "CloseButton1.jpg");
-            this.bitmapButtonSort.ImageNormal = PicLoader.Read("Button.Panel", "SortButton.jpg");
+            this.bitmapButtonClose.ImageNormal = PicLoader.Read("Button.Panel", "closebutton1.jpg");
+            this.bitmapButtonSort.ImageNormal = PicLoader.Read("Button.Panel", "sortbutton.jpg");
             bitmapButtonSort.NoUseDrawNine = true;
             this.nlPageSelector1 = new ControlPlus.NLPageSelector(this, 123, 362, 204);
             nlPageSelector1.PageChange += nlPageSelector1_PageChange;

@@ -12,7 +12,7 @@ namespace FEGame.Forms.CMain
         public SystemSetup()
         {
             InitializeComponent();
-            this.bitmapButtonClose.ImageNormal = PicLoader.Read("Button.Panel", "CloseButton1.jpg");
+            this.bitmapButtonClose.ImageNormal = PicLoader.Read("Button.Panel", "closebutton1.jpg");
             bitmapButtonClose.NoUseDrawNine = true;
         }
 

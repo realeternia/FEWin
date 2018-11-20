@@ -55,7 +55,7 @@ namespace FEGame.Forms.MiniGame
         public override void Init(int width, int height)
         {
             base.Init(width, height);
-            this.bitmapButtonClose.ImageNormal = PicLoader.Read("Button.Panel", "CloseButton1.jpg");
+            this.bitmapButtonClose.ImageNormal = PicLoader.Read("Button.Panel", "closebutton1.jpg");
             this.bitmapButtonHelp.ImageNormal = PicLoader.Read("Button.Panel", "LearnButton.jpg");
             bitmapButtonHelp.NoUseDrawNine = true;
             show = true;

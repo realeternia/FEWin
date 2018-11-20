@@ -88,7 +88,7 @@ namespace FEGame.Forms.CMain
         public void Draw(Graphics g, int menuTar)
         {
             bool isTarget = menuTar == Id;
-            Image button = PicLoader.Read("Button", string.Format("{0}{1}.png", MainIconConfig.Icon, isTarget && !InCD ? "On" : ""));
+            Image button = PicLoader.Read("Button", string.Format("{0}{1}.png", MainIconConfig.Icon, isTarget && !InCD ? "on" : ""));
             int buttony = Y;
 
             string info = "";

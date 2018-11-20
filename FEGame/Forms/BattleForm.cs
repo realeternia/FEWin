@@ -28,7 +28,7 @@ namespace FEGame.Forms
         public BattleForm()
         {
             InitializeComponent();
-            this.bitmapButtonClose.ImageNormal = PicLoader.Read("Button.Panel", "CloseButton1.jpg");
+            this.bitmapButtonClose.ImageNormal = PicLoader.Read("Button.Panel", "closebutton1.jpg");
             bitmapButtonClose.NoUseDrawNine = true;
             myCursor = new HSCursor(this);
         }
@@ -46,36 +46,17 @@ namespace FEGame.Forms
             {
                 for (int j = 0; j < 30; j++)
                 {
-                    
+                    Rectangle destRect = new Rectangle(50*i, 50*j, 50,50);
+                    g.DrawImage(tileImage, destRect, 0, 0, 50, 50, GraphicsUnit.Pixel);
                 }
             }
 
-            foreach (var sceneConfig in ConfigData.SceneDict.Values)
-            {
-                if (sceneConfig.Icon == "")
-                    continue;
-
-                var regionConfig = ConfigData.GetSceneRegionConfig(sceneConfig.RegionId);
-
-                Image image = PicLoader.Read("Map.MapIcon", string.Format("{0}.png", sceneConfig.Icon));
-
-                Rectangle destRect = new Rectangle(sceneConfig.IconX-2, sceneConfig.IconY-2, image.Width+4, image.Height+4);
-                Rectangle destRect2 = new Rectangle(sceneConfig.IconX, sceneConfig.IconY, image.Width, image.Height);
-
-                g.DrawImage(image, destRect, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, HSImageAttributes.FromColor(Color.FromName(regionConfig.IconColor)));
-                g.DrawImage(image, destRect2, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, HSImageAttributes.ToGray);
-                image.Dispose();
-
-                if (sceneConfig.Id == UserProfile.InfoBasic.MapId)
-                {
-                    baseX = sceneConfig.IconX - 750/2 + 30;
-                    baseY = sceneConfig.IconY - 500/2 + 30;
-                    baseX = MathTool.Clamp(baseX, 0, worldMap.Width - 750);
-                    baseY = MathTool.Clamp(baseY, 0, worldMap.Height - 500);
-                }
-            }
+            tileImage.Dispose();
             g.Dispose();
 
+            baseX = MathTool.Clamp(baseX, 0, worldMap.Width - 750);
+            baseY = MathTool.Clamp(baseY, 0, worldMap.Height - 500);
+            
             showImage = true;
         }
 
@@ -183,16 +164,30 @@ namespace FEGame.Forms
             BorderPainter.Draw(e.Graphics, "", Width, Height);
 
             Font font = new Font("黑体", 12*1.33f, FontStyle.Bold, GraphicsUnit.Pixel);
-            e.Graphics.DrawString("世界地图", font, Brushes.White, Width / 2 - 40, 8);
+            e.Graphics.DrawString("战斗", font, Brushes.White, Width / 2 - 40, 8);
             font.Dispose();
 
+        }
+
+        private static Image GetPreview(int id)
+        {
+            SceneConfig sceneConfig = ConfigData.GetSceneConfig(id);
+
+            ControlPlus.TipImage tipData = new ControlPlus.TipImage(PaintTool.GetTalkColor);
+            tipData.AddTextNewLine(sceneConfig.Name, "Lime", 20);
+            tipData.AddTextNewLine(string.Format("地图等级: {0}", sceneConfig.Level), sceneConfig.Level>UserProfile.InfoBasic.Level?"Red": "White");
+         //   tipData.AddTextNewLine(string.Format("区域: {0}", ConfigData.GetSceneRegionConfig(sceneConfig.RegionId).Name), "White", 20);
+
+            return tipData.Image;
+        }
+
+        private void doubleBuffedPanel1_Paint(object sender, PaintEventArgs e)
+        {
             if (!showImage)
                 return;
 
-            e.Graphics.DrawImage(worldMap, new Rectangle(15, 35, 750,500), new Rectangle(baseX, baseY, 750,500), GraphicsUnit.Pixel);
-            Image tit = PicLoader.Read("Map", "title.png");
-            e.Graphics.DrawImage(tit, 30, 45, 126, 44);
-            tit.Dispose();
+            e.Graphics.DrawImage(worldMap, new Rectangle(0, 0, doubleBuffedPanel1.Width, doubleBuffedPanel1.Height), new Rectangle(baseX, baseY, 750, 500), GraphicsUnit.Pixel);
+
             foreach (var mapIconConfig in ConfigData.SceneDict.Values)
             {
                 if (mapIconConfig.Icon == "")
@@ -205,7 +200,7 @@ namespace FEGame.Forms
                     int width = 100;
                     int height = 100;
 
-                    if (x > baseX && y > baseY && x + width < baseX + 750 && y + height < baseY + 500)
+                    if (x > baseX && y > baseY && x + width < baseX + doubleBuffedPanel1.Width && y + height < baseY + doubleBuffedPanel1.Height)
                     {
                         Image image = PicLoader.Read("Map.MapIcon", string.Format("{0}.png", mapIconConfig.Icon));
                         Rectangle destRect = new Rectangle(x - baseX + 11, y - baseY + 31, width + 8, height + 8);
@@ -222,25 +217,14 @@ namespace FEGame.Forms
                         image.Dispose();
                     }
                 }
-                if (mapIconConfig.Id == UserProfile.InfoBasic.MapId)
-                {
-                    Image image = PicLoader.Read("Map", "arrow.png");
-                    e.Graphics.DrawImage(image, mapIconConfig.IconX - baseX + 40, mapIconConfig.IconY - baseY - 5 + pointerY, 30, 48);
-                    image.Dispose();
-                }
+                //if (mapIconConfig.Id == UserProfile.InfoBasic.MapId)
+                //{
+                //    Image image = PicLoader.Read("Map", "arrow.png");
+                //    e.Graphics.DrawImage(image, mapIconConfig.IconX - baseX + 40, mapIconConfig.IconY - baseY - 5 + pointerY, 30, 48);
+                //    image.Dispose();
+                //}
             }
-        }
 
-        private static Image GetPreview(int id)
-        {
-            SceneConfig sceneConfig = ConfigData.GetSceneConfig(id);
-
-            ControlPlus.TipImage tipData = new ControlPlus.TipImage(PaintTool.GetTalkColor);
-            tipData.AddTextNewLine(sceneConfig.Name, "Lime", 20);
-            tipData.AddTextNewLine(string.Format("地图等级: {0}", sceneConfig.Level), sceneConfig.Level>UserProfile.InfoBasic.Level?"Red": "White");
-         //   tipData.AddTextNewLine(string.Format("区域: {0}", ConfigData.GetSceneRegionConfig(sceneConfig.RegionId).Name), "White", 20);
-
-            return tipData.Image;
         }
     }
 }

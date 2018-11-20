@@ -110,17 +110,6 @@ namespace FEGame.Forms.CMain.Quests
                     index++;
                 }
             }
-            if (config.RewardCollectType > 0)
-            {
-                var itemList = DropBook.GetCollectItems(config.RewardCollectType, 0);
-                foreach (var itemId in itemList)
-                {
-                    UserProfile.InfoBag.AddItem(itemId, 1);
-                    vRegion.AddRegion(new PictureRegion(index, pos.X + 3 + 20 + (index - 1) * 70, pos.Y + 3 + 25,
-                                                        60, 60, PictureRegionCellType.Item, itemId));
-                    index++;
-                }
-            }
 
             if (!string.IsNullOrEmpty(config.RewardDungeonItemId) && UserProfile.InfoDungeon.DungeonId > 0)
             {

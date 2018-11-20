@@ -16,10 +16,10 @@ namespace FEGame.Forms
         public RoleForm()
         {
             InitializeComponent();
-            bitmapButtonClose.ImageNormal = PicLoader.Read("Button.Panel", "CloseButton1.jpg");
-            bitmapButtonJob.ImageNormal = PicLoader.Read("Button.Panel", "JobButton.jpg");
+            bitmapButtonClose.ImageNormal = PicLoader.Read("Button.Panel", "closebutton1.jpg");
+            bitmapButtonJob.ImageNormal = PicLoader.Read("Button.Panel", "jobbutton.jpg");
             bitmapButtonJob.NoUseDrawNine = true;
-            bitmapButtonHistory.ImageNormal = PicLoader.Read("Button.Panel", "InfoButton.jpg");
+            bitmapButtonHistory.ImageNormal = PicLoader.Read("Button.Panel", "infobutton.jpg");
             bitmapButtonHistory.NoUseDrawNine = true;
         }
 
