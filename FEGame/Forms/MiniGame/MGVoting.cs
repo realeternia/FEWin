@@ -80,7 +80,7 @@ namespace FEGame.Forms.MiniGame
         public MGVoting()
         {
             InitializeComponent();
-            this.bitmapButtonC1.ImageNormal = PicLoader.Read("Button.Panel", "ButtonBack2.PNG");
+            this.bitmapButtonC1.ImageNormal = PicLoader.Read("Button.Panel", "ButtonBack2.png");
             bitmapButtonC1.Font = new Font("宋体", 8 * 1.33f, FontStyle.Regular, GraphicsUnit.Pixel);
             bitmapButtonC1.ForeColor = Color.White;
             bitmapButtonC1.IconImage = HSIcons.GetIconsByEName("rot3");
@@ -90,7 +90,7 @@ namespace FEGame.Forms.MiniGame
             vRegion = new VirtualRegion(this);
             for (int i = 0; i < 3; i++)
             {
-                ButtonRegion region = new ButtonRegion(i + 1, 30, 270+30*i, 20, 20, "GameBackNormal1.PNG", "GameBackNormal1On.PNG");
+                ButtonRegion region = new ButtonRegion(i + 1, 30, 270+30*i, 20, 20, "GameBackNormal1.png", "GameBackNormal1On.png");
                 vRegion.AddRegion(region);
             }
             

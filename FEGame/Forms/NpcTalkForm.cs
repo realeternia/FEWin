@@ -316,19 +316,19 @@ namespace FEGame.Forms
                 font2.Dispose();
 
                 e.Graphics.DrawImage(SceneQuestBook.GetSceneQuestImageBig(config.Id), 20, 60, 300, 300);
-                Image border = PicLoader.Read("Border", "scenequestbg.PNG"); //边框
+                Image border = PicLoader.Read("Border", "scenequestbg.png"); //边框
                 e.Graphics.DrawImage(border, 20, 60, 300, 300);
                 border.Dispose();
 
                 if (config.TriggerRate > 0 && config.TriggerRate <= 30)
                 {//稀有
-                    Image rareImg = PicLoader.Read("System", "sqrare2.PNG");
+                    Image rareImg = PicLoader.Read("System", "sqrare2.png");
                     e.Graphics.DrawImage(rareImg, 20+16, 60+16, 64, 32);
                     rareImg.Dispose();
                 }
                 else if (config.TriggerRate > 0 && config.TriggerRate <= 60)
                 {//罕见
-                    Image rareImg = PicLoader.Read("System", "sqrare1.PNG");
+                    Image rareImg = PicLoader.Read("System", "sqrare1.png");
                     e.Graphics.DrawImage(rareImg, 20 + 16, 60 + 16, 64, 32);
                     rareImg.Dispose();
                 }
@@ -343,8 +343,8 @@ namespace FEGame.Forms
                 if (answerList != null && (evtItem == null || evtItem.RunningState != TalkEventItem.TalkEventState.Running))
                 {
                     int id = 0;
-                    var bgTarget = PicLoader.Read("System", "WordBack1.PNG");
-                    var bgCommon = PicLoader.Read("System", "WordBack2.PNG");
+                    var bgTarget = PicLoader.Read("System", "WordBack1.png");
+                    var bgCommon = PicLoader.Read("System", "WordBack2.png");
                     foreach (var word in answerList)
                     {
                         var rect = word.Rect;

@@ -108,7 +108,7 @@ namespace FEGame
                 Close();
             }
 
-            tabPageLogin.BackgroundImage = PicLoader.Read("System", "LogBack.JPG");
+            tabPageLogin.BackgroundImage = PicLoader.Read("System", "LogBack.jpg");
             passport = WorldInfoManager.LastAccountName;
             labelAccount.Text = string.Format("账户 {0}", passport);
             ChangePage(0);
@@ -272,7 +272,7 @@ namespace FEGame
             //e.Graphics.FillRectangle(b, 0,0, tabPageLogin.Width, tabPageLogin.Height);
             //b.Dispose();
 
-            var logoImg = PicLoader.Read("System", "logo.PNG");
+            var logoImg = PicLoader.Read("System", "logo.png");
             var logWid = tabPageLogin.Width/4;
             var logHeight = tabPageLogin.Height / 5;
             var logX = (tabPageLogin.Width - logWid) /2;

@@ -34,7 +34,7 @@ namespace FEGame.Core
         public void ChangeCursor(string cname)
         {
             if (cname != Name)
-                ChangeCursor("System.Cursor", string.Format("{0}.PNG", cname), 0, 0);
+                ChangeCursor("System.Cursor", string.Format("{0}.png", cname), 0, 0);
         }
 
         public void ChangeCursor(string path, string cname)
@@ -51,7 +51,7 @@ namespace FEGame.Core
                 Name = keyname;
                 Image img = PicLoader.Read(path, cname);
                 if (img == null)
-                    img = PicLoader.Read("system.cursor", "default.PNG");
+                    img = PicLoader.Read("system.cursor", "default.png");
                 SetCursorSize(img, new Point(0, 0), width, height);
             }
         }

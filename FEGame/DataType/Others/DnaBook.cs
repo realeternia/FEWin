@@ -35,10 +35,10 @@ namespace FEGame.DataType.Others
         public static Image GetDnaImage(int id)
         {
             var dnaConfig = ConfigData.GetPlayerDnaConfig(id);
-            string fname = string.Format("Player/Dna/{0}.PNG", dnaConfig.Url);
+            string fname = string.Format("Player/Dna/{0}.png", dnaConfig.Url);
             if (!ImageManager.HasImage(fname))
             {
-                Image image = PicLoader.Read("Player.Dna", string.Format("{0}.PNG", dnaConfig.Url));
+                Image image = PicLoader.Read("Player.Dna", string.Format("{0}.png", dnaConfig.Url));
                 ImageManager.AddImage(fname, image);
             }
             return ImageManager.GetImage(fname);

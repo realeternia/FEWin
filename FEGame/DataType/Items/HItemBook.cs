@@ -128,7 +128,7 @@ namespace FEGame.DataType.Items
             string fname = string.Format("Item/{0}", hItemConfig.Url);
             if (!ImageManager.HasImage(fname))
             {
-                Image image = PicLoader.Read("Item", string.Format("{0}.JPG", hItemConfig.Url));
+                Image image = PicLoader.Read("Item", string.Format("{0}.jpg", hItemConfig.Url));
                 ImageManager.AddImage(fname, image);
             }
             return ImageManager.GetImage(fname);

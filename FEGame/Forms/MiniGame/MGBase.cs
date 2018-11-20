@@ -55,8 +55,8 @@ namespace FEGame.Forms.MiniGame
         public override void Init(int width, int height)
         {
             base.Init(width, height);
-            this.bitmapButtonClose.ImageNormal = PicLoader.Read("Button.Panel", "CloseButton1.JPG");
-            this.bitmapButtonHelp.ImageNormal = PicLoader.Read("Button.Panel", "LearnButton.JPG");
+            this.bitmapButtonClose.ImageNormal = PicLoader.Read("Button.Panel", "CloseButton1.jpg");
+            this.bitmapButtonHelp.ImageNormal = PicLoader.Read("Button.Panel", "LearnButton.jpg");
             bitmapButtonHelp.NoUseDrawNine = true;
             show = true;
         }
@@ -66,7 +66,7 @@ namespace FEGame.Forms.MiniGame
             config = ConfigData.GetMinigameConfig(id);
 
             if (!string.IsNullOrEmpty(config.BgImage))
-                backImage = PicLoader.Read("MiniGame", config.BgImage + ".JPG");
+                backImage = PicLoader.Read("MiniGame", config.BgImage + ".jpg");
             type = config.WindowId;
             hardness = hard;
         }

@@ -16,10 +16,10 @@ namespace FEGame.Forms
         public RoleForm()
         {
             InitializeComponent();
-            bitmapButtonClose.ImageNormal = PicLoader.Read("Button.Panel", "CloseButton1.JPG");
-            bitmapButtonJob.ImageNormal = PicLoader.Read("Button.Panel", "JobButton.JPG");
+            bitmapButtonClose.ImageNormal = PicLoader.Read("Button.Panel", "CloseButton1.jpg");
+            bitmapButtonJob.ImageNormal = PicLoader.Read("Button.Panel", "JobButton.jpg");
             bitmapButtonJob.NoUseDrawNine = true;
-            bitmapButtonHistory.ImageNormal = PicLoader.Read("Button.Panel", "InfoButton.JPG");
+            bitmapButtonHistory.ImageNormal = PicLoader.Read("Button.Panel", "InfoButton.jpg");
             bitmapButtonHistory.NoUseDrawNine = true;
         }
 
@@ -58,7 +58,7 @@ namespace FEGame.Forms
             if (!show)
                 return;
             e.Graphics.FillRectangle(Brushes.LightSlateGray, 25-1, 55-1, 52, 52);
-            Image head = PicLoader.Read("Player", string.Format("{0}.PNG", UserProfile.InfoBasic.Head));
+            Image head = PicLoader.Read("Player", string.Format("{0}.png", UserProfile.InfoBasic.Head));
             e.Graphics.DrawImage(head, 25, 55, 50, 50);
             head.Dispose();
 

@@ -32,7 +32,7 @@ namespace FEGame.Forms.MiniGame
         public MGThreeBody()
         {
             InitializeComponent();
-            this.bitmapButtonC1.ImageNormal = PicLoader.Read("Button.Panel", "ButtonBack2.PNG");
+            this.bitmapButtonC1.ImageNormal = PicLoader.Read("Button.Panel", "ButtonBack2.png");
             bitmapButtonC1.Font = new Font("宋体", 8 * 1.33f, FontStyle.Regular, GraphicsUnit.Pixel);
             bitmapButtonC1.ForeColor = Color.White;
             bitmapButtonC1.IconImage = HSIcons.GetIconsByEName("rot3");
@@ -43,7 +43,7 @@ namespace FEGame.Forms.MiniGame
             string[] txt = { "浸泡", "脱水", "医疗", "农耕", "科研" };
             for (int i = 0; i < 5; i++)
             {
-                ButtonRegion region = new ButtonRegion(i + 1, 40 + 55 * i, 310, 50, 50, string.Format("GameSanTi{0}.PNG", i + 1), string.Format("GameSanTi{0}On.PNG", i + 1));
+                ButtonRegion region = new ButtonRegion(i + 1, 40 + 55 * i, 310, 50, 50, string.Format("GameSanTi{0}.png", i + 1), string.Format("GameSanTi{0}On.png", i + 1));
                 region.AddDecorator(new RegionTextDecorator(10, 30, 10, txt[i]));
                 vRegion.AddRegion(region);
             }
@@ -201,7 +201,7 @@ namespace FEGame.Forms.MiniGame
             if (!show)
                 return;
 
-            Image img = PicLoader.Read("MiniGame.Planet", string.Format("star{0}.PNG", isGoodEra ? 1 : 2));
+            Image img = PicLoader.Read("MiniGame.Planet", string.Format("star{0}.png", isGoodEra ? 1 : 2));
             e.Graphics.DrawImage(img, 50 + xoff, 50 + yoff, 100, 100);
             img.Dispose();
 

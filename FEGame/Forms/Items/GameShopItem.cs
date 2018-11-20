@@ -45,7 +45,7 @@ namespace FEGame.Forms.Items
             bitmapButtonBuy.Location = new Point(X + 125, Y + 70);
             bitmapButtonBuy.Size = new Size(35, 20);
             this.bitmapButtonBuy.Click += new System.EventHandler(this.pictureBoxBuy_Click);
-            this.bitmapButtonBuy.ImageNormal = PicLoader.Read("Button.Panel", "ButtonBack2.PNG");
+            this.bitmapButtonBuy.ImageNormal = PicLoader.Read("Button.Panel", "ButtonBack2.png");
             bitmapButtonBuy.Font = new Font("宋体", 8 * 1.33f, FontStyle.Regular, GraphicsUnit.Pixel);
             bitmapButtonBuy.ForeColor = Color.White;
             bitmapButtonBuy.IconImage = HSIcons.GetIconsByEName("oth9");
@@ -146,7 +146,7 @@ namespace FEGame.Forms.Items
 
         public void Draw(Graphics g)
         {
-            Image back = PicLoader.Read("System", "ShopItemBack.JPG");
+            Image back = PicLoader.Read("System", "ShopItemBack.jpg");
             g.DrawImage(back, X, Y, Width - 1, Height - 1);
             back.Dispose();
 

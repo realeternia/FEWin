@@ -15,7 +15,7 @@ namespace FEGame.Core.Loader
             if (!Config.Config.ShowImage && dir != "System.Cursor")
             {
                 dir = "System";
-                path = "blank.PNG";
+                path = "blank.png";
             }
 
             Image img = null;

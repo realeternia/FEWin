@@ -8,10 +8,10 @@ namespace FEGame.Core
     {
         public static Image GetIconsByEName(string name)
         {
-            string fname = string.Format("Icon/{0}.PNG", name);
+            string fname = string.Format("Icon/{0}.png", name);
             if (!ImageManager.HasImage(fname))
             {
-                Image image = PicLoader.Read("Icon", string.Format("{0}.PNG", name));
+                Image image = PicLoader.Read("Icon", string.Format("{0}.png", name));
                 ImageManager.AddImage(fname, image, true);
             }
             return ImageManager.GetImage(fname);

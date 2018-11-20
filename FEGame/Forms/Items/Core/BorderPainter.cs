@@ -16,14 +16,14 @@ namespace FEGame.Forms.Items.Core
 
         static BorderPainter()
         {
-            top = PicLoader.Read("Border", "BaseT.PNG");
-            bottom = PicLoader.Read("Border", "BaseB.PNG");
-            left = PicLoader.Read("Border", "BaseL.PNG");
-            right = PicLoader.Read("Border", "BaseR.PNG");
-            topleft = PicLoader.Read("Border", "BaseTL.PNG");
-            topright = PicLoader.Read("Border", "BaseTR.PNG");
-            bottomleft = PicLoader.Read("Border", "BaseBL.PNG");
-            bottomright = PicLoader.Read("Border", "BaseBR.PNG");
+            top = PicLoader.Read("Border", "BaseT.png");
+            bottom = PicLoader.Read("Border", "BaseB.png");
+            left = PicLoader.Read("Border", "BaseL.png");
+            right = PicLoader.Read("Border", "BaseR.png");
+            topleft = PicLoader.Read("Border", "BaseTL.png");
+            topright = PicLoader.Read("Border", "BaseTR.png");
+            bottomleft = PicLoader.Read("Border", "BaseBL.png");
+            bottomright = PicLoader.Read("Border", "BaseBR.png");
         }
 
         public static void Draw(Graphics g, string head, int width, int height)
@@ -41,7 +41,7 @@ namespace FEGame.Forms.Items.Core
 
             if (head != "")
             {
-                Image headimg = PicLoader.Read("System.Headline", string.Format("{0}.PNG", head));
+                Image headimg = PicLoader.Read("System.Headline", string.Format("{0}.png", head));
                 int wd = (width - 100)*4/5;
                 g.DrawImage(headimg, (width - wd)/2, 0, wd, headimg.Height);
                 headimg.Dispose();

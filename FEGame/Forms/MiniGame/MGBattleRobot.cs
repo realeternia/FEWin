@@ -21,9 +21,9 @@ namespace FEGame.Forms.MiniGame
         {
             InitializeComponent();
 
-            bitmapButtonC1.ImageNormal = PicLoader.Read("Button.Panel", "ButtonBack2.PNG");
-            bitmapButtonC2.ImageNormal = PicLoader.Read("Button.Panel", "ButtonBack2.PNG");
-            bitmapButtonC3.ImageNormal = PicLoader.Read("Button.Panel", "ButtonBack2.PNG");
+            bitmapButtonC1.ImageNormal = PicLoader.Read("Button.Panel", "ButtonBack2.png");
+            bitmapButtonC2.ImageNormal = PicLoader.Read("Button.Panel", "ButtonBack2.png");
+            bitmapButtonC3.ImageNormal = PicLoader.Read("Button.Panel", "ButtonBack2.png");
         }
 
         public override void Init(int width, int height)
