@@ -34,20 +34,20 @@ namespace FEGame.DataType.Scenes
 
         public static Image GetSceneQuestImageScene(int id)
         {
-            string fname = string.Format("SceneQuest/{0}.PNG", ConfigData.SceneQuestDict[id].FigueScene);
+            string fname = string.Format("SceneQuest/{0}.png", ConfigData.SceneQuestDict[id].FigueScene);
             if (!ImageManager.HasImage(fname))
             {
-                Image image = PicLoader.Read("SceneQuest", string.Format("{0}.JPG", ConfigData.SceneQuestDict[id].FigueScene));
+                Image image = PicLoader.Read("SceneQuest", string.Format("{0}.jpg", ConfigData.SceneQuestDict[id].FigueScene));
                 ImageManager.AddImage(fname, image);
             }
             return ImageManager.GetImage(fname);
         }
         public static Image GetSceneQuestImageBig(int id)
         {
-            string fname = string.Format("SceneQuest/{0}.PNG", ConfigData.SceneQuestDict[id].FigueBig);
+            string fname = string.Format("SceneQuest/{0}.png", ConfigData.SceneQuestDict[id].FigueBig);
             if (!ImageManager.HasImage(fname))
             {
-                Image image = PicLoader.Read("SceneQuest", string.Format("{0}.JPG", ConfigData.SceneQuestDict[id].FigueBig));
+                Image image = PicLoader.Read("SceneQuest", string.Format("{0}.jpg", ConfigData.SceneQuestDict[id].FigueBig));
                 ImageManager.AddImage(fname, image);
             }
             return ImageManager.GetImage(fname);

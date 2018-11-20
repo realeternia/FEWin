@@ -69,10 +69,10 @@ namespace FEGame.DataType.Peoples
 
         public static Image GetPersonImage(int id)
         {
-            string fname = string.Format("People/{0}.PNG", ConfigData.GetPeopleConfig(id).Figue);
+            string fname = string.Format("People/{0}.png", ConfigData.GetPeopleConfig(id).Figue);
             if (!ImageManager.HasImage(fname))
             {
-                Image image = PicLoader.Read("People", string.Format("{0}.PNG", ConfigData.GetPeopleConfig(id).Figue));
+                Image image = PicLoader.Read("People", string.Format("{0}.png", ConfigData.GetPeopleConfig(id).Figue));
                 ImageManager.AddImage(fname, image);
             }
             return ImageManager.GetImage(fname);

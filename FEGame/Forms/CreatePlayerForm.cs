@@ -61,7 +61,7 @@ namespace FEGame.Forms
         private void CreatePlayerForm_Load(object sender, EventArgs e)
         {
             headId = 1;
-            pictureBoxHead.Image = PicLoader.Read("Player", "1.PNG");
+            pictureBoxHead.Image = PicLoader.Read("Player", "1.png");
 
             for (int i = 0; i < 6; i++)
                 SetDnaState(MathTool.GetRandom(1 + i*2, 3 + i*2), true);
@@ -83,7 +83,7 @@ namespace FEGame.Forms
             headId ++;
             if (headId > 10)
                 headId -= 10;
-            pictureBoxHead.Image = PicLoader.Read("Player", string.Format("{0}.PNG", headId));
+            pictureBoxHead.Image = PicLoader.Read("Player", string.Format("{0}.png", headId));
             Invalidate();
         }
 

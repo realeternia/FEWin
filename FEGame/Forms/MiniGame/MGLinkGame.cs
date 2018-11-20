@@ -48,7 +48,7 @@ namespace FEGame.Forms.MiniGame
         public MGLinkGame()
         {
             InitializeComponent();
-            this.bitmapButtonC1.ImageNormal = PicLoader.Read("Button.Panel", "ButtonBack2.PNG");
+            this.bitmapButtonC1.ImageNormal = PicLoader.Read("Button.Panel", "ButtonBack2.png");
             bitmapButtonC1.Font = new Font("宋体", 8 * 1.33f, FontStyle.Regular, GraphicsUnit.Pixel);
             bitmapButtonC1.ForeColor = Color.White;
             bitmapButtonC1.IconImage = HSIcons.GetIconsByEName("rot1");
@@ -58,11 +58,11 @@ namespace FEGame.Forms.MiniGame
             bitmapButtonC1.Text = @"开始";
             for (int i = 0; i < 16; i++)
             {
-                iconTypes[i] = PicLoader.Read("MiniGame.LinkGame", String.Format("{0}.JPG", i + 1));
+                iconTypes[i] = PicLoader.Read("MiniGame.LinkGame", String.Format("{0}.jpg", i + 1));
             }
             for (int i = 0; i < 6; i++)
             {
-                iconTypes[20 + i] = PicLoader.Read("MiniGame.LinkGame", String.Format("s{0}.JPG", i + 1));
+                iconTypes[20 + i] = PicLoader.Read("MiniGame.LinkGame", String.Format("s{0}.jpg", i + 1));
             }
             xoff = 0;
         }

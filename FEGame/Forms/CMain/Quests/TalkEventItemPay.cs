@@ -58,7 +58,7 @@ namespace FEGame.Forms.CMain.Quests
                 index++;
             }
 
-            var button = new ButtonRegion(20, pos.X + 3 + 20 + (index - 1) % 7 * 70, pos.Y + 3 + 25 + (index - 1) / 7 * 70, 60, 60, "iconbg.JPG", "");
+            var button = new ButtonRegion(20, pos.X + 3 + 20 + (index - 1) % 7 * 70, pos.Y + 3 + 25 + (index - 1) / 7 * 70, 60, 60, "iconbg.jpg", "");
             button.AddDecorator(new RegionImageDecorator(HSIcons.GetIconsByEName("rot7"), 60 / 2));
             vRegion.AddRegion(button);
         }

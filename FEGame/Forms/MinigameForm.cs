@@ -18,14 +18,14 @@ namespace FEGame.Forms
         {
             InitializeComponent();
 
-            this.bitmapButtonClose.ImageNormal = PicLoader.Read("Button.Panel", "CloseButton1.JPG");
+            this.bitmapButtonClose.ImageNormal = PicLoader.Read("Button.Panel", "CloseButton1.jpg");
             vRegion = new VirtualRegion(this);
             int id = 0;
             foreach (var minigameConfig in ConfigData.MinigameDict.Values)
             {
                 var region = new ButtonRegion(minigameConfig.Id, 20 + (id%8)*65, 40 + (id/8)*65, 50, 50,
-                    minigameConfig.IconPath + ".PNG",
-                    minigameConfig.IconPath + "On.PNG");
+                    minigameConfig.IconPath + ".png",
+                    minigameConfig.IconPath + "On.png");
                 region.AddDecorator(new RegionTextDecorator(0, 42, 8, minigameConfig.Name));
                 vRegion.AddRegion(region);
                 id++;

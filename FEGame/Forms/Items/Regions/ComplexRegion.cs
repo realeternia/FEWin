@@ -25,7 +25,7 @@ namespace FEGame.Forms.Items.Regions
             string iconName = "";
             Color borderColor = Color.White;
             CheckResourceType(type, ref iconName, ref borderColor);
-            var pictureRegion = new ButtonRegion(index, pos.X, pos.Y, size, size, "iconbg.JPG", "");
+            var pictureRegion = new ButtonRegion(index, pos.X, pos.Y, size, size, "iconbg.jpg", "");
             var textControl = new RegionTextDecorator(3, size - 20, 11, change > 0 ? Color.White : Color.Red, true, change.ToString());
             pictureRegion.AddDecorator(new RegionImageDecorator(HSIcons.GetIconsByEName(iconName), size/2));
             pictureRegion.AddDecorator(textControl);

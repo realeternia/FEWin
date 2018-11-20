@@ -37,8 +37,8 @@ namespace FEGame.Forms
         public ItemForm()
         {
             InitializeComponent();
-            this.bitmapButtonClose.ImageNormal = PicLoader.Read("Button.Panel", "CloseButton1.JPG");
-            this.bitmapButtonSort.ImageNormal = PicLoader.Read("Button.Panel", "SortButton.JPG");
+            this.bitmapButtonClose.ImageNormal = PicLoader.Read("Button.Panel", "CloseButton1.jpg");
+            this.bitmapButtonSort.ImageNormal = PicLoader.Read("Button.Panel", "SortButton.jpg");
             bitmapButtonSort.NoUseDrawNine = true;
             this.nlPageSelector1 = new ControlPlus.NLPageSelector(this, 123, 362, 204);
             nlPageSelector1.PageChange += nlPageSelector1_PageChange;
@@ -155,7 +155,7 @@ namespace FEGame.Forms
                         if (UserProfile.InfoBag.Items[baseid + tar].Type != 0)
                         {
                             HItemConfig itemConfig = ConfigData.GetHItemConfig(UserProfile.InfoBag.Items[baseid + tar].Type);
-                            myCursor.ChangeCursor("Item", string.Format("{0}.JPG", itemConfig.Url), 40, 40);
+                            myCursor.ChangeCursor("Item", string.Format("{0}.jpg", itemConfig.Url), 40, 40);
                             leftSelectTar = tar;
                             tooltip.Hide(this);
                         }
@@ -273,7 +273,7 @@ namespace FEGame.Forms
                 tempImage.Dispose();
                 tempImage = new Bitmap(324, 324);
                 Graphics g = Graphics.FromImage(tempImage);
-                Image img = PicLoader.Read("System", "ItemBackDown.JPG");
+                Image img = PicLoader.Read("System", "ItemBackDown.jpg");
                 g.DrawImage(img, 0, 0, 324, 324);
                 img.Dispose();
                 font = new Font("Aril", 11*1.33f, FontStyle.Bold, GraphicsUnit.Pixel);

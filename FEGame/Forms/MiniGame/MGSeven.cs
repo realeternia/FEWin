@@ -23,7 +23,7 @@ namespace FEGame.Forms.MiniGame
                     return;
                 }
 
-                Image img = PicLoader.Read("MiniGame.Seven", string.Format("g{0}.PNG", Index));
+                Image img = PicLoader.Read("MiniGame.Seven", string.Format("g{0}.png", Index));
                 if (Y >= yMin && Y + 64 < yMax) //画整个
                 {
                     g.DrawImage(img, X, Y, 64, 64);
@@ -62,7 +62,7 @@ namespace FEGame.Forms.MiniGame
         {
             InitializeComponent();
             #region 按钮初始化
-            this.bitmapButtonC1.ImageNormal = PicLoader.Read("Button.Panel", "ButtonBack2.PNG");
+            this.bitmapButtonC1.ImageNormal = PicLoader.Read("Button.Panel", "ButtonBack2.png");
             bitmapButtonC1.Font = new Font("宋体", 8 * 1.33f, FontStyle.Regular, GraphicsUnit.Pixel);
             bitmapButtonC1.ForeColor = Color.White;
             bitmapButtonC1.IconImage = HSIcons.GetIconsByEName("rot1");
@@ -70,7 +70,7 @@ namespace FEGame.Forms.MiniGame
             bitmapButtonC1.IconXY = new Point(4, 5);
             bitmapButtonC1.TextOffX = 8;
             bitmapButtonC1.Text = @"开始";
-            this.bitmapButtonC2.ImageNormal = PicLoader.Read("Button.Panel", "ButtonBack2.PNG");
+            this.bitmapButtonC2.ImageNormal = PicLoader.Read("Button.Panel", "ButtonBack2.png");
             bitmapButtonC2.Font = new Font("宋体", 8 * 1.33f, FontStyle.Regular, GraphicsUnit.Pixel);
             bitmapButtonC2.ForeColor = Color.White;
             bitmapButtonC2.IconImage = HSIcons.GetIconsByEName("rot2");
@@ -78,7 +78,7 @@ namespace FEGame.Forms.MiniGame
             bitmapButtonC2.IconXY = new Point(4, 5);
             bitmapButtonC2.TextOffX = 8;
             bitmapButtonC2.Text = @"停止";
-            this.bitmapButtonC3.ImageNormal = PicLoader.Read("Button.Panel", "ButtonBack2.PNG");
+            this.bitmapButtonC3.ImageNormal = PicLoader.Read("Button.Panel", "ButtonBack2.png");
             bitmapButtonC3.Font = new Font("宋体", 8 * 1.33f, FontStyle.Regular, GraphicsUnit.Pixel);
             bitmapButtonC3.ForeColor = Color.White;
             bitmapButtonC3.IconImage = HSIcons.GetIconsByEName("rot2");
@@ -86,7 +86,7 @@ namespace FEGame.Forms.MiniGame
             bitmapButtonC3.IconXY = new Point(4, 5);
             bitmapButtonC3.TextOffX = 8;
             bitmapButtonC3.Text = @"停止";
-            this.bitmapButtonC4.ImageNormal = PicLoader.Read("Button.Panel", "ButtonBack2.PNG");
+            this.bitmapButtonC4.ImageNormal = PicLoader.Read("Button.Panel", "ButtonBack2.png");
             bitmapButtonC4.Font = new Font("宋体", 8 * 1.33f, FontStyle.Regular, GraphicsUnit.Pixel);
             bitmapButtonC4.ForeColor = Color.White;
             bitmapButtonC4.IconImage = HSIcons.GetIconsByEName("rot2");

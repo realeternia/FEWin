@@ -42,7 +42,7 @@ namespace FEGame.Forms.MiniGame
         public MGRacing()
         {
             InitializeComponent();
-            this.bitmapButtonC1.ImageNormal = PicLoader.Read("Button.Panel", "ButtonBack2.PNG");
+            this.bitmapButtonC1.ImageNormal = PicLoader.Read("Button.Panel", "ButtonBack2.png");
             bitmapButtonC1.Font = new Font("宋体", 8 * 1.33f, FontStyle.Regular, GraphicsUnit.Pixel);
             bitmapButtonC1.ForeColor = Color.White;
             bitmapButtonC1.IconImage = HSIcons.GetIconsByEName("rot3");
@@ -53,11 +53,11 @@ namespace FEGame.Forms.MiniGame
             string[] txt = { "低速", "中速", "高速" };
             for (int i = 0; i < 3; i++)
             {
-                ButtonRegion region = new ButtonRegion(i + 1, 40 + 70 * i, 310, 50, 50, "GameBackNormal1.PNG", "GameBackNormal1On.PNG");
+                ButtonRegion region = new ButtonRegion(i + 1, 40 + 70 * i, 310, 50, 50, "GameBackNormal1.png", "GameBackNormal1On.png");
                 region.AddDecorator(new RegionTextDecorator(10, 20, 10, txt[i]));
                 vRegion.AddRegion(region);
             }
-            var region2 = new ButtonRegion(4, 40 + 55 * 4, 310, 50, 50, "GameBackNormal2.PNG", "GameBackNormal1On.PNG");
+            var region2 = new ButtonRegion(4, 40 + 55 * 4, 310, 50, 50, "GameBackNormal2.png", "GameBackNormal1On.png");
             region2.AddDecorator(new RegionTextDecorator(10, 20, 10, "氮气"));
             vRegion.AddRegion(region2);
             
@@ -209,10 +209,10 @@ namespace FEGame.Forms.MiniGame
                 distanceDes = "短";
 
 
-            Image img = PicLoader.Read("MiniGame.Racing", string.Format("race{0}.PNG", (int)info.Hardness+1));
+            Image img = PicLoader.Read("MiniGame.Racing", string.Format("race{0}.png", (int)info.Hardness+1));
             e.Graphics.DrawImage(img, 50 + xoff, 50 + yoff, 100, 100);
             img.Dispose();
-            img = PicLoader.Read("Border", "questb1.PNG");
+            img = PicLoader.Read("Border", "questb1.png");
             e.Graphics.DrawImage(img, 50 + xoff, 50 + yoff, 100, 100);
             img.Dispose();
             var font = new Font("宋体", 12*1.33f, FontStyle.Bold, GraphicsUnit.Pixel);

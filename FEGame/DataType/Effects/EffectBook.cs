@@ -67,7 +67,7 @@ namespace FEGame.DataType.Effects
             string fname = string.Format("Effect/{0}t{1}{2}", name, type, flip ? "f" : "");
             if (!ImageManager.HasImage(fname))
             {
-                Image image = PicLoader.Read("Effect", string.Format("{0}.PNG", name));
+                Image image = PicLoader.Read("Effect", string.Format("{0}.png", name));
                 switch (type)
                 {
                     case 1: image.RotateFlip(RotateFlipType.Rotate90FlipNone); break;

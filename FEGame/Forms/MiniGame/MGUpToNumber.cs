@@ -20,7 +20,7 @@ namespace FEGame.Forms.MiniGame
         public MGUpToNumber()
         {
             InitializeComponent();
-            this.bitmapButtonC1.ImageNormal = PicLoader.Read("Button.Panel", "ButtonBack2.PNG");
+            this.bitmapButtonC1.ImageNormal = PicLoader.Read("Button.Panel", "ButtonBack2.png");
             bitmapButtonC1.Font = new Font("宋体", 8 * 1.33f, FontStyle.Regular, GraphicsUnit.Pixel);
             bitmapButtonC1.ForeColor = Color.White;
             bitmapButtonC1.IconImage = HSIcons.GetIconsByEName("res2");
@@ -31,7 +31,7 @@ namespace FEGame.Forms.MiniGame
             string[] txt = { "牛肉", "蜂蜜", "黄油", " 水" };
             for (int i = 0; i < 4; i++)
             {
-                ButtonRegion region = new ButtonRegion(i + 1, 60 + 55 * i, 310, 50, 50, "GameBackNormal1.PNG", "GameBackNormal1On.PNG");
+                ButtonRegion region = new ButtonRegion(i + 1, 60 + 55 * i, 310, 50, 50, "GameBackNormal1.png", "GameBackNormal1On.png");
                 region.AddDecorator(new RegionTextDecorator(10, 20, 10, txt[i]));
                 vRegion.AddRegion(region);
             }
@@ -133,7 +133,7 @@ namespace FEGame.Forms.MiniGame
 
             for (int i = 0; i < 4; i++)
             {
-                Image img = PicLoader.Read("MiniGame.Soup", string.Format("item{0}.PNG", i + 1));
+                Image img = PicLoader.Read("MiniGame.Soup", string.Format("item{0}.png", i + 1));
                 for (int j = 0; j < itemGet[i]; j++)
                 {
                     e.Graphics.DrawImage(img, 80+xoff + j * 12, 17+yoff + 30 * i, 24, 24);

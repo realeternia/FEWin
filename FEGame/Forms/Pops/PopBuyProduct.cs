@@ -24,7 +24,7 @@ namespace FEGame.Forms.Pops
         public PopBuyProduct()
         {
             InitializeComponent();
-            BackgroundImage = PicLoader.Read("System", "DeckChoose.PNG");
+            BackgroundImage = PicLoader.Read("System", "DeckChoose.png");
             vRegion = new VirtualRegion(this);
             vRegion.RegionEntered += new VirtualRegion.VRegionEnteredEventHandler(virtualRegion_RegionEntered);
             vRegion.RegionLeft += new VirtualRegion.VRegionLeftEventHandler(virtualRegion_RegionLeft);

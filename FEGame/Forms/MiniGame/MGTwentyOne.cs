@@ -36,7 +36,7 @@ namespace FEGame.Forms.MiniGame
         public MGTwentyOne()
         {
             InitializeComponent();
-            this.bitmapButtonC1.ImageNormal = PicLoader.Read("Button.Panel", "ButtonBack2.PNG");
+            this.bitmapButtonC1.ImageNormal = PicLoader.Read("Button.Panel", "ButtonBack2.png");
             bitmapButtonC1.Font = new Font("宋体", 8 * 1.33f, FontStyle.Regular, GraphicsUnit.Pixel);
             bitmapButtonC1.ForeColor = Color.White;
             bitmapButtonC1.IconImage = HSIcons.GetIconsByEName("oth9");
@@ -44,7 +44,7 @@ namespace FEGame.Forms.MiniGame
             bitmapButtonC1.IconXY = new Point(4, 5);
             bitmapButtonC1.TextOffX = 8;
 
-            this.bitmapButtonC2.ImageNormal = PicLoader.Read("Button.Panel", "ButtonBack2.PNG");
+            this.bitmapButtonC2.ImageNormal = PicLoader.Read("Button.Panel", "ButtonBack2.png");
             bitmapButtonC2.Font = new Font("宋体", 8 * 1.33f, FontStyle.Regular, GraphicsUnit.Pixel);
             bitmapButtonC2.ForeColor = Color.White;
             bitmapButtonC2.IconImage = HSIcons.GetIconsByEName("oth11");
@@ -269,19 +269,19 @@ namespace FEGame.Forms.MiniGame
 
                 if (battleResult == BattleResult.MyWin)
                 {
-                    var img2 = PicLoader.Read("System", "Win.PNG");
+                    var img2 = PicLoader.Read("System", "Win.png");
                     e.Graphics.DrawImage(img2, 50 + xoff + 100, 180 + yoff + 5, 40, 50);
                     img2.Dispose();
                 }
                 else if (battleResult == BattleResult.HisWin)
                 {
-                    var img2 = PicLoader.Read("System", "Win.PNG");
+                    var img2 = PicLoader.Read("System", "Win.png");
                     e.Graphics.DrawImage(img2, 50 + xoff + 100, 80 + yoff + 5, 40, 50);
                     img2.Dispose();
                 }
                 else
                 {
-                    var img2 = PicLoader.Read("System", "Draw.PNG");
+                    var img2 = PicLoader.Read("System", "Draw.png");
                     e.Graphics.DrawImage(img2, 50 + xoff + 100, 130 + yoff + 5, 40, 50);
                     img2.Dispose();
                 }
@@ -292,7 +292,7 @@ namespace FEGame.Forms.MiniGame
         {
             if (v == 99)
             {
-                var img2 = PicLoader.Read("System", "CardBack.JPG");
+                var img2 = PicLoader.Read("System", "CardBack.jpg");
                 g.DrawImage(img2, x, y, 40, 50);
                 img2.Dispose();
                 return;
@@ -300,7 +300,7 @@ namespace FEGame.Forms.MiniGame
 
             g.FillRectangle(Brushes.Wheat, x, y, 40, 50);
             int type = (v/13) + 1;
-            var img = PicLoader.Read("MiniGame.Poker", type + ".PNG");
+            var img = PicLoader.Read("MiniGame.Poker", type + ".png");
             g.DrawImage(img, x,y,20,20);
             img.Dispose();
             int number = (v%13) + 1;

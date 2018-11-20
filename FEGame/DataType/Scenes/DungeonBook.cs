@@ -33,10 +33,10 @@ namespace FEGame.DataType.Scenes
         public static Image GetDungeonItemImage(int id)
         {
             var itemConfig = ConfigData.GetDungeonItemConfig(id);
-            string fname = string.Format("Dungeon/Item/{0}.PNG", itemConfig.Url);
+            string fname = string.Format("Dungeon/Item/{0}.png", itemConfig.Url);
             if (!ImageManager.HasImage(fname))
             {
-                Image image = PicLoader.Read("Dungeon.Item", string.Format("{0}.PNG", itemConfig.Url));
+                Image image = PicLoader.Read("Dungeon.Item", string.Format("{0}.png", itemConfig.Url));
                 ImageManager.AddImage(fname, image);
             }
             return ImageManager.GetImage(fname);
@@ -57,10 +57,10 @@ namespace FEGame.DataType.Scenes
         public static Image GetGismoImage(int id)
         {
             var gismoConfig = ConfigData.GetDungeonGismoConfig(id);
-            string fname = string.Format("Dungeon/Gismo/{0}.PNG", gismoConfig.Icon);
+            string fname = string.Format("Dungeon/Gismo/{0}.png", gismoConfig.Icon);
             if (!ImageManager.HasImage(fname))
             {
-                Image image = PicLoader.Read("Dungeon.Gismo", string.Format("{0}.PNG", gismoConfig.Icon));
+                Image image = PicLoader.Read("Dungeon.Gismo", string.Format("{0}.png", gismoConfig.Icon));
                 ImageManager.AddImage(fname, image);
             }
             return ImageManager.GetImage(fname);

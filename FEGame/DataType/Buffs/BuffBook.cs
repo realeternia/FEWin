@@ -34,7 +34,7 @@ namespace FEGame.DataType.Buffs
             string fname = string.Format("Buff/{0}{1}", buffConfig.Icon, indexTxt);
             if (!ImageManager.HasImage(fname))
             {
-                Image image = PicLoader.Read("Buff", string.Format("{0}{1}.PNG", buffConfig.Icon, indexTxt));
+                Image image = PicLoader.Read("Buff", string.Format("{0}{1}.png", buffConfig.Icon, indexTxt));
                 ImageManager.AddImage(fname, image.GetThumbnailImage(20, 20, null, new IntPtr(0)));
             }
             return ImageManager.GetImage(fname);

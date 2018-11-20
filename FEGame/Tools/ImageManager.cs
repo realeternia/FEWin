@@ -27,7 +27,7 @@ namespace FEGame.Tools
 
         static ImageManager()
         {
-            nullImage = PicLoader.Read("System", "Null.JPG");
+            nullImage = PicLoader.Read("System", "Null.jpg");
         }
 
         public static bool HasImage(string path)
