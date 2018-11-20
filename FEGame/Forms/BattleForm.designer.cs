@@ -60,9 +60,9 @@ namespace FEGame.Forms
             this.doubleBuffedPanel1.Size = new System.Drawing.Size(950, 650);
             this.doubleBuffedPanel1.TabIndex = 28;
             this.doubleBuffedPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.doubleBuffedPanel1_Paint);
-            this.doubleBuffedPanel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.WorldMapViewForm_MouseDown);
-            this.doubleBuffedPanel1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.WorldMapViewForm_MouseMove);
-            this.doubleBuffedPanel1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.WorldMapViewForm_MouseUp);
+            this.doubleBuffedPanel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BattleForm_MouseDown);
+            this.doubleBuffedPanel1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.BattleForm_MouseMove);
+            this.doubleBuffedPanel1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BattleForm_MouseUp);
             // 
             // BattleForm
             // 
@@ -73,8 +73,8 @@ namespace FEGame.Forms
             this.DoubleBuffered = true;
             this.Name = "BattleForm";
             this.Size = new System.Drawing.Size(1000, 700);
-            this.Click += new System.EventHandler(this.WorldMapViewForm_Click);
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.WorldMapViewForm_Paint);
+            this.Click += new System.EventHandler(this.BattleForm_Click);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.BattleForm_Paint);
             this.Controls.SetChildIndex(this.bitmapButtonClose, 0);
             this.Controls.SetChildIndex(this.doubleBuffedPanel1, 0);
             this.ResumeLayout(false);

@@ -6,7 +6,6 @@ using ConfigDatas;
 using ControlPlus;
 using FEGame.Core;
 using FEGame.Core.Loader;
-using FEGame.DataType.Scenes;
 using FEGame.DataType.User;
 using FEGame.Forms.CMain;
 using FEGame.Forms.Items.Core;
@@ -42,20 +41,30 @@ namespace FEGame.Forms
             Graphics g = Graphics.FromImage(worldMap);
 
             var tileImage = PicLoader.Read("Tiles", "1.jpg");
+            var tileImage2 = PicLoader.Read("Tiles", "2.jpg");
             for (int i = 0; i < 30; i++)
             {
                 for (int j = 0; j < 30; j++)
                 {
                     Rectangle destRect = new Rectangle(50*i, 50*j, 50,50);
-                    g.DrawImage(tileImage, destRect, 0, 0, 50, 50, GraphicsUnit.Pixel);
+                    if ((i + j) % 5 == 1)
+                        g.DrawImage(tileImage2, destRect, 0, 0, 50, 50, GraphicsUnit.Pixel);
+                    else
+                        g.DrawImage(tileImage, destRect, 0, 0, 50, 50, GraphicsUnit.Pixel);
                 }
             }
-
             tileImage.Dispose();
+            tileImage2.Dispose();
+
+            Pen myPen = new Pen(Brushes.DarkGoldenrod, 6); //描一个金边
+            g.DrawRectangle(myPen, 0+3, 0+3, 1500-6, 1500-6);
+            myPen.Dispose();
+            g.DrawRectangle(Pens.DarkRed, 0+5, 0+5, 1500-10, 1500-10);
+
             g.Dispose();
 
-            baseX = MathTool.Clamp(baseX, 0, worldMap.Width - 750);
-            baseY = MathTool.Clamp(baseY, 0, worldMap.Height - 500);
+            baseX = MathTool.Clamp(baseX, 0, worldMap.Width - doubleBuffedPanel1.Width);
+            baseY = MathTool.Clamp(baseY, 0, worldMap.Height - doubleBuffedPanel1.Height);
             
             showImage = true;
         }
@@ -65,25 +74,22 @@ namespace FEGame.Forms
             if ((tick % 10) == 0)
             {
                 pointerY = (pointerY == 0 ? -12 : 0);
-                Invalidate();
+                doubleBuffedPanel1.Invalidate();
             }
         }
 
-        private void WorldMapViewForm_MouseMove(object sender, MouseEventArgs e)
+        private void BattleForm_MouseMove(object sender, MouseEventArgs e)
         {
-            int truex = e.X - 15;
-            int truey = e.Y - 35;
-            
             if (mouseHold)
             {
                 if (MathTool.GetDistance(e.Location, dragStartPos)>3)
                 {
                     baseX -= e.Location.X-dragStartPos.X;
                     baseY -= e.Location.Y - dragStartPos.Y;
-                    baseX = MathTool.Clamp(baseX, 0, worldMap.Width - 750);
-                    baseY = MathTool.Clamp(baseY, 0, worldMap.Height - 500);
+                    baseX = MathTool.Clamp(baseX, 0, worldMap.Width - doubleBuffedPanel1.Width);
+                    baseY = MathTool.Clamp(baseY, 0, worldMap.Height - doubleBuffedPanel1.Height);
                     dragStartPos = e.Location;
-                    Invalidate();
+                    doubleBuffedPanel1.Invalidate();
                 }
                 dragStartPos = e.Location;
             }
@@ -104,27 +110,27 @@ namespace FEGame.Forms
                 if (newSel != selectName)
                 {
                     selectName = newSel;
-                    Invalidate();
+                    doubleBuffedPanel1.Invalidate();
                 }
             }
         }
 
         private bool mouseHold;
         private Point dragStartPos;
-        private void WorldMapViewForm_MouseUp(object sender, MouseEventArgs e)
+        private void BattleForm_MouseUp(object sender, MouseEventArgs e)
         {
             mouseHold = false;
             myCursor.ChangeCursor("default");
         }
 
-        private void WorldMapViewForm_MouseDown(object sender, MouseEventArgs e)
+        private void BattleForm_MouseDown(object sender, MouseEventArgs e)
         {
             mouseHold = true;
             myCursor.ChangeCursor("hand"); 
             dragStartPos = e.Location;
         }
 
-        private void WorldMapViewForm_Click(object sender, EventArgs e)
+        private void BattleForm_Click(object sender, EventArgs e)
         {
             if (selectName =="")
                 return;
@@ -159,7 +165,7 @@ namespace FEGame.Forms
             Close();
         }
 
-        private void WorldMapViewForm_Paint(object sender, PaintEventArgs e)
+        private void BattleForm_Paint(object sender, PaintEventArgs e)
         {
             BorderPainter.Draw(e.Graphics, "", Width, Height);
 
@@ -186,7 +192,8 @@ namespace FEGame.Forms
             if (!showImage)
                 return;
 
-            e.Graphics.DrawImage(worldMap, new Rectangle(0, 0, doubleBuffedPanel1.Width, doubleBuffedPanel1.Height), new Rectangle(baseX, baseY, 750, 500), GraphicsUnit.Pixel);
+            e.Graphics.DrawImage(worldMap, new Rectangle(0, 0, doubleBuffedPanel1.Width, doubleBuffedPanel1.Height),
+                new Rectangle(baseX, baseY, doubleBuffedPanel1.Width, doubleBuffedPanel1.Height), GraphicsUnit.Pixel);
 
             foreach (var mapIconConfig in ConfigData.SceneDict.Values)
             {
@@ -211,7 +218,7 @@ namespace FEGame.Forms
 
                         image = GetPreview(mapIconConfig.Id);
                         int tx = x - baseX + width;
-                        if (tx > 750 - image.Width)
+                        if (tx > doubleBuffedPanel1.Width - image.Width)
                             tx -= image.Width + width;
                         e.Graphics.DrawImage(image, tx + 15, y - baseY + 35, image.Width, image.Height);
                         image.Dispose();
