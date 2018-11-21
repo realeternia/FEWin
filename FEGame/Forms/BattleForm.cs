@@ -37,7 +37,7 @@ namespace FEGame.Forms
 
             battleManager = new BattleManager();
             //test code
-            //battleManager.AddUnit
+            battleManager.AddUnit(new Controller.Battle.Units.HeroUnit(43020101));
         }
 
         public override void Init(int width, int height)
