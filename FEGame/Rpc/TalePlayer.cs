@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections;
-using FEGame.Controler.World;
+using FEGame.Controller.World;
 using FEGame.Core;
 using FEGame.DataType.User;
 using JLM.NetSocket;

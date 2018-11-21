@@ -1,6 +1,6 @@
 ﻿using System;
 using ConfigDatas;
-using FEGame.Controler.World;
+using FEGame.Controller.World;
 using FEGame.Core;
 using FEGame.Rpc;
 using NarlonLib.Tools;

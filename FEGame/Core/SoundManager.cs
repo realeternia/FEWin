@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using FEGame.Controler.World;
+using FEGame.Controller.World;
 using FEGame.ThirdParty;
 using NarlonLib.Log;
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-using FEGame.Controler.World;
+using FEGame.Controller.World;
 using FEGame.Core.Loader;
 using FEGame.Forms.Items.Core;
 

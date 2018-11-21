@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using NarlonLib.Tools;
 
-namespace FEGame.Controler.GM
+namespace FEGame.Controller.GM
 {
     public static class GMCodeZone
     {

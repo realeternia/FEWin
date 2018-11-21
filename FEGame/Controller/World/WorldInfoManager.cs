@@ -4,7 +4,7 @@ using System.IO;
 using System.Windows.Forms;
 using NarlonLib.File;
 
-namespace FEGame.Controler.World
+namespace FEGame.Controller.World
 {
     internal static class WorldInfoManager
     {

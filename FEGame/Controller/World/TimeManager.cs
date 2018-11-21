@@ -1,4 +1,4 @@
-namespace FEGame.Controler.World
+namespace FEGame.Controller.World
 {
     internal static class TimeManager
     {

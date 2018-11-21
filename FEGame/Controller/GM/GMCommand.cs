@@ -5,7 +5,7 @@ using FEGame.DataType.User;
 using FEGame.Forms;
 using FEGame.Forms.CMain;
 
-namespace FEGame.Controler.GM
+namespace FEGame.Controller.GM
 {
     internal class GMCommand
     {

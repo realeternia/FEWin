@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using ConfigDatas;
 using ControlPlus;
+using FEGame.Controller.Battle;
 using FEGame.Core;
 using FEGame.Core.Loader;
 using FEGame.DataType.User;
@@ -24,12 +25,19 @@ namespace FEGame.Forms
         private Image worldMap; 
         private HSCursor myCursor;
 
+        private BattleManager battleManager;
+
         public BattleForm()
         {
             InitializeComponent();
             this.bitmapButtonClose.ImageNormal = PicLoader.Read("Button.Panel", "closebutton1.jpg");
             bitmapButtonClose.NoUseDrawNine = true;
             myCursor = new HSCursor(this);
+
+
+            battleManager = new BattleManager();
+            //test code
+            //battleManager.AddUnit
         }
 
         public override void Init(int width, int height)

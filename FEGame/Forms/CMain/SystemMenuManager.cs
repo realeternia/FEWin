@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Forms;
 using ConfigDatas;
-using FEGame.Controler.GM;
+using FEGame.Controller.GM;
 using FEGame.DataType.User;
 using FEGame.Forms.Items.Core;
 

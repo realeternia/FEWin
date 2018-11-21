@@ -98,10 +98,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controller\Battle\BattleManager.cs" />
+    <Compile Include="Controller\Battle\Units\BaseUnit.cs" />
+    <Compile Include="Controller\Battle\Units\HeroUnit.cs" />
+    <Compile Include="Controller\Battle\Units\MonsterUnit.cs" />
     <Compile Include="Core\Config\Config.cs" />
     <Compile Include="DataType\Effects\Facts\BaseEffect.cs" />
     <Compile Include="DataType\Effects\Facts\MovingUIEffect.cs" />
-    <Compile Include="Controler\GM\GMCommand.cs" />
+    <Compile Include="Controller\GM\GMCommand.cs" />
     <Compile Include="Forms\BattleForm.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -120,8 +124,8 @@
     <Compile Include="Rpc\S2CImplement.cs" />
     <Compile Include="Rpc\C2SSender.cs" />
     <Compile Include="Rpc\TalePlayer.cs" />
-    <Compile Include="Controler\World\TimeManager.cs" />
-    <Compile Include="Controler\World\WorldInfoManager.cs" />
+    <Compile Include="Controller\World\TimeManager.cs" />
+    <Compile Include="Controller\World\WorldInfoManager.cs" />
     <Compile Include="DataType\Drops\DropBook.cs" />
     <Compile Include="DataType\Others\DnaBook.cs" />
     <Compile Include="DataType\Scenes\DungeonBook.cs" />
@@ -200,7 +204,7 @@
     <Compile Include="Forms\CMain\Quests\TalkEventItemReward.cs" />
     <Compile Include="Forms\CMain\Quests\TalkEventItemAction.cs" />
     <Compile Include="Forms\CMain\Quests\TalkEventItemTrade.cs" />
-    <Compile Include="Controler\GM\GMCodeZone.cs" />
+    <Compile Include="Controller\GM\GMCodeZone.cs" />
     <Compile Include="Forms\CMain\SystemSetup.cs">
       <SubType>UserControl</SubType>
     </Compile>
