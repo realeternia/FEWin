@@ -46,7 +46,7 @@ namespace FEGame.Controller.Battle.Units
         public virtual void Draw(Graphics g, int baseX, int baseY)
         {
             var img = SamuraiBook.GetImage(Cid);
-            var cellSize = BattleManager.CellSize;
+            var cellSize = TileManager.CellSize;
             g.DrawImage(img, X * cellSize - baseX, Y * cellSize - baseY, cellSize, cellSize);
         }
 

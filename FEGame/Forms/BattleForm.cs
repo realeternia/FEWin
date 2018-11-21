@@ -15,10 +15,11 @@ namespace FEGame.Forms
         private int baseX = 900;
         private int baseY = 250;
         private int selectTargetId;
-        private Image worldMap; 
+
         private HSCursor myCursor;
 
         private BattleManager battleManager;
+        private TileManager tileManager;
 
         public BattleForm()
         {
@@ -29,6 +30,7 @@ namespace FEGame.Forms
 
 
             battleManager = new BattleManager();
+            tileManager = new TileManager();
             //test code
             battleManager.AddUnit(new Controller.Battle.Units.HeroSam(43020101, 15, 15));
             battleManager.AddUnit(new Controller.Battle.Units.HeroSam(43020102, 15, 13));
@@ -40,35 +42,10 @@ namespace FEGame.Forms
         {
             base.Init(width, height);
 
-            //50每格子
-            worldMap = new Bitmap(BattleManager.CellSize * 30, BattleManager.CellSize * 30);
-            Graphics g = Graphics.FromImage(worldMap);
+            tileManager.Init();
 
-            var tileImage = PicLoader.Read("Tiles", "1.jpg");
-            var tileImage2 = PicLoader.Read("Tiles", "2.jpg");
-            for (int i = 0; i < 30; i++)
-            {
-                for (int j = 0; j < 30; j++)
-                {
-                    Rectangle destRect = new Rectangle(BattleManager.CellSize * i, BattleManager.CellSize * j, BattleManager.CellSize, BattleManager.CellSize);
-                    if ((i + j) % 5 == 1)
-                        g.DrawImage(tileImage2, destRect, 0, 0, BattleManager.CellSize, BattleManager.CellSize, GraphicsUnit.Pixel);
-                    else
-                        g.DrawImage(tileImage, destRect, 0, 0, BattleManager.CellSize, BattleManager.CellSize, GraphicsUnit.Pixel);
-                }
-            }
-            tileImage.Dispose();
-            tileImage2.Dispose();
-
-            Pen myPen = new Pen(Brushes.DarkGoldenrod, 6); //描一个金边
-            g.DrawRectangle(myPen, 0+3, 0+3, 1500-6, 1500-6);
-            myPen.Dispose();
-            g.DrawRectangle(Pens.DarkRed, 0+5, 0+5, 1500-10, 1500-10);
-
-            g.Dispose();
-
-            baseX = MathTool.Clamp(baseX, 0, worldMap.Width - doubleBuffedPanel1.Width);
-            baseY = MathTool.Clamp(baseY, 0, worldMap.Height - doubleBuffedPanel1.Height);
+            baseX = MathTool.Clamp(baseX, 0, tileManager.Width - doubleBuffedPanel1.Width);
+            baseY = MathTool.Clamp(baseY, 0, tileManager.Height - doubleBuffedPanel1.Height);
             
             showImage = true;
         }
@@ -89,8 +66,8 @@ namespace FEGame.Forms
                 {
                     baseX -= e.Location.X-dragStartPos.X;
                     baseY -= e.Location.Y - dragStartPos.Y;
-                    baseX = MathTool.Clamp(baseX, 0, worldMap.Width - doubleBuffedPanel1.Width);
-                    baseY = MathTool.Clamp(baseY, 0, worldMap.Height - doubleBuffedPanel1.Height);
+                    baseX = MathTool.Clamp(baseX, 0, tileManager.Width - doubleBuffedPanel1.Width);
+                    baseY = MathTool.Clamp(baseY, 0, tileManager.Height - doubleBuffedPanel1.Height);
                     dragStartPos = e.Location;
                     doubleBuffedPanel1.Invalidate();
                 }
@@ -152,19 +129,17 @@ namespace FEGame.Forms
             if (!showImage)
                 return;
 
-            e.Graphics.DrawImage(worldMap, new Rectangle(0, 0, doubleBuffedPanel1.Width, doubleBuffedPanel1.Height),
-                new Rectangle(baseX, baseY, doubleBuffedPanel1.Width, doubleBuffedPanel1.Height), GraphicsUnit.Pixel);
-
+            tileManager.Draw(e.Graphics, baseX, baseY, doubleBuffedPanel1.Width, doubleBuffedPanel1.Height);
             battleManager.Draw(e.Graphics, baseX, baseY);
 
             if (selectTargetId > 0)
             {
                 var targetUnit = battleManager.GetSam(selectTargetId);
                 var image = targetUnit.GetPreview();
-                int tx = targetUnit.X * BattleManager.CellSize - baseX + BattleManager.CellSize;
+                int tx = targetUnit.X * TileManager.CellSize - baseX + TileManager.CellSize;
                 if (tx > doubleBuffedPanel1.Width - image.Width)
-                    tx -= image.Width + BattleManager.CellSize;
-                e.Graphics.DrawImage(image, tx, targetUnit.Y * BattleManager.CellSize - baseY, image.Width, image.Height);
+                    tx -= image.Width + TileManager.CellSize;
+                e.Graphics.DrawImage(image, tx, targetUnit.Y * TileManager.CellSize - baseY, image.Width, image.Height);
                 image.Dispose();
             }
         }

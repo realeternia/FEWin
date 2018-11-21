@@ -99,6 +99,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controller\Battle\BattleManager.cs" />
+    <Compile Include="Controller\Battle\TileManager.cs" />
     <Compile Include="Controller\Battle\Units\BaseSam.cs" />
     <Compile Include="Controller\Battle\Units\Frags\SamAttr.cs" />
     <Compile Include="Controller\Battle\Units\HeroSam.cs" />

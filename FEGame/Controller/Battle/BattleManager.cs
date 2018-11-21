@@ -6,7 +6,6 @@ namespace FEGame.Controller.Battle
 {
     public class BattleManager
     {
-        public const int CellSize = 50;
         private List<BaseSam> unitList = new List<BaseSam>();
         private int unitIdOffset = 1000;
 
@@ -31,8 +30,8 @@ namespace FEGame.Controller.Battle
         {
             foreach (var baseUnit in unitList)
             {
-                if (baseX >= baseUnit.X * CellSize && baseX < baseUnit.X * CellSize + CellSize &&
-                    baseY >= baseUnit.Y * CellSize && baseY < baseUnit.Y * CellSize + CellSize)
+                if (baseX >= baseUnit.X * TileManager.CellSize && baseX < baseUnit.X * TileManager.CellSize + TileManager.CellSize &&
+                    baseY >= baseUnit.Y * TileManager.CellSize && baseY < baseUnit.Y * TileManager.CellSize + TileManager.CellSize)
                     return baseUnit.Id;
             }
 
