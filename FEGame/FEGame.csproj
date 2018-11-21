@@ -99,9 +99,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controller\Battle\BattleManager.cs" />
-    <Compile Include="Controller\Battle\Units\BaseUnit.cs" />
-    <Compile Include="Controller\Battle\Units\HeroUnit.cs" />
-    <Compile Include="Controller\Battle\Units\MonsterUnit.cs" />
+    <Compile Include="Controller\Battle\Units\BaseSam.cs" />
+    <Compile Include="Controller\Battle\Units\HeroSam.cs" />
+    <Compile Include="Controller\Battle\Units\MonsterSam.cs" />
     <Compile Include="Core\Config\Config.cs" />
     <Compile Include="DataType\Effects\Facts\BaseEffect.cs" />
     <Compile Include="DataType\Effects\Facts\MovingUIEffect.cs" />
@@ -322,7 +322,7 @@
     <Compile Include="Forms\CMain\SystemMenu.Designer.cs">
       <DependentUpon>SystemMenu.cs</DependentUpon>
     </Compile>
-    <Compile Include="DataType\Peoples\PeopleBook.cs" />
+    <Compile Include="DataType\Samurais\SamuraiBook.cs" />
     <Compile Include="DataType\User\Profile.cs" />
     <Compile Include="DataType\Buffs\Buff.cs" />
     <Compile Include="Tools\PaintTool.cs" />

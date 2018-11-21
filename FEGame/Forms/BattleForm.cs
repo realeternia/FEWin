@@ -37,7 +37,9 @@ namespace FEGame.Forms
 
             battleManager = new BattleManager();
             //test code
-            battleManager.AddUnit(new Controller.Battle.Units.HeroUnit(43020101));
+            battleManager.AddUnit(new Controller.Battle.Units.HeroSam(43020101, 15, 15));
+            battleManager.AddUnit(new Controller.Battle.Units.MonsterSam(43000005, 18, 18));
+            battleManager.AddUnit(new Controller.Battle.Units.MonsterSam(43000005, 18, 21));
         }
 
         public override void Init(int width, int height)
@@ -45,7 +47,7 @@ namespace FEGame.Forms
             base.Init(width, height);
 
             //50每格子
-            worldMap = new Bitmap(50 * 30, 50 * 30);
+            worldMap = new Bitmap(BattleManager.CellSize * 30, BattleManager.CellSize * 30);
             Graphics g = Graphics.FromImage(worldMap);
 
             var tileImage = PicLoader.Read("Tiles", "1.jpg");
@@ -54,11 +56,11 @@ namespace FEGame.Forms
             {
                 for (int j = 0; j < 30; j++)
                 {
-                    Rectangle destRect = new Rectangle(50*i, 50*j, 50,50);
+                    Rectangle destRect = new Rectangle(BattleManager.CellSize * i, BattleManager.CellSize * j, BattleManager.CellSize, BattleManager.CellSize);
                     if ((i + j) % 5 == 1)
-                        g.DrawImage(tileImage2, destRect, 0, 0, 50, 50, GraphicsUnit.Pixel);
+                        g.DrawImage(tileImage2, destRect, 0, 0, BattleManager.CellSize, BattleManager.CellSize, GraphicsUnit.Pixel);
                     else
-                        g.DrawImage(tileImage, destRect, 0, 0, 50, 50, GraphicsUnit.Pixel);
+                        g.DrawImage(tileImage, destRect, 0, 0, BattleManager.CellSize, BattleManager.CellSize, GraphicsUnit.Pixel);
                 }
             }
             tileImage.Dispose();
@@ -202,6 +204,8 @@ namespace FEGame.Forms
 
             e.Graphics.DrawImage(worldMap, new Rectangle(0, 0, doubleBuffedPanel1.Width, doubleBuffedPanel1.Height),
                 new Rectangle(baseX, baseY, doubleBuffedPanel1.Width, doubleBuffedPanel1.Height), GraphicsUnit.Pixel);
+
+            battleManager.Draw(e.Graphics, baseX, baseY);
 
             foreach (var mapIconConfig in ConfigData.SceneDict.Values)
             {

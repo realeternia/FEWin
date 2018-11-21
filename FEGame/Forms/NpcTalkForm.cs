@@ -8,7 +8,7 @@ using ControlPlus.Drawing;
 using FEGame.Core.Loader;
 using FEGame.DataType;
 using FEGame.DataType.Others;
-using FEGame.DataType.Peoples;
+using FEGame.DataType.Samurais;
 using FEGame.DataType.Scenes;
 using FEGame.DataType.User;
 using FEGame.Forms.CMain;
@@ -212,32 +212,6 @@ namespace FEGame.Forms
                 }
 
             }
-
-            if (interactBlock != null && interactBlock.Depth == 0)
-            {//额外的任务目标
-                if (!string.IsNullOrEmpty(config.EnemyName))
-                {
-                    var peopleId = PeopleBook.GetPeopleId(config.EnemyName);
-                    if (peopleId > 0 && PeopleBook.IsPeople(peopleId)) //是否要结交新英雄
-                    {
-                        var peopleConfig = ConfigData.GetPeopleConfig(peopleId);
-                        string reason;
-                        var result = GetRivalActivateResult(peopleConfig, out reason);
-                        SceneQuestBlock questBlock;
-                        if (result)
-                        {
-                            questBlock = SceneQuestBook.GetQuestData(this, EventId, eventLevel, "blockunlock");
-                            questBlock.SetScript(string.Format("|icon.hatt8||{0}", questBlock.Script));
-                        }
-                        else
-                        {
-                            questBlock = SceneQuestBook.GetQuestData(this, EventId, eventLevel, "blockunlockfail");
-                            questBlock.SetScript(string.Format("|icon.hatt8||{0}|darkred|{1}", questBlock.Script, reason));
-                        }
-                        AddBlockAnswer(questBlock);
-                    }
-                }
-            }
         }
 
         private void AddBlockAnswer(SceneQuestBlock block)
@@ -250,30 +224,6 @@ namespace FEGame.Forms
                 sceneQuestBlock.SetRect(new Rectangle(360 + 10, yoff, 400, 400));
                 id++;
             }
-        }
-
-        private bool GetRivalActivateResult(PeopleConfig peopleConfig, out string reason)
-        {
-            reason = "";
-            if (peopleConfig.RivalDefeat > 0)
-            {
-                var winCount = 0;
-                if (winCount < peopleConfig.RivalDefeat)
-                {
-                    reason = string.Format("(击败次数{0}/{1})", winCount, peopleConfig.RivalDefeat);
-                    return false;
-                }
-            }
-            else if (peopleConfig.RivalRecordId > 0)
-            {
-                var myVal = UserProfile.InfoRecord.GetRecordById(peopleConfig.RivalRecordId);
-                if (myVal < peopleConfig.RivalRecordValue)
-                {
-                    reason = string.Format("(需求{0}(已有{1})>={2})", ConfigData.GetRecordInfoConfig(peopleConfig.RivalRecordId).Cname, myVal, peopleConfig.RivalRecordValue);
-                    return false;
-                }
-            }
-            return true;
         }
 
         private void NpcTalkForm_MouseMove(object sender, MouseEventArgs e)

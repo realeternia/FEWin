@@ -1,8 +1,8 @@
 ﻿namespace FEGame.Controller.Battle.Units
 {
-    public class MonsterUnit : BaseUnit
+    public class MonsterSam : BaseSam
     {
-        public MonsterUnit(int id, byte x, byte y)
+        public MonsterSam(int id, byte x, byte y)
             : base(id, x, y)
         {
         }

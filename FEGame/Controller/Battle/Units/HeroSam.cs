@@ -1,8 +1,8 @@
 ﻿namespace FEGame.Controller.Battle.Units
 {
-    public class HeroUnit : BaseUnit
+    public class HeroSam : BaseSam
     {
-        public HeroUnit(int id, byte x, byte y)
+        public HeroSam(int id, byte x, byte y)
             : base(id, x, y)
         {
         }

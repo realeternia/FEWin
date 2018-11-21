@@ -6,7 +6,7 @@ using ControlPlus.Drawing;
 using FEGame.Core;
 using FEGame.Core.Interface;
 using FEGame.DataType.Items;
-using FEGame.DataType.Peoples;
+using FEGame.DataType.Samurais;
 using FEGame.DataType.Scenes;
 
 namespace FEGame.Forms.Items.Regions
@@ -50,10 +50,10 @@ namespace FEGame.Forms.Items.Regions
                 }
                 else if (type == PictureRegionCellType.People)
                 {
-                    img = PeopleBook.GetPersonImage(nid);
+                    img = SamuraiBook.GetImage(nid);
                     preAction = () =>
                     {
-                        var peopleConfig = ConfigData.GetPeopleConfig(nid);
+                        var peopleConfig = ConfigData.GetSamuraiConfig(nid);
                         var brush = new SolidBrush(Color.FromName(HSTypes.I2QualityColorD(peopleConfig.Quality)));
                         g.FillRectangle(brush, X + 3, Y + 3, Width - 6, Height - 6);
                         brush.Dispose();
@@ -134,7 +134,7 @@ namespace FEGame.Forms.Items.Regions
             }
             else if (regionType == PictureRegionCellType.People)
             {
-                Image image = PeopleBook.GetPreview(nid);
+                Image image = SamuraiBook.GetPreview(nid);
                 tooltip.Show(image, form, x, y);
             }
             else if (regionType == PictureRegionCellType.DungeonItem)

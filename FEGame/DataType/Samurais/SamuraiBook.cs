@@ -7,18 +7,18 @@ using FEGame.Tools;
 using NarlonLib.Log;
 using NarlonLib.Tools;
 
-namespace FEGame.DataType.Peoples
+namespace FEGame.DataType.Samurais
 {
-    internal static class PeopleBook
+    internal static class SamuraiBook
     {
         private static Dictionary<string, int> itemNameIdDict;
 
-        public static int GetPeopleId(string ename)
+        public static int GetOneId(string ename)
         {
             if (itemNameIdDict == null)
             {
                 itemNameIdDict = new Dictionary<string, int>();
-                foreach (var peopleConfig in ConfigData.PeopleDict.Values)
+                foreach (var peopleConfig in ConfigData.SamuraiDict.Values)
                 {
                     if (itemNameIdDict.ContainsKey(peopleConfig.Ename))
                     {
@@ -35,11 +35,11 @@ namespace FEGame.DataType.Peoples
 
         public static Image GetPreview(int id)
         {
-            PeopleConfig peopleConfig = ConfigData.GetPeopleConfig(id);
+            var peopleConfig = ConfigData.GetSamuraiConfig(id);
 
             ControlPlus.TipImage tipData = new ControlPlus.TipImage(PaintTool.GetTalkColor);
             tipData.AddTextNewLine(peopleConfig.Name, "White", 20);
-            tipData.AddTextNewLine(string.Format("{0}级{1}", peopleConfig.Level, ""), "White");
+            tipData.AddTextNewLine(string.Format("{0}级{1}", 1, ""), "White");
             tipData.AddLine();
             //int[] attrs = JobBook.GetJobLevelAttr(peopleConfig.Job, peopleConfig.Level);
             //tipData.AddTextNewLine(string.Format("战斗 {0,3:D}  守护 {1,3:D}", attrs[0], attrs[1]), "Lime");
@@ -55,40 +55,15 @@ namespace FEGame.DataType.Peoples
             return tipData.Image;
         }
 
-        public static bool IsPeople(int id)
-       {
-           PeopleConfig peopleConfig = ConfigData.GetPeopleConfig(id);
-           return peopleConfig.Type > 0 && peopleConfig.Type < 100; 
-        }
-
-        public static bool IsMonster(int id)
+        public static Image GetImage(int id)
         {
-            PeopleConfig peopleConfig = ConfigData.GetPeopleConfig(id);
-            return peopleConfig.Type == 0;
-        }
-
-        public static Image GetPersonImage(int id)
-        {
-            string fname = string.Format("People/{0}.png", ConfigData.GetPeopleConfig(id).Figue);
+            string fname = string.Format("Samurai/{0}.png", ConfigData.GetSamuraiConfig(id).Figue);
             if (!ImageManager.HasImage(fname))
             {
-                Image image = PicLoader.Read("People", string.Format("{0}.png", ConfigData.GetPeopleConfig(id).Figue));
+                Image image = PicLoader.Read("Samurai", string.Format("{0}.png", ConfigData.GetSamuraiConfig(id).Figue));
                 ImageManager.AddImage(fname, image);
             }
             return ImageManager.GetImage(fname);
-        }
-
-        public static int[] GetRandNPeople(int count, int minLevel, int maxLevel)
-        {
-            List<int> pids = new List<int>();
-            foreach (PeopleConfig peopleConfig in ConfigData.PeopleDict.Values)
-            {
-                if (IsPeople(peopleConfig.Id) && peopleConfig.Level >= minLevel && peopleConfig.Level <= maxLevel)
-                    pids.Add(peopleConfig.Id);
-            }
-
-            ArraysUtils.RandomShuffle(pids);
-            return pids.GetRange(0, count).ToArray();
         }
 
         public static void Fight(int pid, string map, int rlevel, PictureRegion.HsActionCallback winEvent, PictureRegion.HsActionCallback lossEvent, PictureRegion.HsActionCallback cancelEvent)
