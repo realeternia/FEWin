@@ -1,16 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-using ConfigDatas;
-using ControlPlus;
 using FEGame.Controller.Battle;
 using FEGame.Core;
 using FEGame.Core.Loader;
-using FEGame.DataType.User;
-using FEGame.Forms.CMain;
 using FEGame.Forms.Items.Core;
-using FEGame.Tools;
 using NarlonLib.Math;
 
 namespace FEGame.Forms
@@ -20,8 +14,7 @@ namespace FEGame.Forms
         private bool showImage;
         private int baseX = 900;
         private int baseY = 250;
-        private int pointerY;
-        private string selectName;
+        private int selectTargetId;
         private Image worldMap; 
         private HSCursor myCursor;
 
@@ -82,11 +75,10 @@ namespace FEGame.Forms
 
         public override void OnFrame(int tick, float timePass)
         {
-            if ((tick % 10) == 0)
-            {
-                pointerY = (pointerY == 0 ? -12 : 0);
-                doubleBuffedPanel1.Invalidate();
-            }
+            //if ((tick % 10) == 0)
+            //{
+            //    doubleBuffedPanel1.Invalidate();
+            //}
         }
 
         private void BattleForm_MouseMove(object sender, MouseEventArgs e)
@@ -108,19 +100,10 @@ namespace FEGame.Forms
             {
                 dragStartPos = e.Location;
 
-                string newSel = "";
-                foreach (var mapIconConfig in ConfigData.SceneDict.Values)
+                var newTarget = battleManager.GetRegionUnitId(baseX + e.Location.X, baseY + e.Location.Y);
+                if (newTarget != selectTargetId)
                 {
-                    if (mapIconConfig.Icon == "")
-                        continue;
-
-                    //var iconSize = iconSizeDict[mapIconConfig.Id];
-                    //if (truex > mapIconConfig.IconX - baseX && truey > mapIconConfig.IconY - baseY && truex < mapIconConfig.IconX - baseX + iconSize.Width && truey < mapIconConfig.IconY - baseY + iconSize.Height)
-                    //    newSel = mapIconConfig.Icon;
-                }
-                if (newSel != selectName)
-                {
-                    selectName = newSel;
+                    selectTargetId = newTarget;
                     doubleBuffedPanel1.Invalidate();
                 }
             }
@@ -143,32 +126,10 @@ namespace FEGame.Forms
 
         private void BattleForm_Click(object sender, EventArgs e)
         {
-            if (selectName =="")
+            if (selectTargetId == 0)
                 return;
 
-            foreach (var mapIconConfig in ConfigData.SceneDict.Values)
-            {
-                if (mapIconConfig.Icon == selectName && mapIconConfig.Id != UserProfile.InfoBasic.MapId)
-                {
-                    if (UserProfile.InfoDungeon.DungeonId > 0) //副本中不允许外传
-                        return;
 
-                    if (MessageBoxEx2.Show("是否花10钻石立刻移动到该地区?") == DialogResult.OK)
-                    {
-                        if (UserProfile.InfoBag.PayDiamond(10))
-                        {
-                            UserProfile.InfoBasic.Position = 0;//如果是0，后面流程会随机一个位置
-                    //        Scene.Instance.ChangeMap(mapIconConfig.Id, true);
-                            Close();
-                        }
-                        else
-                        {
-                            MainTipManager.AddTip(HSErrors.GetDescript(ErrorConfig.Indexer.BagNotEnoughDimond), "Red");
-                        }
-                    }
-                    return;
-                }
-            }
         }
 
         private void buttonClose_Click(object sender, EventArgs e)
@@ -186,18 +147,6 @@ namespace FEGame.Forms
 
         }
 
-        private static Image GetPreview(int id)
-        {
-            SceneConfig sceneConfig = ConfigData.GetSceneConfig(id);
-
-            ControlPlus.TipImage tipData = new ControlPlus.TipImage(PaintTool.GetTalkColor);
-            tipData.AddTextNewLine(sceneConfig.Name, "Lime", 20);
-            tipData.AddTextNewLine(string.Format("地图等级: {0}", sceneConfig.Level), sceneConfig.Level>UserProfile.InfoBasic.Level?"Red": "White");
-         //   tipData.AddTextNewLine(string.Format("区域: {0}", ConfigData.GetSceneRegionConfig(sceneConfig.RegionId).Name), "White", 20);
-
-            return tipData.Image;
-        }
-
         private void doubleBuffedPanel1_Paint(object sender, PaintEventArgs e)
         {
             if (!showImage)
@@ -208,43 +157,16 @@ namespace FEGame.Forms
 
             battleManager.Draw(e.Graphics, baseX, baseY);
 
-            foreach (var mapIconConfig in ConfigData.SceneDict.Values)
+            if (selectTargetId > 0)
             {
-                if (mapIconConfig.Icon == "")
-                    continue;
-
-                if (mapIconConfig.Icon == selectName)
-                {
-                    int x = mapIconConfig.IconX;
-                    int y = mapIconConfig.IconY;
-                    int width = 100;
-                    int height = 100;
-
-                    if (x > baseX && y > baseY && x + width < baseX + doubleBuffedPanel1.Width && y + height < baseY + doubleBuffedPanel1.Height)
-                    {
-                        Image image = PicLoader.Read("Map.MapIcon", string.Format("{0}.png", mapIconConfig.Icon));
-                        Rectangle destRect = new Rectangle(x - baseX + 11, y - baseY + 31, width + 8, height + 8);
-                        Rectangle destRect2 = new Rectangle(x - baseX + 15, y - baseY + 35, width, height);
-                        e.Graphics.DrawImage(image, destRect, 0, 0, width, height, GraphicsUnit.Pixel);
-                        e.Graphics.DrawImage(image, destRect2, 0, 0, width, height, GraphicsUnit.Pixel);
-                        image.Dispose();
-
-                        image = GetPreview(mapIconConfig.Id);
-                        int tx = x - baseX + width;
-                        if (tx > doubleBuffedPanel1.Width - image.Width)
-                            tx -= image.Width + width;
-                        e.Graphics.DrawImage(image, tx + 15, y - baseY + 35, image.Width, image.Height);
-                        image.Dispose();
-                    }
-                }
-                //if (mapIconConfig.Id == UserProfile.InfoBasic.MapId)
-                //{
-                //    Image image = PicLoader.Read("Map", "arrow.png");
-                //    e.Graphics.DrawImage(image, mapIconConfig.IconX - baseX + 40, mapIconConfig.IconY - baseY - 5 + pointerY, 30, 48);
-                //    image.Dispose();
-                //}
+                var targetUnit = battleManager.GetSam(selectTargetId);
+                var image = targetUnit.GetPreview();
+                int tx = targetUnit.X * BattleManager.CellSize - baseX + BattleManager.CellSize;
+                if (tx > doubleBuffedPanel1.Width - image.Width)
+                    tx -= image.Width + BattleManager.CellSize;
+                e.Graphics.DrawImage(image, tx, targetUnit.Y * BattleManager.CellSize - baseY, image.Width, image.Height);
+                image.Dispose();
             }
-
         }
     }
 }

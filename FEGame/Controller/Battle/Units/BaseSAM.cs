@@ -2,6 +2,8 @@
 using ConfigDatas;
 using FEGame.Controller.Battle.Units.Frags;
 using FEGame.DataType.Samurais;
+using FEGame.DataType.User;
+using FEGame.Tools;
 
 namespace FEGame.Controller.Battle.Units
 {
@@ -9,10 +11,12 @@ namespace FEGame.Controller.Battle.Units
     {
         public BattleManager BM { get; set; }
 
+        public int Id { get; set; } //唯一id
         public int Cid { get; private set; }
         public byte Level { get; protected set; }
         public byte X { get; set; }
         public byte Y { get; set; }
+        public string Name { get; protected set; }
 
         protected SamAttr baseAttr; //基础属性
 
@@ -27,6 +31,7 @@ namespace FEGame.Controller.Battle.Units
         public virtual void Init()
         {
             var samuraiConfig = ConfigData.GetSamuraiConfig(Cid);
+            Name = samuraiConfig.Name;
             baseAttr.Str = samuraiConfig.Str;
             baseAttr.Def = samuraiConfig.Def;
             baseAttr.Skl = samuraiConfig.Skl;
@@ -43,6 +48,16 @@ namespace FEGame.Controller.Battle.Units
             var img = SamuraiBook.GetImage(Cid);
             var cellSize = BattleManager.CellSize;
             g.DrawImage(img, X * cellSize - baseX, Y * cellSize - baseY, cellSize, cellSize);
+        }
+
+        public Image GetPreview()
+        {
+            ControlPlus.TipImage tipData = new ControlPlus.TipImage(PaintTool.GetTalkColor);
+            tipData.AddTextNewLine(Name, "Lime", 20);
+            tipData.AddTextNewLine(Level.ToString(), "Lime", 20);
+            //   tipData.AddTextNewLine(string.Format("区域: {0}", ConfigData.GetSceneRegionConfig(sceneConfig.RegionId).Name), "White", 20);
+
+            return tipData.Image;
         }
     }
 }
