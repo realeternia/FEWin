@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using FEGame.Controller.Battle;
@@ -20,6 +21,8 @@ namespace FEGame.Forms
 
         private BattleManager battleManager;
         private TileManager tileManager;
+
+        private List<TileManager.PathResult> savedPath;
 
         public BattleForm()
         {
@@ -44,8 +47,8 @@ namespace FEGame.Forms
 
             tileManager.Init();
 
-            baseX = MathTool.Clamp(baseX, 0, tileManager.Width - doubleBuffedPanel1.Width);
-            baseY = MathTool.Clamp(baseY, 0, tileManager.Height - doubleBuffedPanel1.Height);
+            baseX = MathTool.Clamp(baseX, 0, tileManager.MapPixelWidth - doubleBuffedPanel1.Width);
+            baseY = MathTool.Clamp(baseY, 0, tileManager.MapPixelHeight - doubleBuffedPanel1.Height);
             
             showImage = true;
         }
@@ -66,8 +69,8 @@ namespace FEGame.Forms
                 {
                     baseX -= e.Location.X-dragStartPos.X;
                     baseY -= e.Location.Y - dragStartPos.Y;
-                    baseX = MathTool.Clamp(baseX, 0, tileManager.Width - doubleBuffedPanel1.Width);
-                    baseY = MathTool.Clamp(baseY, 0, tileManager.Height - doubleBuffedPanel1.Height);
+                    baseX = MathTool.Clamp(baseX, 0, tileManager.MapPixelWidth - doubleBuffedPanel1.Width);
+                    baseY = MathTool.Clamp(baseY, 0, tileManager.MapPixelHeight - doubleBuffedPanel1.Height);
                     dragStartPos = e.Location;
                     doubleBuffedPanel1.Invalidate();
                 }
@@ -101,12 +104,13 @@ namespace FEGame.Forms
             dragStartPos = e.Location;
         }
 
-        private void BattleForm_Click(object sender, EventArgs e)
+        private void doubleBuffedPanel1_Click(object sender, EventArgs e)
         {
-            if (selectTargetId == 0)
-                return;
+            var x = (dragStartPos.X+baseX) / TileManager.CellSize;
+            var y = (dragStartPos.Y+baseY) / TileManager.CellSize;
+            savedPath = tileManager.GetPathResults(x, y, 6);
 
-
+            doubleBuffedPanel1.Invalidate();
         }
 
         private void buttonClose_Click(object sender, EventArgs e)
@@ -132,6 +136,20 @@ namespace FEGame.Forms
             tileManager.Draw(e.Graphics, baseX, baseY, doubleBuffedPanel1.Width, doubleBuffedPanel1.Height);
             battleManager.Draw(e.Graphics, baseX, baseY);
 
+            if (savedPath != null && savedPath.Count > 0)
+            {
+                Font ft = new Font("宋体", 11, FontStyle.Bold);
+                foreach (var pathResult in savedPath)
+                {
+                    var px = pathResult.NowCell.X * TileManager.CellSize - baseX;
+                    var py = pathResult.NowCell.Y * TileManager.CellSize - baseY;
+                    e.Graphics.FillRectangle(Brushes.Green, px, py, 30, 30);
+                    e.Graphics.DrawString(pathResult.MovLeft.ToString(), ft, Brushes.Black, new PointF(px,py));
+                }
+
+                ft.Dispose();
+            }
+
             if (selectTargetId > 0)
             {
                 var targetUnit = battleManager.GetSam(selectTargetId);
@@ -143,5 +161,6 @@ namespace FEGame.Forms
                 image.Dispose();
             }
         }
+
     }
 }

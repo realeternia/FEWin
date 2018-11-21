@@ -59,6 +59,7 @@ namespace FEGame.Forms
             this.doubleBuffedPanel1.Name = "doubleBuffedPanel1";
             this.doubleBuffedPanel1.Size = new System.Drawing.Size(950, 650);
             this.doubleBuffedPanel1.TabIndex = 28;
+            this.doubleBuffedPanel1.Click += new System.EventHandler(this.doubleBuffedPanel1_Click);
             this.doubleBuffedPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.doubleBuffedPanel1_Paint);
             this.doubleBuffedPanel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BattleForm_MouseDown);
             this.doubleBuffedPanel1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.BattleForm_MouseMove);
@@ -73,7 +74,6 @@ namespace FEGame.Forms
             this.DoubleBuffered = true;
             this.Name = "BattleForm";
             this.Size = new System.Drawing.Size(1000, 700);
-            this.Click += new System.EventHandler(this.BattleForm_Click);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.BattleForm_Paint);
             this.Controls.SetChildIndex(this.bitmapButtonClose, 0);
             this.Controls.SetChildIndex(this.doubleBuffedPanel1, 0);
