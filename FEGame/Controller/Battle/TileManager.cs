@@ -21,6 +21,7 @@ namespace FEGame.Controller.Battle
         {
             public int CId; //配置表id
             public int SamuraiId;
+            public byte Camp; //阵营
 
             public int Cost
             {
@@ -49,11 +50,12 @@ namespace FEGame.Controller.Battle
             Instance = this;
         }
 
-        public void Enter(byte x, byte y, int id)
+        public void Enter(byte x, byte y, int id, byte camp)
         {
             if (tileArray[x, y].SamuraiId != 0)
                 throw new ApplicationException("cell used");
             tileArray[x, y].SamuraiId = id;
+            tileArray[x, y].Camp = camp;
         }
 
         public void Leave(byte x, byte y, int id)
@@ -61,6 +63,7 @@ namespace FEGame.Controller.Battle
             if (tileArray[x, y].SamuraiId != id)
                 throw new ApplicationException("cell check Error");
             tileArray[x, y].SamuraiId = 0;
+            tileArray[x, y].Camp = 0;
         }
 
         public void Init()
@@ -103,7 +106,7 @@ namespace FEGame.Controller.Battle
             g.Dispose();
         }
 
-        public List<PathResult> GetPathResults(int x, int y, int movCount)
+        public List<PathResult> GetPathResults(int x, int y, int movCount, byte myCamp)
         {
             List<PathResult> openList = new List<PathResult>();
             List<PathResult> closeList = new List<PathResult>();
@@ -120,6 +123,8 @@ namespace FEGame.Controller.Battle
                     if (closeNode != null && closeNode.MovLeft >= openCell.MovLeft)
                         continue; //已经遍历过
                     var myCost = tileArray[openCell.NowCell.X, openCell.NowCell.Y].Cost;
+                    if (HasEnemyBeside(openCell.NowCell.X, openCell.NowCell.Y, myCamp))
+                        myCost+=2;
                     if (openCell.Parent == Point.Empty) //初始格不算消耗
                         myCost = 0;
                     if (openCell.MovLeft < myCost) //步数不足
@@ -165,6 +170,22 @@ namespace FEGame.Controller.Battle
             }
 
             return closeList;
+        }
+
+        private bool HasEnemyBeside(int x, int y, byte myCamp)
+        {
+            return CheckCellEnemy(x - 1, y, myCamp) || CheckCellEnemy(x + 1, y, myCamp) ||
+                   CheckCellEnemy(x, y - 1, myCamp) || CheckCellEnemy(x, y + 1, myCamp);
+        }
+
+        private bool CheckCellEnemy(int x, int y, byte myCamp)
+        {
+            if (x >= Width || x < 0)
+                return false;
+            if (y >= Height || y < 0)
+                return false;
+            var targetCamp = tileArray[x, y].Camp;
+            return targetCamp > 0 && targetCamp != myCamp;
         }
 
         public void Draw(Graphics g, int baseX, int baseY, int panelW, int panelH)

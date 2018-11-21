@@ -2,7 +2,6 @@
 using ConfigDatas;
 using FEGame.Controller.Battle.Units.Frags;
 using FEGame.DataType.Samurais;
-using FEGame.DataType.User;
 using FEGame.Tools;
 
 namespace FEGame.Controller.Battle.Units
@@ -14,17 +13,19 @@ namespace FEGame.Controller.Battle.Units
         public int Id { get; set; } //唯一id
         public int Cid { get; private set; }
         public byte Level { get; protected set; }
+        public byte Camp { get; protected set; }
         public byte X { get; set; }
         public byte Y { get; set; }
         public string Name { get; protected set; }
 
         protected SamAttr baseAttr; //基础属性
 
-        protected BaseSam(int id, byte x, byte y)
+        protected BaseSam(int id, byte x, byte y, byte camp)
         {
             Cid = id;
             X = x;
             Y = y;
+            Camp = camp;
             baseAttr = new SamAttr();
         }
 

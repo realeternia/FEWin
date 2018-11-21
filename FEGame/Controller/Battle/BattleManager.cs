@@ -22,7 +22,7 @@ namespace FEGame.Controller.Battle
             bu.BM = this;
             bu.Init();
             unitList.Add(bu);
-            TileManager.Instance.Enter(bu.X, bu.Y, bu.Id);
+            TileManager.Instance.Enter(bu.X, bu.Y, bu.Id, bu.Camp);
         }
 
         public BaseSam GetSam(int id)

@@ -47,10 +47,10 @@ namespace FEGame.Forms
             baseY = MathTool.Clamp(baseY, 0, tileManager.MapPixelHeight - doubleBuffedPanel1.Height);
 
             //test code
-            battleManager.AddUnit(new Controller.Battle.Units.HeroSam(43020101, 15, 15));
-            battleManager.AddUnit(new Controller.Battle.Units.HeroSam(43020102, 15, 13));
-            battleManager.AddUnit(new Controller.Battle.Units.MonsterSam(43000005, 18, 18));
-            battleManager.AddUnit(new Controller.Battle.Units.MonsterSam(43000005, 18, 21));
+            battleManager.AddUnit(new Controller.Battle.Units.HeroSam(43020101, 15, 15, 1));
+            battleManager.AddUnit(new Controller.Battle.Units.HeroSam(43020102, 15, 13, 1));
+            battleManager.AddUnit(new Controller.Battle.Units.MonsterSam(43000005, 18, 18, 2));
+            battleManager.AddUnit(new Controller.Battle.Units.MonsterSam(43000005, 18, 21, 2));
 
             showImage = true;
         }
@@ -110,7 +110,7 @@ namespace FEGame.Forms
         {
             var x = (dragStartPos.X+baseX) / TileManager.CellSize;
             var y = (dragStartPos.Y+baseY) / TileManager.CellSize;
-            savedPath = tileManager.GetPathResults(x, y, 6);
+            savedPath = tileManager.GetPathResults(x, y, 6, 1);
 
             doubleBuffedPanel1.Invalidate();
         }
