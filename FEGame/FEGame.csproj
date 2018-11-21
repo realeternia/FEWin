@@ -100,6 +100,7 @@
   <ItemGroup>
     <Compile Include="Controller\Battle\BattleManager.cs" />
     <Compile Include="Controller\Battle\Units\BaseSam.cs" />
+    <Compile Include="Controller\Battle\Units\Frags\SamAttr.cs" />
     <Compile Include="Controller\Battle\Units\HeroSam.cs" />
     <Compile Include="Controller\Battle\Units\MonsterSam.cs" />
     <Compile Include="Core\Config\Config.cs" />
