@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using ConfigDatas;
 using FEGame.DataType.Others;
@@ -7,11 +8,29 @@ namespace FEGame.Controller.Battle
 {
     public class TileManager
     {
+        public static TileManager Instance { get; private set; }
+
         public class PathResult
         {
             public Point NowCell;
             public Point Parent;
             public int MovLeft;
+        }
+
+        public class TileInfo
+        {
+            public int CId; //配置表id
+            public int SamuraiId;
+
+            public int Cost
+            {
+                get
+                {
+                    if (SamuraiId > 0) //有人的格子无法移动
+                        return 99;
+                    return ConfigDatas.ConfigData.GetTileConfig(CId).MoveCost;
+                }
+            }
         }
 
         public const int CellSize = 50;
@@ -23,21 +42,40 @@ namespace FEGame.Controller.Battle
         public int Width { get; private set; }
         public int Height { get; private set; }
 
-        private int[,] tileArray;
+        private TileInfo[,] tileArray;
+
+        public TileManager()
+        {
+            Instance = this;
+        }
+
+        public void Enter(byte x, byte y, int id)
+        {
+            if (tileArray[x, y].SamuraiId != 0)
+                throw new ApplicationException("cell used");
+            tileArray[x, y].SamuraiId = id;
+        }
+
+        public void Leave(byte x, byte y, int id)
+        {
+            if (tileArray[x, y].SamuraiId != id)
+                throw new ApplicationException("cell check Error");
+            tileArray[x, y].SamuraiId = 0;
+        }
 
         public void Init()
         {
             //50每格子
             Width = Height = 30;
-            tileArray = new int[Width, Height];
+            tileArray = new TileInfo[Width, Height];
             for (int i = 0; i < Width; i++)
             {
                 for (int j = 0; j < Height; j++)
                 {
                     if ((i + j) % 5 == 1)
-                        tileArray[i,j] = 3;
+                        tileArray[i, j] = new TileInfo {CId = 3};
                     else
-                        tileArray[i, j] = 4;
+                        tileArray[i, j] = new TileInfo { CId = 4};
                 }
             }
 
@@ -50,14 +88,10 @@ namespace FEGame.Controller.Battle
             {
                 for (int j = 0; j < Height; j++)
                 {
-                    Rectangle destRect = new Rectangle(CellSize * i, CellSize * j, CellSize/2, CellSize/2);
+                    Rectangle destRect = new Rectangle(CellSize * i, CellSize * j, CellSize, CellSize);
 
-                    Pen b = new Pen(Color.FromName(ConfigData.GetTileConfig(tileArray[i, j]).Color)); //测试用，画一个区域
-                    g.DrawRectangle(b, destRect);
-                    b.Dispose();
-
-                    //var tileImg = TileBook.GetTileImage(tileArray[i, j], CellSize, CellSize);
-                    //g.DrawImage(tileImg, destRect, 0, 0, CellSize, CellSize, GraphicsUnit.Pixel);
+                    var tileImg = TileBook.GetTileImage(tileArray[i, j].CId, CellSize, CellSize);
+                    g.DrawImage(tileImg, destRect, 0, 0, CellSize, CellSize, GraphicsUnit.Pixel);
                 }
             }
 
@@ -85,7 +119,7 @@ namespace FEGame.Controller.Battle
                     var closeNode = closeList.Find(p => p.NowCell.X == openCell.NowCell.X && p.NowCell.Y == openCell.NowCell.Y);
                     if (closeNode != null && closeNode.MovLeft >= openCell.MovLeft)
                         continue; //已经遍历过
-                    var myCost = ConfigDatas.ConfigData.GetTileConfig(tileArray[openCell.NowCell.X, openCell.NowCell.Y]).MoveCost;
+                    var myCost = tileArray[openCell.NowCell.X, openCell.NowCell.Y].Cost;
                     if (openCell.Parent == Point.Empty) //初始格不算消耗
                         myCost = 0;
                     if (openCell.MovLeft < myCost) //步数不足

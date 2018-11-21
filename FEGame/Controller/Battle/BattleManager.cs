@@ -6,11 +6,14 @@ namespace FEGame.Controller.Battle
 {
     public class BattleManager
     {
+        public static BattleManager Instance { get; private set; }
+
         private List<BaseSam> unitList = new List<BaseSam>();
         private int unitIdOffset = 1000;
 
         public BattleManager()
         {
+            Instance = this;
         }
 
         public void AddUnit(BaseSam bu)
@@ -19,6 +22,7 @@ namespace FEGame.Controller.Battle
             bu.BM = this;
             bu.Init();
             unitList.Add(bu);
+            TileManager.Instance.Enter(bu.X, bu.Y, bu.Id);
         }
 
         public BaseSam GetSam(int id)

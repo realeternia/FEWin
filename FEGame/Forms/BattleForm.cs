@@ -34,11 +34,7 @@ namespace FEGame.Forms
 
             battleManager = new BattleManager();
             tileManager = new TileManager();
-            //test code
-            battleManager.AddUnit(new Controller.Battle.Units.HeroSam(43020101, 15, 15));
-            battleManager.AddUnit(new Controller.Battle.Units.HeroSam(43020102, 15, 13));
-            battleManager.AddUnit(new Controller.Battle.Units.MonsterSam(43000005, 18, 18));
-            battleManager.AddUnit(new Controller.Battle.Units.MonsterSam(43000005, 18, 21));
+
         }
 
         public override void Init(int width, int height)
@@ -49,7 +45,13 @@ namespace FEGame.Forms
 
             baseX = MathTool.Clamp(baseX, 0, tileManager.MapPixelWidth - doubleBuffedPanel1.Width);
             baseY = MathTool.Clamp(baseY, 0, tileManager.MapPixelHeight - doubleBuffedPanel1.Height);
-            
+
+            //test code
+            battleManager.AddUnit(new Controller.Battle.Units.HeroSam(43020101, 15, 15));
+            battleManager.AddUnit(new Controller.Battle.Units.HeroSam(43020102, 15, 13));
+            battleManager.AddUnit(new Controller.Battle.Units.MonsterSam(43000005, 18, 18));
+            battleManager.AddUnit(new Controller.Battle.Units.MonsterSam(43000005, 18, 21));
+
             showImage = true;
         }
 
@@ -139,14 +141,27 @@ namespace FEGame.Forms
             if (savedPath != null && savedPath.Count > 0)
             {
                 Font ft = new Font("宋体", 11, FontStyle.Bold);
+                Brush selectRegion = new SolidBrush(Color.FromArgb(100, Color.Green));
                 foreach (var pathResult in savedPath)
                 {
                     var px = pathResult.NowCell.X * TileManager.CellSize - baseX;
                     var py = pathResult.NowCell.Y * TileManager.CellSize - baseY;
-                    e.Graphics.FillRectangle(Brushes.Green, px, py, 30, 30);
-                    e.Graphics.DrawString(pathResult.MovLeft.ToString(), ft, Brushes.Black, new PointF(px,py));
+                    e.Graphics.FillRectangle(selectRegion, px, py, TileManager.CellSize, TileManager.CellSize);
+
+#if DEBUG
+                    e.Graphics.DrawString(pathResult.MovLeft.ToString(), ft, Brushes.Black, px, py);
+                    if (pathResult.Parent.X == pathResult.NowCell.X + 1)
+                        e.Graphics.DrawString("←", ft, Brushes.Black, px, py + 15);
+                    else if (pathResult.Parent.X == pathResult.NowCell.X - 1)
+                        e.Graphics.DrawString("→", ft, Brushes.Black, px, py + 15);
+                    else if (pathResult.Parent.Y == pathResult.NowCell.Y + 1)
+                        e.Graphics.DrawString("↑", ft, Brushes.Black, px, py + 15);
+                    else if (pathResult.Parent.Y == pathResult.NowCell.Y - 1)
+                        e.Graphics.DrawString("↓", ft, Brushes.Black, px, py + 15);
+#endif
                 }
 
+                selectRegion.Dispose();
                 ft.Dispose();
             }
 
