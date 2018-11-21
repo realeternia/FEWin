@@ -42,10 +42,12 @@ namespace FEGame.Controller.Battle
             return 0;
         }
 
-        public void Draw(Graphics g, int baseX, int baseY)
+        public void Draw(Graphics g, int baseX, int baseY, int movingId)
         {
             foreach (var baseUnit in unitList)
             {
+                if (baseUnit.Id == movingId) //移动单位不绘制
+                    continue;
                 baseUnit.Draw(g, baseX, baseY);
             }
         }

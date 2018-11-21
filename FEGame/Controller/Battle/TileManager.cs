@@ -110,7 +110,7 @@ namespace FEGame.Controller.Battle
         {
             List<PathResult> openList = new List<PathResult>();
             List<PathResult> closeList = new List<PathResult>();
-            openList.Add(new PathResult {NowCell = new Point(x, y), Parent = Point.Empty, MovLeft = movCount});
+            openList.Add(new PathResult {NowCell = new Point(x, y), Parent = new Point(-1, -1), MovLeft = movCount});
             while (openList.Count > 0)
             {
                 var oldOpenList = openList.ToArray();
@@ -125,7 +125,7 @@ namespace FEGame.Controller.Battle
                     var myCost = tileArray[openCell.NowCell.X, openCell.NowCell.Y].Cost;
                     if (HasEnemyBeside(openCell.NowCell.X, openCell.NowCell.Y, myCamp))
                         myCost+=2;
-                    if (openCell.Parent == Point.Empty) //初始格不算消耗
+                    if (openCell.Parent.X < 0) //初始格不算消耗
                         myCost = 0;
                     if (openCell.MovLeft < myCost) //步数不足
                         continue;

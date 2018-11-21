@@ -20,6 +20,11 @@ namespace FEGame.Controller.Battle.Units
 
         protected SamAttr baseAttr; //基础属性
 
+        public int Mov
+        {
+            get { return baseAttr.Mov; }
+        }
+
         protected BaseSam(int id, byte x, byte y, byte camp)
         {
             Cid = id;

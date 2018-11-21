@@ -124,6 +124,7 @@
     <Compile Include="Forms\ChangeAccountForm.Designer.cs">
       <DependentUpon>ChangeAccountForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Items\Battle\ChessMoveAnim.cs" />
     <Compile Include="Forms\Items\Regions\VirtualRegionMoveMediator.cs" />
     <Compile Include="Rpc\NetDataCache.cs" />
     <Compile Include="Tools\ImageManager.cs" />

@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using FEGame.Controller.Battle;
 using FEGame.Core;
 using FEGame.Core.Loader;
+using FEGame.Forms.Items.Battle;
 using FEGame.Forms.Items.Core;
 using NarlonLib.Math;
 
@@ -12,10 +13,15 @@ namespace FEGame.Forms
 {
     internal sealed partial class BattleForm : BasePanel
     {
+        enum RoundStage
+        {
+            None, SelectMove, Move
+        }
         private bool showImage;
         private int baseX = 900;
         private int baseY = 250;
-        private int selectTargetId;
+        private int mouseOnId;
+        private int moveId; //移动单位id
 
         private HSCursor myCursor;
 
@@ -23,6 +29,8 @@ namespace FEGame.Forms
         private TileManager tileManager;
 
         private List<TileManager.PathResult> savedPath;
+        private RoundStage stage;
+        private ChessMoveAnim chessMoveAnim; //移动控件
 
         public BattleForm()
         {
@@ -31,10 +39,9 @@ namespace FEGame.Forms
             bitmapButtonClose.NoUseDrawNine = true;
             myCursor = new HSCursor(this);
 
-
             battleManager = new BattleManager();
             tileManager = new TileManager();
-
+            chessMoveAnim = new ChessMoveAnim();
         }
 
         public override void Init(int width, int height)
@@ -57,6 +64,8 @@ namespace FEGame.Forms
 
         public override void OnFrame(int tick, float timePass)
         {
+            if (chessMoveAnim.Update())
+                doubleBuffedPanel1.Invalidate();
             //if ((tick % 10) == 0)
             //{
             //    doubleBuffedPanel1.Invalidate();
@@ -83,9 +92,9 @@ namespace FEGame.Forms
                 dragStartPos = e.Location;
 
                 var newTarget = battleManager.GetRegionUnitId(baseX + e.Location.X, baseY + e.Location.Y);
-                if (newTarget != selectTargetId)
+                if (newTarget != mouseOnId)
                 {
-                    selectTargetId = newTarget;
+                    mouseOnId = newTarget;
                     doubleBuffedPanel1.Invalidate();
                 }
             }
@@ -108,11 +117,49 @@ namespace FEGame.Forms
 
         private void doubleBuffedPanel1_Click(object sender, EventArgs e)
         {
-            var x = (dragStartPos.X+baseX) / TileManager.CellSize;
-            var y = (dragStartPos.Y+baseY) / TileManager.CellSize;
-            savedPath = tileManager.GetPathResults(x, y, 6, 1);
+            var x = (dragStartPos.X + baseX) / TileManager.CellSize;
+            var y = (dragStartPos.Y + baseY) / TileManager.CellSize;
+            if (stage == RoundStage.None)
+            {
+                if (mouseOnId <= 0)
+                    return;
 
-            doubleBuffedPanel1.Invalidate();
+                moveId = mouseOnId;
+                var tileUnit = battleManager.GetSam(mouseOnId);
+                if (tileUnit.Camp == ConfigDatas.CampConfig.Indexer.Reborn)
+                {
+                    savedPath = tileManager.GetPathResults(x, y, tileUnit.Mov, (byte)ConfigDatas.CampConfig.Indexer.Reborn);
+                    stage = RoundStage.SelectMove;
+                    doubleBuffedPanel1.Invalidate();
+                }
+            }
+            else if (stage == RoundStage.SelectMove)
+            {
+                var selectTarget = savedPath.Find(cell => cell.NowCell.X == x && cell.NowCell.Y == y);
+                if (selectTarget != null)
+                {
+                    stage = RoundStage.Move;
+                    Stack<Point> roadPath = new Stack<Point>();
+                    do
+                    {
+                        roadPath.Push(selectTarget.NowCell);
+                        selectTarget = savedPath.Find(cell => cell.NowCell.X == selectTarget.Parent.X && cell.NowCell.Y == selectTarget.Parent.Y);
+                    } while (selectTarget != null && selectTarget.Parent.X >= 0);
+
+                    savedPath = null;
+                    var tileUnit = battleManager.GetSam(moveId);
+                    roadPath.Push(new Point(tileUnit.X, tileUnit.Y));
+                    chessMoveAnim.Set(tileUnit.Cid, roadPath.ToArray());
+                    chessMoveAnim.FinishAction = delegate
+                    {
+                        tileManager.Leave(tileUnit.X, tileUnit.Y, moveId);
+                        tileUnit.X = (byte)x;
+                        tileUnit.Y = (byte)y;
+                        tileManager.Enter(tileUnit.X, tileUnit.Y, moveId, tileUnit.Camp);
+                        stage = RoundStage.None;
+                    };
+                }
+            }
         }
 
         private void buttonClose_Click(object sender, EventArgs e)
@@ -136,7 +183,7 @@ namespace FEGame.Forms
                 return;
 
             tileManager.Draw(e.Graphics, baseX, baseY, doubleBuffedPanel1.Width, doubleBuffedPanel1.Height);
-            battleManager.Draw(e.Graphics, baseX, baseY);
+            battleManager.Draw(e.Graphics, baseX, baseY, moveId);
 
             if (savedPath != null && savedPath.Count > 0)
             {
@@ -165,9 +212,11 @@ namespace FEGame.Forms
                 ft.Dispose();
             }
 
-            if (selectTargetId > 0)
+            chessMoveAnim.Draw(e.Graphics, baseX, baseY);
+
+            if (mouseOnId > 0)
             {
-                var targetUnit = battleManager.GetSam(selectTargetId);
+                var targetUnit = battleManager.GetSam(mouseOnId);
                 var image = targetUnit.GetPreview();
                 int tx = targetUnit.X * TileManager.CellSize - baseX + TileManager.CellSize;
                 if (tx > doubleBuffedPanel1.Width - image.Width)
