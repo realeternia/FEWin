@@ -8,7 +8,7 @@ using NarlonLib.Log;
 
 namespace FEGame.DataType.User
 {
-    public class InfoDungeon
+    public class InfoDungeon : IUserInfoSub
     {
         [FieldIndex(Index = 1)] public int DungeonId; //副本id
 
@@ -37,7 +37,13 @@ namespace FEGame.DataType.User
             EventList = new List<DbGismoState>();
             Items = new List<IntPair>();
         }
+        void IUserInfoSub.OnLogin()
+        {
+        }
 
+        void IUserInfoSub.OnLogout()
+        {
+        }
         public void Enter(int dungeonId) //进入副本需要初始化
         {
             DungeonId = dungeonId;

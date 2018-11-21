@@ -6,7 +6,7 @@ using FEGame.Rpc;
 
 namespace FEGame.DataType.User
 {
-    public class InfoBasic
+    public class InfoBasic : IUserInfoSub
     {
         [FieldIndex(Index = 3)] public int Head;
         [FieldIndex(Index = 5)] public uint Dna; //可以影响sq的选项，影响sq的出现概率（未实现）
@@ -20,6 +20,13 @@ namespace FEGame.DataType.User
         [FieldIndex(Index = 25)] public uint MentalPoint; //精神
 
         public InfoBasic()
+        {
+        }
+        void IUserInfoSub.OnLogin()
+        {
+        }
+
+        void IUserInfoSub.OnLogout()
         {
         }
 

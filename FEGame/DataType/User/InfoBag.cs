@@ -10,7 +10,7 @@ using NarlonLib.Tools;
 
 namespace FEGame.DataType.User
 {
-    public class InfoBag
+    public class InfoBag : IUserInfoSub
     {
         [FieldIndex(Index = 1)] public GameResource Resource;
         [FieldIndex(Index = 2)] public int Diamond;
@@ -27,6 +27,13 @@ namespace FEGame.DataType.User
                 Items[i] = new IntPair();
             CdGroupStartTime = new int[GameConstants.ItemCdGroupCount];
             CdGroupTime = new int[GameConstants.ItemCdGroupCount];
+        }
+        void IUserInfoSub.OnLogin()
+        {
+        }
+
+        void IUserInfoSub.OnLogout()
+        {
         }
 
         public bool CheckResource(uint[] resourceInfo)
@@ -361,5 +368,6 @@ namespace FEGame.DataType.User
             }
             return 0;
         }
+
     }
 }

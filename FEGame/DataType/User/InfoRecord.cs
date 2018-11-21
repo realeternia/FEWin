@@ -3,7 +3,7 @@ using FEGame.Core;
 
 namespace FEGame.DataType.User
 {
-    public class InfoRecord
+    public class InfoRecord : IUserInfoSub
     {
         [FieldIndex(Index = 1)] public Dictionary<int, int> Records;
         [FieldIndex(Index = 2)] public uint[] Flags; //标记值10x32
@@ -15,6 +15,13 @@ namespace FEGame.DataType.User
             Records = new Dictionary<int, int>();
             States = new Dictionary<int, int>();
             Flags = new uint[10];
+        }
+        void IUserInfoSub.OnLogin()
+        {
+        }
+
+        void IUserInfoSub.OnLogout()
+        {
         }
 
         public int GetRecordById(int id)

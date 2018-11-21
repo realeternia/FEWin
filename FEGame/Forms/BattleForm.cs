@@ -38,6 +38,7 @@ namespace FEGame.Forms
             battleManager = new BattleManager();
             //test code
             battleManager.AddUnit(new Controller.Battle.Units.HeroSam(43020101, 15, 15));
+            battleManager.AddUnit(new Controller.Battle.Units.HeroSam(43020102, 15, 13));
             battleManager.AddUnit(new Controller.Battle.Units.MonsterSam(43000005, 18, 18));
             battleManager.AddUnit(new Controller.Battle.Units.MonsterSam(43000005, 18, 21));
         }

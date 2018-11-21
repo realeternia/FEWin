@@ -6,7 +6,7 @@ using FEGame.Forms.CMain;
 
 namespace FEGame.DataType.User
 {
-    public class InfoGismo
+    public class InfoGismo : IUserInfoSub
     {
         [FieldIndex(Index = 1)] public Dictionary<int, bool> Gismos;
 
@@ -16,6 +16,13 @@ namespace FEGame.DataType.User
         public InfoGismo()
         {
             Gismos = new Dictionary<int, bool>();
+        }
+        void IUserInfoSub.OnLogin()
+        {
+        }
+
+        void IUserInfoSub.OnLogout()
+        {
         }
 
         public void AddGismo(int id)

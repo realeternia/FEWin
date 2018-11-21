@@ -14,6 +14,10 @@
         {
             get { return Profile.InfoBag; }
         }
+        public static InfoHero InfoHero
+        {
+            get { return Profile.InfoHero; }
+        }
         public static InfoDungeon InfoDungeon
         {
             get { return Profile.InfoDungeon; }

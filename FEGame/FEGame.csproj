@@ -107,6 +107,9 @@
     <Compile Include="DataType\Effects\Facts\BaseEffect.cs" />
     <Compile Include="DataType\Effects\Facts\MovingUIEffect.cs" />
     <Compile Include="Controller\GM\GMCommand.cs" />
+    <Compile Include="DataType\User\Db\DbHeroAttr.cs" />
+    <Compile Include="DataType\User\InfoHero.cs" />
+    <Compile Include="DataType\User\IUserInfoSub.cs" />
     <Compile Include="Forms\BattleForm.cs">
       <SubType>UserControl</SubType>
     </Compile>
