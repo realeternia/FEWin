@@ -47,5 +47,16 @@ namespace FEGame.Core
             }
             return ImageManager.GetImage(fname);
         }
+
+        public static Image GetSystemImage(string name)
+        {
+            string fname = string.Format("System/{0}.png", name);
+            if (!ImageManager.HasImage(fname))
+            {
+                Image image = PicLoader.Read("System", string.Format("{0}.png", name));
+                ImageManager.AddImage(fname, image, true);
+            }
+            return ImageManager.GetImage(fname);
+        }
     }
 }

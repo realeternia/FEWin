@@ -242,6 +242,14 @@ namespace FEGame.Forms
 
             chessMoveAnim.Draw(e.Graphics, baseX, baseY);
 
+            if (selectCellPos.X >= 0 && selectCellPos.Y >= 0)
+            {
+                var selectImg = HSIcons.GetSystemImage("actmark");
+                var px = selectCellPos.X * TileManager.CellSize - baseX;
+                var py = selectCellPos.Y * TileManager.CellSize - baseY;
+                e.Graphics.DrawImage(selectImg, px, py, TileManager.CellSize, TileManager.CellSize);
+            }
+
             if (mouseOnId > 0)
             {
                 var targetUnit = battleManager.GetSam(mouseOnId);
