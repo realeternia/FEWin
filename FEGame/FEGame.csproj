@@ -253,7 +253,6 @@
     <Compile Include="Forms\MiniGame\MGSeven.Designer.cs">
       <DependentUpon>MGSeven.cs</DependentUpon>
     </Compile>
-    <Compile Include="DataType\Others\RankData.cs" />
     <Compile Include="DataType\User\InfoWorld.cs" />
     <Compile Include="Forms\Items\Core\BorderPainter.cs" />
     <Compile Include="Forms\Items\Regions\SubVirtualRegion.cs" />

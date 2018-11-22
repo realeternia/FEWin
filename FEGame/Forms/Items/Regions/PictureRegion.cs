@@ -50,7 +50,7 @@ namespace FEGame.Forms.Items.Regions
                 }
                 else if (type == PictureRegionCellType.People)
                 {
-                    img = SamuraiBook.GetImage(nid);
+                    img = HSIcons.GetImage("Samurai", nid);
                     preAction = () =>
                     {
                         var peopleConfig = ConfigData.GetSamuraiConfig(nid);

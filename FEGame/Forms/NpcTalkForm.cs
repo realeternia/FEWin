@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using ConfigDatas;
 using ControlPlus;
 using ControlPlus.Drawing;
+using FEGame.Core;
 using FEGame.Core.Loader;
 using FEGame.DataType;
 using FEGame.DataType.Others;
@@ -66,7 +67,7 @@ namespace FEGame.Forms
                     var dnaId = DnaBook.GetDnaId(config.TriggerDNAHard[i]);
                     if (UserProfile.InfoBasic.HasDna(dnaId))
                     {
-                        vRegion.AddRegion(new ImageRegion(dnaId, 28*regionIndex,55, 24,24, ImageRegionCellType.None, DnaBook.GetDnaImage(dnaId)));
+                        vRegion.AddRegion(new ImageRegion(dnaId, 28*regionIndex,55, 24,24, ImageRegionCellType.None, HSIcons.GetImage("Dna", dnaId)));
                         dnaChangeDict[dnaId] = "事件难度 " + config.TriggerDNAHard[i].Substring(3);
                         //dnaChangeDict[dnaId] += "$经验资源 " + GetDnaStr(-int.Parse(config.TriggerDNAHard[i + 1]));
                         regionIndex++;
@@ -87,7 +88,7 @@ namespace FEGame.Forms
                         }
                         else
                         {
-                            vRegion.AddRegion(new ImageRegion(dnaId, 28 * regionIndex, 55, 24, 24, ImageRegionCellType.None, DnaBook.GetDnaImage(dnaId)));
+                            vRegion.AddRegion(new ImageRegion(dnaId, 28 * regionIndex, 55, 24, 24, ImageRegionCellType.None, HSIcons.GetImage("Dna", dnaId)));
                             dnaChangeDict[dnaId] = dataStr;
                         }
                         regionIndex++;

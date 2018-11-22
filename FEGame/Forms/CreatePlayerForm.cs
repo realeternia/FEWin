@@ -166,7 +166,7 @@ namespace FEGame.Forms
                 g.DrawLine(pen, x, y + halfSize, x + halfSize * 2, y + halfSize);
             pen.Dispose();
 
-            var img = DnaBook.GetDnaImage(id);
+            var img = HSIcons.GetImage("Dna", id);
             g.DrawImage(img, x+2, y+2, CellSize-4, CellSize-4);
         }
 

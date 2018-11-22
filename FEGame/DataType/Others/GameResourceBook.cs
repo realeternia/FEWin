@@ -148,61 +148,7 @@ namespace FEGame.DataType.Others
                 count *= 2;
             return Math.Max(1, count);
         }
-        /// <summary>
-        /// ore资源获得通用入口
-        /// </summary>
-        public static uint InResBuildOre(int resId, int level)
-        {
-            uint count = 0;
-            if (resId == (int)GameResourceType.Gold)
-                count = (uint)ExpTree.GetGoldFactor(level);
-            else
-                count = (uint)ExpTree.GetResFactor(level);
-            if (resId == (int)GameResourceType.Lumber || resId == (int)GameResourceType.Stone)
-                count *= 2;
-            var valGet = MathTool.GetRandom(count*0.75, count*1.25);
-            return (uint)Math.Max(1, valGet);
-        }
-        /// <summary>
-        /// 消耗石材制作装备,level 1-5
-        /// </summary>
-        public static uint OutStoneCompose(int qual)
-        {
-            return 60 + (uint)qual*40;
-        }
-        /// <summary>
-        /// 消耗木材制作装备,level 1-5
-        /// </summary>
-        public static uint OutWoodCompose(int qual)
-        {
-            return 60 + (uint)qual * 40;
-        }
-        /// <summary>
-        /// 消耗木材建设农场
-        /// </summary>
-        public static uint OutWoodBuildFarm(uint cost)
-        {
-            return cost;
-        }
 
-        /// <summary>
-        /// 购买武器卡牌消耗Gem
-        /// </summary>
-        public static uint OutGemCardBuy(int qual)
-        {
-            if (qual == 0)
-                return 1;
-            return (uint)(qual * (qual + 1) * Math.Sqrt(qual)); //2-8-20-40
-        }
-        /// <summary>
-        /// 购买怪物卡牌消耗Carbuncle
-        /// </summary>
-        public static uint OutCarbuncleCardBuy(int qual)
-        {
-            if (qual == 0)
-                return 1;
-            return (uint)(qual * (qual + 1) * Math.Sqrt(qual)); //2-8-20-40
-        }
         /// <summary>
         /// 战斗中贿赂怪物消耗Carbuncle
         /// </summary>
@@ -215,28 +161,6 @@ namespace FEGame.DataType.Others
                 return 5;
             return (uint)(levelDiffer * (levelDiffer + 1)) + 5;
         }
-        /// <summary>
-        /// 消耗水银购买祝福
-        /// </summary>
-        public static uint OutMercuryBlessBuy(int level)
-        {
-            return (uint)(3*level);
-        }
-        /// <summary>
-        /// 购买法术卡牌消耗Mercury
-        /// </summary>
-        public static uint OutMercuryCardBuy(int qual)
-        {
-            if (qual == 0)
-                return 1;
-            return (uint)(qual * (qual + 1) * Math.Sqrt(qual)); //2-8-20-40
-        }
-        /// <summary>
-        /// 刷新一些属性时效果
-        /// </summary>
-        public static uint OutSulfurRefresh(float factor)
-        {
-            return (uint)(10 * factor);
-        }
+   
     }
 }

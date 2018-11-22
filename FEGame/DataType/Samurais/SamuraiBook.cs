@@ -55,17 +55,6 @@ namespace FEGame.DataType.Samurais
             return tipData.Image;
         }
 
-        public static Image GetImage(int id)
-        {
-            string fname = string.Format("Samurai/{0}.png", ConfigData.GetSamuraiConfig(id).Figue);
-            if (!ImageManager.HasImage(fname))
-            {
-                Image image = PicLoader.Read("Samurai", string.Format("{0}.png", ConfigData.GetSamuraiConfig(id).Figue));
-                ImageManager.AddImage(fname, image);
-            }
-            return ImageManager.GetImage(fname);
-        }
-
         public static void Fight(int pid, string map, int rlevel, PictureRegion.HsActionCallback winEvent, PictureRegion.HsActionCallback lossEvent, PictureRegion.HsActionCallback cancelEvent)
         {
 

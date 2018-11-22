@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using ConfigDatas;
 using FEGame.Controller.Battle.Units.Frags;
+using FEGame.Core;
 using FEGame.DataType.Samurais;
 using FEGame.Tools;
 
@@ -24,6 +25,7 @@ namespace FEGame.Controller.Battle.Units
         {
             get { return baseAttr.Mov; }
         }
+        public int LeftHp { get; set; }
 
         protected BaseSam(int id, byte x, byte y, byte camp)
         {
@@ -47,13 +49,22 @@ namespace FEGame.Controller.Battle.Units
             baseAttr.Luk = samuraiConfig.Luk;
             baseAttr.Mov = samuraiConfig.Mov;
             Level = samuraiConfig.Level;
+
+            LeftHp = baseAttr.Hp;
         }
 
         public virtual void Draw(Graphics g, int baseX, int baseY)
         {
-            var img = SamuraiBook.GetImage(Cid);
             var cellSize = TileManager.CellSize;
-            g.DrawImage(img, X * cellSize - baseX, Y * cellSize - baseY, cellSize, cellSize);
+            var cellX = X * cellSize - baseX;
+            var cellY = Y * cellSize - baseY;
+
+            var img = HSIcons.GetImage("Samurai", Cid);
+
+            g.DrawImage(img, cellX, cellY, cellSize, cellSize);
+
+            g.FillRectangle(Brushes.Black, cellX, cellY + cellSize - 10, cellSize, 10);
+            g.FillRectangle(Brushes.Lime, cellX+1, cellY + cellSize - 10+1, (cellSize-2)* LeftHp / baseAttr.Hp, 10-2);
         }
 
         public Image GetPreview()
