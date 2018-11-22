@@ -20,8 +20,12 @@ namespace FEGame.Forms
         private bool showImage;
         private int baseX = 900;
         private int baseY = 250;
-        private int mouseOnId;
+        private int mouseOnId; //鼠标上的单位id
         private int moveId; //移动单位id
+
+        private bool mouseHold;
+        private Point dragStartPos; //像素
+        private Point selectCellPos; //地图格
 
         private HSCursor myCursor;
 
@@ -97,11 +101,16 @@ namespace FEGame.Forms
                     mouseOnId = newTarget;
                     doubleBuffedPanel1.Invalidate();
                 }
+
+                var newCellPos = new Point((dragStartPos.X + baseX) / TileManager.CellSize, (dragStartPos.Y + baseY) / TileManager.CellSize);
+                if (newCellPos.X != selectCellPos.X || newCellPos.Y != selectCellPos.Y)
+                {
+                    selectCellPos = newCellPos;
+                    doubleBuffedPanel1.Invalidate();
+                }
             }
         }
 
-        private bool mouseHold;
-        private Point dragStartPos;
         private void BattleForm_MouseUp(object sender, MouseEventArgs e)
         {
             mouseHold = false;
@@ -189,11 +198,18 @@ namespace FEGame.Forms
             {
                 Font ft = new Font("宋体", 11, FontStyle.Bold);
                 Brush selectRegion = new SolidBrush(Color.FromArgb(100, Color.Green));
+
+                TileManager.PathResult mouseTarget = null;
                 foreach (var pathResult in savedPath)
                 {
                     var px = pathResult.NowCell.X * TileManager.CellSize - baseX;
                     var py = pathResult.NowCell.Y * TileManager.CellSize - baseY;
                     e.Graphics.FillRectangle(selectRegion, px, py, TileManager.CellSize, TileManager.CellSize);
+
+                    if (pathResult.NowCell.X == selectCellPos.X && pathResult.NowCell.Y == selectCellPos.Y)
+                    {
+                        mouseTarget = pathResult;
+                    }
 
 #if DEBUG
                     e.Graphics.DrawString(pathResult.MovLeft.ToString(), ft, Brushes.Black, px, py);
@@ -210,6 +226,17 @@ namespace FEGame.Forms
 
                 selectRegion.Dispose();
                 ft.Dispose();
+
+                if (mouseTarget != null) //选中了一个移动格子
+                {
+                    while (mouseTarget.Parent.X >= 0)
+                    {
+                        e.Graphics.DrawLine(Pens.White, mouseTarget.NowCell.X * TileManager.CellSize - baseX+ TileManager.CellSize/2, mouseTarget.NowCell.Y * TileManager.CellSize - baseY + TileManager.CellSize / 2
+                            , mouseTarget.Parent.X * TileManager.CellSize - baseX + TileManager.CellSize / 2, mouseTarget.Parent.Y * TileManager.CellSize - baseY + TileManager.CellSize / 2);
+
+                        mouseTarget = savedPath.Find(cell => cell.NowCell.X == mouseTarget.Parent.X && cell.NowCell.Y == mouseTarget.Parent.Y);
+                    }
+                }
             }
 
             chessMoveAnim.Draw(e.Graphics, baseX, baseY);
