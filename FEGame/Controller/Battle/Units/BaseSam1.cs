@@ -27,6 +27,8 @@ namespace FEGame.Controller.Battle.Units
         }
         public int LeftHp { get; set; }
 
+        public int Job { get; set; }
+
         protected BaseSam(int id, byte x, byte y, byte camp)
         {
             Cid = id;
@@ -49,6 +51,7 @@ namespace FEGame.Controller.Battle.Units
             baseAttr.Luk = samuraiConfig.Luk;
             baseAttr.Mov = samuraiConfig.Mov;
             Level = samuraiConfig.Level;
+            Job = samuraiConfig.Job;
 
             LeftHp = baseAttr.Hp;
         }
@@ -63,8 +66,11 @@ namespace FEGame.Controller.Battle.Units
 
             g.DrawImage(img, cellX, cellY, cellSize, cellSize);
 
-            g.FillRectangle(Brushes.Black, cellX, cellY + cellSize - 10, cellSize, 10);
-            g.FillRectangle(Brushes.Lime, cellX+1, cellY + cellSize - 10+1, (cellSize-2)* LeftHp / baseAttr.Hp, 10-2);
+            g.FillRectangle(Brushes.Black, cellX+5, cellY + cellSize - 10, cellSize-5, 10);
+            g.FillRectangle(Brushes.Lime, cellX+5+1, cellY + cellSize - 10+1, (cellSize-5-2)* LeftHp / baseAttr.Hp, 10-2);
+
+            var jobImg = HSIcons.GetImage("Job", Job);
+            g.DrawImage(jobImg, cellX, cellY + cellSize - 10, 10, 10);
         }
 
         public Image GetPreview()
