@@ -169,7 +169,7 @@ namespace FEGame.Forms
                         moveId = 0;
 
                         var adapter = new TileAdapter(tileManager.Width, tileManager.Height);
-                        savedPath = adapter.GetPathAttack(x, y, tileUnit.Range);
+                        savedPath = adapter.GetPathAttack(x, y, tileUnit.Range, (byte)ConfigDatas.CampConfig.Indexer.Reborn);
                         stage = RoundStage.Attack;
                     };
                 }
@@ -211,10 +211,23 @@ namespace FEGame.Forms
 
             if (selectCellPos.X >= 0 && selectCellPos.Y >= 0)
             {
-                var selectImg = HSIcons.GetSystemImage("actmark");
                 var px = selectCellPos.X * TileManager.CellSize - baseX;
                 var py = selectCellPos.Y * TileManager.CellSize - baseY;
-                e.Graphics.DrawImage(selectImg, px, py, TileManager.CellSize, TileManager.CellSize);
+
+                if (stage == RoundStage.SelectMove)
+                {
+                    var selectImg = HSIcons.GetImage("Samurai", battleManager.GetSam(moveId).Cid);
+                    if(savedPath.Find(node => node.NowCell.X == selectCellPos.X && node.NowCell.Y == selectCellPos.Y) != null)
+                        e.Graphics.DrawImage(selectImg, px, py, TileManager.CellSize, TileManager.CellSize);
+                    else
+                        e.Graphics.DrawImage(selectImg, new Rectangle( px, py, TileManager.CellSize, TileManager.CellSize), 0, 0, 
+                            selectImg.Width, selectImg.Height, GraphicsUnit.Pixel, HSImageAttributes.ToGray);
+                }
+                else
+                {
+                    var selectImg = HSIcons.GetSystemImage("actmark");
+                    e.Graphics.DrawImage(selectImg, px, py, TileManager.CellSize, TileManager.CellSize);
+                }
             }
 
             if (mouseOnId > 0)
@@ -240,7 +253,12 @@ namespace FEGame.Forms
                     var px = pathResult.NowCell.X * TileManager.CellSize - baseX;
                     var py = pathResult.NowCell.Y * TileManager.CellSize - baseY;
                     e.Graphics.DrawImage(HSIcons.GetSystemImage(stage == RoundStage.SelectMove ? "rgmove" : "rgattack"), px, py, TileManager.CellSize, TileManager.CellSize);
-                    //e.Graphics.FillRectangle(selectRegion, px, py, TileManager.CellSize, TileManager.CellSize);
+                    if (stage == RoundStage.Attack)
+                    {
+                        var tileConfig = tileManager.GetTile(pathResult.NowCell.X, pathResult.NowCell.Y);
+                        if (tileConfig.Camp > 0 && tileConfig.Camp != (byte) ConfigDatas.CampConfig.Indexer.Reborn)
+                            e.Graphics.DrawImage(HSIcons.GetSystemImage("rgtarget"), px, py, TileManager.CellSize, TileManager.CellSize);
+                    }
 
                     if (pathResult.NowCell.X == selectCellPos.X && pathResult.NowCell.Y == selectCellPos.Y)
                     {

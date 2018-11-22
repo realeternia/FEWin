@@ -14,11 +14,12 @@ namespace FEGame.Controller.Battle
             height = h;
         }
 
-        public List<TileManager.PathResult> GetPathAttack(int x, int y, int atkCount)
+        public List<TileManager.PathResult> GetPathAttack(int x, int y, int atkCount, byte myCamp)
         {
             List<TileManager.PathResult> openList = new List<TileManager.PathResult>();
             List<TileManager.PathResult> closeList = new List<TileManager.PathResult>();
-            openList.Add(new TileManager.PathResult { NowCell = new Point(x, y), Parent = new Point(-1, -1), MovLeft = atkCount });
+            var srcPoint = new TileManager.PathResult {NowCell = new Point(x, y), Parent = new Point(-1, -1), MovLeft = atkCount};
+            openList.Add(srcPoint);
             while (openList.Count > 0)
             {
                 var oldOpenList = openList.ToArray();
@@ -52,6 +53,9 @@ namespace FEGame.Controller.Battle
                     DetectNearby(openList, openCell, myCost);
                 }
             }
+
+            closeList.Remove(srcPoint);
+            closeList.RemoveAll(node => TileManager.Instance.GetTile(node.NowCell.X, node.NowCell.Y).Camp == myCamp); //把同阵营剔除
 
             return closeList;
         }

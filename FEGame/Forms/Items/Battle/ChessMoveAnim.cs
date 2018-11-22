@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using FEGame.Controller.Battle;
+using FEGame.Core;
 
 namespace FEGame.Forms.Items.Battle
 {
@@ -11,9 +12,13 @@ namespace FEGame.Forms.Items.Battle
         private double moveProgress; //0-1
         private double[] pathSegmentLength;
         private Point[] path;
+        private int samuraiId;
+
+        private int movePerSecond = 600;
 
         public void Set(int sid, Point[] p)
         {
+            samuraiId = sid;
             pathLength = 0;
             moveProgress = 0;
             path = new Point[p.Length];
@@ -34,7 +39,7 @@ namespace FEGame.Forms.Items.Battle
         {
             if (pathLength > 0)
             {
-                var moveDis = 150 / 10; //10帧
+                var moveDis = movePerSecond / 20; //20帧
 
                 moveProgress = Math.Min((double) 1, moveProgress + moveDis / pathLength);
                 if (moveProgress >= 1)
@@ -72,7 +77,8 @@ namespace FEGame.Forms.Items.Battle
             if (pathLength > 0)
             {
                 var nowPos = GetNowPosOnPath();
-                g.FillRectangle(Brushes.White, nowPos.X - baseX, nowPos.Y - baseY, 30, 30);
+                var img = HSIcons.GetImage("Samurai", samuraiId);
+                g.DrawImage(img, nowPos.X - baseX, nowPos.Y - baseY, TileManager.CellSize, TileManager.CellSize);
             }
         }
 
