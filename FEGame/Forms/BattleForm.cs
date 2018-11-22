@@ -137,7 +137,8 @@ namespace FEGame.Forms
                 var tileUnit = battleManager.GetSam(mouseOnId);
                 if (tileUnit.Camp == ConfigDatas.CampConfig.Indexer.Reborn)
                 {
-                    savedPath = tileManager.GetPathResults(x, y, tileUnit.Mov, (byte)ConfigDatas.CampConfig.Indexer.Reborn);
+                    var adapter = new TileAdapter(tileManager.Width, tileManager.Height);
+                    savedPath = adapter.GetPathResults(x, y, tileUnit.Mov, (byte)ConfigDatas.CampConfig.Indexer.Reborn);
                     stage = RoundStage.SelectMove;
                     doubleBuffedPanel1.Invalidate();
                 }
