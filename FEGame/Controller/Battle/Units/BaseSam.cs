@@ -25,6 +25,10 @@ namespace FEGame.Controller.Battle.Units
         {
             get { return baseAttr.Mov; }
         }
+        public int Range
+        {
+            get { return 2; }
+        }
         public int LeftHp { get; set; }
 
         public int Job { get; set; }

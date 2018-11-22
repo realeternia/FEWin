@@ -15,7 +15,7 @@ namespace FEGame.Forms
     {
         enum RoundStage
         {
-            None, SelectMove, Move
+            None, SelectMove, Move, Attack
         }
         private bool showImage;
         private int baseX = 900;
@@ -138,7 +138,7 @@ namespace FEGame.Forms
                 if (tileUnit.Camp == ConfigDatas.CampConfig.Indexer.Reborn)
                 {
                     var adapter = new TileAdapter(tileManager.Width, tileManager.Height);
-                    savedPath = adapter.GetPathResults(x, y, tileUnit.Mov, (byte)ConfigDatas.CampConfig.Indexer.Reborn);
+                    savedPath = adapter.GetPathMove(x, y, tileUnit.Mov, (byte)ConfigDatas.CampConfig.Indexer.Reborn);
                     stage = RoundStage.SelectMove;
                     doubleBuffedPanel1.Invalidate();
                 }
@@ -166,10 +166,19 @@ namespace FEGame.Forms
                         tileUnit.X = (byte)x;
                         tileUnit.Y = (byte)y;
                         tileManager.Enter(tileUnit.X, tileUnit.Y, moveId, tileUnit.Camp);
-                        stage = RoundStage.None;
                         moveId = 0;
+
+                        var adapter = new TileAdapter(tileManager.Width, tileManager.Height);
+                        savedPath = adapter.GetPathAttack(x, y, tileUnit.Range);
+                        stage = RoundStage.Attack;
                     };
                 }
+            }
+            else if (stage == RoundStage.Attack)
+            {
+                savedPath = null;
+                stage = RoundStage.None; //todo 先随便写一个攻击
+                doubleBuffedPanel1.Invalidate();
             }
         }
 
@@ -225,14 +234,12 @@ namespace FEGame.Forms
             if (savedPath != null && savedPath.Count > 0)
             {
                 Font ft = new Font("宋体", 11, FontStyle.Bold);
-                Brush selectRegion = new SolidBrush(Color.FromArgb(100, Color.Green));
-
                 TileManager.PathResult mouseTarget = null;
                 foreach (var pathResult in savedPath)
                 {
                     var px = pathResult.NowCell.X * TileManager.CellSize - baseX;
                     var py = pathResult.NowCell.Y * TileManager.CellSize - baseY;
-                    e.Graphics.DrawImage(HSIcons.GetSystemImage("rgmove"), px, py, TileManager.CellSize, TileManager.CellSize);
+                    e.Graphics.DrawImage(HSIcons.GetSystemImage(stage == RoundStage.SelectMove ? "rgmove" : "rgattack"), px, py, TileManager.CellSize, TileManager.CellSize);
                     //e.Graphics.FillRectangle(selectRegion, px, py, TileManager.CellSize, TileManager.CellSize);
 
                     if (pathResult.NowCell.X == selectCellPos.X && pathResult.NowCell.Y == selectCellPos.Y)
@@ -252,11 +259,9 @@ namespace FEGame.Forms
                         e.Graphics.DrawString("↓", ft, Brushes.Black, px, py + 15);
 #endif
                 }
-
-                selectRegion.Dispose();
                 ft.Dispose();
 
-                if (mouseTarget != null) //绘制移动路径
+                if (stage == RoundStage.SelectMove && mouseTarget != null) //绘制移动路径
                 {
                     while (mouseTarget.Parent.X >= 0)
                     {
