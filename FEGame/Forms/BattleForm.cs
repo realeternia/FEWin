@@ -166,6 +166,7 @@ namespace FEGame.Forms
                         tileUnit.Y = (byte)y;
                         tileManager.Enter(tileUnit.X, tileUnit.Y, moveId, tileUnit.Camp);
                         stage = RoundStage.None;
+                        moveId = 0;
                     };
                 }
             }
