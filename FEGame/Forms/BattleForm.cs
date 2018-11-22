@@ -195,50 +195,7 @@ namespace FEGame.Forms
             tileManager.Draw(e.Graphics, baseX, baseY, doubleBuffedPanel1.Width, doubleBuffedPanel1.Height);
             battleManager.Draw(e.Graphics, baseX, baseY, moveId);
 
-            if (savedPath != null && savedPath.Count > 0)
-            {
-                Font ft = new Font("宋体", 11, FontStyle.Bold);
-                Brush selectRegion = new SolidBrush(Color.FromArgb(100, Color.Green));
-
-                TileManager.PathResult mouseTarget = null;
-                foreach (var pathResult in savedPath)
-                {
-                    var px = pathResult.NowCell.X * TileManager.CellSize - baseX;
-                    var py = pathResult.NowCell.Y * TileManager.CellSize - baseY;
-                    e.Graphics.FillRectangle(selectRegion, px, py, TileManager.CellSize, TileManager.CellSize);
-
-                    if (pathResult.NowCell.X == selectCellPos.X && pathResult.NowCell.Y == selectCellPos.Y)
-                    {
-                        mouseTarget = pathResult;
-                    }
-
-#if DEBUG
-                    e.Graphics.DrawString(pathResult.MovLeft.ToString(), ft, Brushes.Black, px, py);
-                    if (pathResult.Parent.X == pathResult.NowCell.X + 1)
-                        e.Graphics.DrawString("←", ft, Brushes.Black, px, py + 15);
-                    else if (pathResult.Parent.X == pathResult.NowCell.X - 1)
-                        e.Graphics.DrawString("→", ft, Brushes.Black, px, py + 15);
-                    else if (pathResult.Parent.Y == pathResult.NowCell.Y + 1)
-                        e.Graphics.DrawString("↑", ft, Brushes.Black, px, py + 15);
-                    else if (pathResult.Parent.Y == pathResult.NowCell.Y - 1)
-                        e.Graphics.DrawString("↓", ft, Brushes.Black, px, py + 15);
-#endif
-                }
-
-                selectRegion.Dispose();
-                ft.Dispose();
-
-                if (mouseTarget != null) //选中了一个移动格子
-                {
-                    while (mouseTarget.Parent.X >= 0)
-                    {
-                        e.Graphics.DrawLine(Pens.White, mouseTarget.NowCell.X * TileManager.CellSize - baseX+ TileManager.CellSize/2, mouseTarget.NowCell.Y * TileManager.CellSize - baseY + TileManager.CellSize / 2
-                            , mouseTarget.Parent.X * TileManager.CellSize - baseX + TileManager.CellSize / 2, mouseTarget.Parent.Y * TileManager.CellSize - baseY + TileManager.CellSize / 2);
-
-                        mouseTarget = savedPath.Find(cell => cell.NowCell.X == mouseTarget.Parent.X && cell.NowCell.Y == mouseTarget.Parent.Y);
-                    }
-                }
-            }
+            DrawMoveRegion(e);
 
             chessMoveAnim.Draw(e.Graphics, baseX, baseY);
 
@@ -262,5 +219,57 @@ namespace FEGame.Forms
             }
         }
 
+        private void DrawMoveRegion(PaintEventArgs e)
+        {
+            if (savedPath != null && savedPath.Count > 0)
+            {
+                Font ft = new Font("宋体", 11, FontStyle.Bold);
+                Brush selectRegion = new SolidBrush(Color.FromArgb(100, Color.Green));
+
+                TileManager.PathResult mouseTarget = null;
+                foreach (var pathResult in savedPath)
+                {
+                    var px = pathResult.NowCell.X * TileManager.CellSize - baseX;
+                    var py = pathResult.NowCell.Y * TileManager.CellSize - baseY;
+                    e.Graphics.DrawImage(HSIcons.GetSystemImage("rgmove"), px, py, TileManager.CellSize, TileManager.CellSize);
+                    //e.Graphics.FillRectangle(selectRegion, px, py, TileManager.CellSize, TileManager.CellSize);
+
+                    if (pathResult.NowCell.X == selectCellPos.X && pathResult.NowCell.Y == selectCellPos.Y)
+                    {
+                        mouseTarget = pathResult;
+                    }
+
+#if DEBUG
+                    e.Graphics.DrawString(pathResult.MovLeft.ToString(), ft, Brushes.Black, px, py);
+                    if (pathResult.Parent.X == pathResult.NowCell.X + 1)
+                        e.Graphics.DrawString("←", ft, Brushes.Black, px, py + 15);
+                    else if (pathResult.Parent.X == pathResult.NowCell.X - 1)
+                        e.Graphics.DrawString("→", ft, Brushes.Black, px, py + 15);
+                    else if (pathResult.Parent.Y == pathResult.NowCell.Y + 1)
+                        e.Graphics.DrawString("↑", ft, Brushes.Black, px, py + 15);
+                    else if (pathResult.Parent.Y == pathResult.NowCell.Y - 1)
+                        e.Graphics.DrawString("↓", ft, Brushes.Black, px, py + 15);
+#endif
+                }
+
+                selectRegion.Dispose();
+                ft.Dispose();
+
+                if (mouseTarget != null) //绘制移动路径
+                {
+                    while (mouseTarget.Parent.X >= 0)
+                    {
+                        e.Graphics.DrawLine(Pens.White,
+                            mouseTarget.NowCell.X * TileManager.CellSize - baseX + TileManager.CellSize / 2,
+                            mouseTarget.NowCell.Y * TileManager.CellSize - baseY + TileManager.CellSize / 2
+                            , mouseTarget.Parent.X * TileManager.CellSize - baseX + TileManager.CellSize / 2,
+                            mouseTarget.Parent.Y * TileManager.CellSize - baseY + TileManager.CellSize / 2);
+
+                        mouseTarget = savedPath.Find(cell =>
+                            cell.NowCell.X == mouseTarget.Parent.X && cell.NowCell.Y == mouseTarget.Parent.Y);
+                    }
+                }
+            }
+        }
     }
 }
