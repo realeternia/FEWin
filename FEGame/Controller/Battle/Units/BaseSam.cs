@@ -2,7 +2,6 @@
 using ConfigDatas;
 using FEGame.Controller.Battle.Units.Frags;
 using FEGame.Core;
-using FEGame.DataType.Samurais;
 using FEGame.Tools;
 
 namespace FEGame.Controller.Battle.Units
@@ -21,6 +20,14 @@ namespace FEGame.Controller.Battle.Units
 
         protected SamAttr baseAttr; //基础属性
 
+        public int Atk
+        {
+            get { return baseAttr.Str; }
+        }
+        public int Def
+        {
+            get { return baseAttr.Def; }
+        }
         public int Mov
         {
             get { return baseAttr.Mov; }
@@ -58,6 +65,11 @@ namespace FEGame.Controller.Battle.Units
             Job = samuraiConfig.Job;
 
             LeftHp = baseAttr.Hp;
+        }
+
+        public void OnAttack(BaseSam attacker)
+        {
+            LeftHp -= attacker.Atk - Def;
         }
 
         public virtual void Draw(Graphics g, int baseX, int baseY)

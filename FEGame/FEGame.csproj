@@ -126,6 +126,8 @@
       <DependentUpon>ChangeAccountForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Items\Battle\ChessMoveAnim.cs" />
+    <Compile Include="Forms\Items\Core\EffectRunController.cs" />
+    <Compile Include="Forms\Items\Core\TextFlowController.cs" />
     <Compile Include="Forms\Items\Regions\VirtualRegionMoveMediator.cs" />
     <Compile Include="Rpc\NetDataCache.cs" />
     <Compile Include="Tools\ImageManager.cs" />

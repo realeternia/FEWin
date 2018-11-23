@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using FEGame.Core;
 using FEGame.DataType.Effects.Facts;
 using FEGame.Forms.CMain;
+using FEGame.Forms.Items.Core;
 using NarlonLib.Tools;
 
 namespace FEGame.Forms
@@ -29,16 +30,6 @@ namespace FEGame.Forms
         {
         }
 
-        private class FlowData
-        {
-            public string Text;
-            public Image Icon;
-            public string Color;
-            public int X;
-            public int Y;
-            public int Time;
-        }
-
         private Panel panel1;
         private long lastMouseMoveTime;
 
@@ -50,8 +41,8 @@ namespace FEGame.Forms
         public bool NeedBlackForm { get; set; }
         public BasePanel ParentPanel; //黑化用
 
-        private List<FlowData> flows;
-        private List<StaticUIEffect> coverEffectList; //动态特效
+        private TextFlowController textFlow;
+        private EffectRunController effectRunBase; //动态特效
         protected bool canClose = true;
 
         public BasePanel()
@@ -73,7 +64,8 @@ namespace FEGame.Forms
             this.Name = "BasePanel";
             this.ResumeLayout(false);
 
-            coverEffectList = new List<StaticUIEffect>();
+            effectRunBase = new EffectRunController();
+            textFlow = new TextFlowController();
         }
 
         public virtual void Init(int width, int height)
@@ -86,43 +78,14 @@ namespace FEGame.Forms
                 Controls["bitmapButtonClose"].Location = new Point(Width - 35, 2);
             if (Controls.ContainsKey("bitmapButtonHelp"))
                 Controls["bitmapButtonHelp"].Location = new Point(Width - 62, 2);
-            flows = new List<FlowData>();
+
             Paint += new PaintEventHandler(BasePanel_Paint);
         }
 
         public virtual void OnFrame(int tick, float timePass)
         {
-            if (coverEffectList.Count > 0)
-            {
-                for (int i = 0; i < coverEffectList.Count; i++)
-                {
-                    var frameEffect = coverEffectList[i];
-                    if (frameEffect != null)
-                    {
-                        if (frameEffect.Next())
-                            Invalidate(new Rectangle(frameEffect.Point.X, frameEffect.Point.Y, frameEffect.Size.Width, frameEffect.Size.Height));
-                    }
-                }
-                coverEffectList.RemoveAll(eff => eff.IsFinished == RunState.Zombie);
-            }
-
-            if (flows.Count > 0)
-            {
-                FlowData[] datas = flows.ToArray();
-                foreach (var flowData in datas)
-                {
-                    flowData.Time--;
-                    if (flowData.Time<11)
-                        flowData.Y -= 2 + (12-flowData.Time)/4*3;
-                }
-
-                foreach (var flowData in datas)
-                {
-                    if (flowData.Time < 0)
-                        flows.Remove(flowData);
-                }
-                Invalidate();
-            }
+            effectRunBase.Update(this);
+            textFlow.Update(this);
         }
 
         public virtual void OnRemove()
@@ -157,35 +120,15 @@ namespace FEGame.Forms
         {
         }
 
-        public void AddFlow(string text, string color, Image img, int x, int y)
-        {
-            FlowData newFlow = new FlowData
-            {
-                Text = text,
-                Color = color,
-                Icon = img,
-                X = x,
-                Y = y,
-                Time = 16 + text.Length/2
-            };
-
-            foreach (var word in flows)
-            {//避让
-                if (Math.Abs(word.X - newFlow.X) < 50 && Math.Abs(word.Y - newFlow.Y) < 20)
-                    newFlow.Y = word.Y + 20;
-            }
-
-            flows.Add(newFlow);
-        }
 
         public void AddFlowCenter(string text, string color)
         {
-            AddFlow(text, color, null, (Width - GetStringWidth(text))/2, Height/2 - 10);
+            textFlow.AddFlow(text, color, null, (Width - GetStringWidth(text))/2, Height/2 - 10);
         }
 
         public void AddFlowCenter(string text, string color, Image img)
         {
-            AddFlow(text, color, img, (Width - GetStringWidth(text)) / 2, Height / 2 - 10);
+            textFlow.AddFlow(text, color, img, (Width - GetStringWidth(text)) / 2, Height / 2 - 10);
         }
 
         private int GetStringWidth(string s)
@@ -199,33 +142,8 @@ namespace FEGame.Forms
 
         private void BasePanel_Paint(object sender, PaintEventArgs e)
         {
-            for (int i = 0; i < coverEffectList.Count; i++)
-            {
-                coverEffectList[i].Draw(e.Graphics);
-            }
-
-            if (flows.Count > 0)
-            {
-                Font ft = new Font("宋体", 18*1.33f, FontStyle.Bold, GraphicsUnit.Pixel);
-                foreach (var flowData in flows.ToArray())
-                {
-                    if (flowData.Time >= 0)
-                    {
-                        int realX = flowData.X;
-                        if (flowData.Icon != null)
-                        {
-                            e.Graphics.DrawImage(flowData.Icon, flowData.X, flowData.Y-4, 32, 32);
-                            realX += 35;
-                        }
-                        Color color = Color.FromName(flowData.Color);
-                        SolidBrush sb = new SolidBrush(color);
-                        e.Graphics.DrawString(flowData.Text, ft, (color.R + color.G + color.B) > 50 ? Brushes.Black : Brushes.White, realX, flowData.Y);
-                        e.Graphics.DrawString(flowData.Text, ft, sb, realX - 1, flowData.Y - 1);
-                        sb.Dispose();
-                    }
-                }
-                ft.Dispose();
-            }            
+            effectRunBase.Draw(e.Graphics);
+            textFlow.Draw(e.Graphics);
         }
 
         public void SetBgm(string bgmPath)
@@ -249,9 +167,9 @@ namespace FEGame.Forms
             }
         }
 
-        public void AddEffect(StaticUIEffect eff)
+        private void AddEffect(StaticUIEffect eff)
         {
-            coverEffectList.Add(eff);
+            effectRunBase.AddEffect(eff);
         }
     }
 

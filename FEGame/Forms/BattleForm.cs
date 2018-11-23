@@ -5,6 +5,8 @@ using System.Windows.Forms;
 using FEGame.Controller.Battle;
 using FEGame.Core;
 using FEGame.Core.Loader;
+using FEGame.DataType.Effects;
+using FEGame.DataType.Effects.Facts;
 using FEGame.Forms.Items.Battle;
 using FEGame.Forms.Items.Core;
 using NarlonLib.Math;
@@ -22,6 +24,7 @@ namespace FEGame.Forms
         private int baseY = 250;
         private int mouseOnId; //鼠标上的单位id
         private int moveId; //移动单位id
+        private int attackId; //攻击单位id
 
         private bool mouseHold;
         private Point dragStartPos; //像素
@@ -36,6 +39,9 @@ namespace FEGame.Forms
         private RoundStage stage;
         private ChessMoveAnim chessMoveAnim; //移动控件
 
+        private TextFlowController textFlow;
+        private EffectRunController effectRun;
+
         public BattleForm()
         {
             InitializeComponent();
@@ -46,6 +52,9 @@ namespace FEGame.Forms
             battleManager = new BattleManager();
             tileManager = new TileManager();
             chessMoveAnim = new ChessMoveAnim();
+           
+            textFlow = new TextFlowController();
+            effectRun = new EffectRunController();
         }
 
         public override void Init(int width, int height)
@@ -70,10 +79,10 @@ namespace FEGame.Forms
         {
             if (chessMoveAnim.Update())
                 doubleBuffedPanel1.Invalidate();
-            //if ((tick % 10) == 0)
-            //{
-            //    doubleBuffedPanel1.Invalidate();
-            //}
+
+            effectRun.Update(doubleBuffedPanel1);
+
+            textFlow.Update(doubleBuffedPanel1);
         }
 
         private void BattleForm_MouseMove(object sender, MouseEventArgs e)
@@ -166,6 +175,7 @@ namespace FEGame.Forms
                         tileUnit.X = (byte)x;
                         tileUnit.Y = (byte)y;
                         tileManager.Enter(tileUnit.X, tileUnit.Y, moveId, tileUnit.Camp);
+                        attackId = moveId;
                         moveId = 0;
 
                         var adapter = new TileAdapter(tileManager.Width, tileManager.Height);
@@ -176,9 +186,28 @@ namespace FEGame.Forms
             }
             else if (stage == RoundStage.Attack)
             {
-                savedPath = null;
-                stage = RoundStage.None; //todo 先随便写一个攻击
-                doubleBuffedPanel1.Invalidate();
+                var selectTarget = savedPath.Find(cell => cell.NowCell.X == x && cell.NowCell.Y == y);
+                if (selectTarget != null)
+                {
+                    var tileConfig = tileManager.GetTile(selectTarget.NowCell.X, selectTarget.NowCell.Y);
+                    if (tileConfig.Camp > 0)
+                    {
+                        var atkUnit = battleManager.GetSam(attackId);
+                        var targetUnit = battleManager.GetSam(tileConfig.UnitId);
+                        targetUnit.OnAttack(atkUnit);
+
+                        var effect = new StaticUIEffect(EffectBook.GetEffect("hit1"), new Point(targetUnit.X * TileManager.CellSize - baseX, 
+                            targetUnit.Y * TileManager.CellSize - baseY), new Size(TileManager.CellSize, TileManager.CellSize));
+                        effect.Repeat = false;
+                        effectRun.AddEffect(effect);
+
+                        attackId = 0;
+                        savedPath = null;
+                        stage = RoundStage.None; //todo 先随便写一个攻击
+
+                        doubleBuffedPanel1.Invalidate();
+                    }
+                }
             }
         }
 
@@ -240,6 +269,9 @@ namespace FEGame.Forms
                 e.Graphics.DrawImage(image, tx, targetUnit.Y * TileManager.CellSize - baseY, image.Width, image.Height);
                 image.Dispose();
             }
+
+            effectRun.Draw(e.Graphics);
+            textFlow.Draw(e.Graphics);
         }
 
         private void DrawMoveRegion(PaintEventArgs e)

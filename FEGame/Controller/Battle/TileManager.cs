@@ -20,14 +20,14 @@ namespace FEGame.Controller.Battle
         public class TileInfo
         {
             public int CId; //配置表id
-            public int SamuraiId;
+            public int UnitId; //单位唯一id
             public byte Camp; //阵营
 
             public int Cost
             {
                 get
                 {
-                    if (SamuraiId > 0) //有人的格子无法移动
+                    if (UnitId > 0) //有人的格子无法移动
                         return 99;
                     return ConfigDatas.ConfigData.GetTileConfig(CId).MoveCost;
                 }
@@ -52,17 +52,17 @@ namespace FEGame.Controller.Battle
 
         public void Enter(byte x, byte y, int id, byte camp)
         {
-            if (tileArray[x, y].SamuraiId != 0)
+            if (tileArray[x, y].UnitId != 0)
                 throw new ApplicationException("cell used");
-            tileArray[x, y].SamuraiId = id;
+            tileArray[x, y].UnitId = id;
             tileArray[x, y].Camp = camp;
         }
 
         public void Leave(byte x, byte y, int id)
         {
-            if (tileArray[x, y].SamuraiId != id)
+            if (tileArray[x, y].UnitId != id)
                 throw new ApplicationException("cell check Error");
-            tileArray[x, y].SamuraiId = 0;
+            tileArray[x, y].UnitId = 0;
             tileArray[x, y].Camp = 0;
         }
 
