@@ -216,7 +216,7 @@ namespace FEGame.Forms
 
                 attackId = 0;
                 savedPath = null;
-                stage = RoundStage.None; //todo 先随便写一个攻击
+                stage = RoundStage.None;
 
                 doubleBuffedPanel1.Invalidate();
             }
