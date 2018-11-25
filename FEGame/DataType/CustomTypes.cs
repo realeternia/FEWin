@@ -8,11 +8,9 @@
 
         Dull = 10,
         Fight = 11, //用于subtype
-        Gift = 12,
         Item = 13,
       //  Ore = 14,
         DropItem = 15,
-        RandomCard = 16,
         Seed = 17,
     }
 
