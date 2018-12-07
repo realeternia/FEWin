@@ -162,30 +162,6 @@ namespace FEGame.DataType.Items
             tipData.AddTextNewLine("", "White", 8);
             if (!string.IsNullOrEmpty(hItemConfig.Descript))
                 tipData.AddTextLines(hItemConfig.Descript, "White", 20, true);
-            if (hItemConfig.SubType == (int) HItemTypes.Gift)
-            {
-                var consumerConfig = ConfigData.GetItemConsumerConfig(hItemConfig.Id);
-                var itemStr = "包含";
-                for (int i = 0; i < consumerConfig.Items.Length; i++)
-                    itemStr += string.Format("{0}x{1} ", ConfigData.GetHItemConfig(GetItemId(consumerConfig.Items[i])).Name,
-                        consumerConfig.ItemCount[i]);
-                tipData.AddTextLines(itemStr, "Gray", 20, true);
-            }
-            if (hItemConfig.SubType == (int)HItemTypes.RandomCard)
-            {
-                var consumerConfig = ConfigData.GetItemConsumerConfig(hItemConfig.Id);
-                int totalRate = 0;
-                foreach (var rate in consumerConfig.RandomCardRate)
-                    totalRate += rate;
-                tipData.AddLine();
-                tipData.AddTextNewLine("抽卡概率", "White");
-                tipData.AddTextNewLine("", "White");
-                tipData.AddImage(HSIcons.GetIconsByEName("gem5"));
-                tipData.AddText(string.Format("{0:0}%  ", (float)consumerConfig.RandomCardRate[4]*100/ totalRate), "White");
-                tipData.AddImage(HSIcons.GetIconsByEName("gem4"));
-                tipData.AddText(string.Format("{0:0}%  ", (float)consumerConfig.RandomCardRate[3] * 100 / totalRate), "White");
-                tipData.AddLine();
-            }
             tipData.AddTextNewLine(string.Format("出售价格:{0}", GameResourceBook.InGoldSellItem(hItemConfig.Rare, hItemConfig.ValueFactor)), "Yellow");
             tipData.AddImage(HSIcons.GetIconsByEName("res1"));
             tipData.AddImageXY(GetHItemImage(id), 8, 8, 48, 48, 7, 24, 32, 32);

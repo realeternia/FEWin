@@ -34,7 +34,7 @@ namespace FEGame.Controller.Battle
             }
         }
 
-        public const int CellSize = 50;
+        public const int CellSize = 60;
         private Image cachedMap;
 
         public int MapPixelWidth { get; private set; }

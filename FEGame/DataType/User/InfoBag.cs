@@ -171,12 +171,12 @@ namespace FEGame.DataType.User
 
             if (Consumer.UseItemsById(pickItem.Type, type))
             {
-                var consumerConfig = ConfigData.GetItemConsumerConfig(pickItem.Type);
-                if (consumerConfig.CdGroup > 0)
-                {
-                    CdGroupStartTime[consumerConfig.CdGroup - 1] = TimeTool.GetNowUnixTime();
-                    CdGroupTime[consumerConfig.CdGroup - 1] = TimeTool.GetNowUnixTime() + consumerConfig.CdTime;
-                }
+                //var consumerConfig = ConfigData.GetItemConsumerConfig(pickItem.Type);
+                //if (consumerConfig.CdGroup > 0)
+                //{
+                //    CdGroupStartTime[consumerConfig.CdGroup - 1] = TimeTool.GetNowUnixTime();
+                //    CdGroupTime[consumerConfig.CdGroup - 1] = TimeTool.GetNowUnixTime() + consumerConfig.CdTime;
+                //}
 
                 DeleteItemByPos(pos, 1);
 
@@ -355,16 +355,16 @@ namespace FEGame.DataType.User
             var canUse = ConfigData.GetHItemConfig(itemId).IsUsable;
             if (canUse)
             {
-                var consumerConfig = ConfigData.GetItemConsumerConfig(itemId);
-                var group = consumerConfig.CdGroup;
-                if (group > 0 && CdGroupStartTime[group-1] > 0)
-                {
-                    var nowTime = TimeTool.GetNowUnixTime();
-                    if (nowTime >= CdGroupTime[group - 1])
-                        return 0;
-                    else
-                        return (float)(nowTime - CdGroupStartTime[group - 1]) / (CdGroupTime[group - 1] - CdGroupStartTime[group - 1]);
-                }
+                //var consumerConfig = ConfigData.GetItemConsumerConfig(itemId);
+                //var group = consumerConfig.CdGroup;
+                //if (group > 0 && CdGroupStartTime[group-1] > 0)
+                //{
+                //    var nowTime = TimeTool.GetNowUnixTime();
+                //    if (nowTime >= CdGroupTime[group - 1])
+                //        return 0;
+                //    else
+                //        return (float)(nowTime - CdGroupStartTime[group - 1]) / (CdGroupTime[group - 1] - CdGroupStartTime[group - 1]);
+                //}
             }
             return 0;
         }

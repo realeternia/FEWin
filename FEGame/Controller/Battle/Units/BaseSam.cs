@@ -86,7 +86,7 @@ namespace FEGame.Controller.Battle.Units
             g.FillRectangle(Brushes.Lime, cellX+5+1, cellY + cellSize - 10+1, (cellSize-5-2)* LeftHp / baseAttr.Hp, 10-2);
 
             var jobImg = HSIcons.GetImage("Job", Job);
-            g.DrawImage(jobImg, cellX, cellY + cellSize - 10, 10, 10);
+            g.DrawImage(jobImg, cellX, cellY + cellSize - 16, 16, 16);
         }
 
         public Image GetPreview()

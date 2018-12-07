@@ -137,7 +137,7 @@ namespace FEGame.Forms
             dragStartPos = e.Location;
         }
 
-        private void doubleBuffedPanel1_Click(object sender, EventArgs e)
+        private void doubleBuffedPanel1_MouseClick(object sender, MouseEventArgs e)
         {
             var x = (dragStartPos.X + baseX) / TileManager.CellSize;
             var y = (dragStartPos.Y + baseY) / TileManager.CellSize;
@@ -190,28 +190,39 @@ namespace FEGame.Forms
             }
             else if (stage == RoundStage.Attack)
             {
-                var selectTarget = savedPath.Find(cell => cell.NowCell.X == x && cell.NowCell.Y == y);
-                if (selectTarget != null)
+                if (e.Button == MouseButtons.Left)//only left key
                 {
-                    var tileConfig = tileManager.GetTile(selectTarget.NowCell.X, selectTarget.NowCell.Y);
-                    if (tileConfig.Camp > 0)
+                    var selectTarget = savedPath.Find(cell => cell.NowCell.X == x && cell.NowCell.Y == y);
+                    if (selectTarget != null)
                     {
-                        var atkUnit = battleManager.GetSam(attackId);
-                        var targetUnit = battleManager.GetSam(tileConfig.UnitId);
-                        targetUnit.OnAttack(atkUnit);
+                        var tileConfig = tileManager.GetTile(selectTarget.NowCell.X, selectTarget.NowCell.Y);
+                        if (tileConfig.Camp > 0)
+                        {
+                            var atkUnit = battleManager.GetSam(attackId);
+                            var targetUnit = battleManager.GetSam(tileConfig.UnitId);
+                            targetUnit.OnAttack(atkUnit);
 
-                        var effect = new StaticUIEffect(EffectBook.GetEffect("hit1"), new Point(targetUnit.X * TileManager.CellSize - baseX, 
-                            targetUnit.Y * TileManager.CellSize - baseY), new Size(TileManager.CellSize, TileManager.CellSize));
-                        effect.Repeat = false;
-                        effectRun.AddEffect(effect);
-
-                        attackId = 0;
-                        savedPath = null;
-                        stage = RoundStage.None; //todo 先随便写一个攻击
-
-                        refreshAll.Fire();
+                            var effect = new StaticUIEffect(EffectBook.GetEffect("hit1"), new Point(targetUnit.X * TileManager.CellSize - baseX,
+                                targetUnit.Y * TileManager.CellSize - baseY), new Size(TileManager.CellSize, TileManager.CellSize));
+                            effect.Repeat = false;
+                            effectRun.AddEffect(effect);
+                        }
+                        else
+                        {
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        return;
                     }
                 }
+
+                attackId = 0;
+                savedPath = null;
+                stage = RoundStage.None;
+
+                refreshAll.Fire();
             }
         }
 
