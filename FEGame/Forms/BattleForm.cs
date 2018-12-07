@@ -42,6 +42,8 @@ namespace FEGame.Forms
         private TextFlowController textFlow;
         private EffectRunController effectRun;
 
+        private ActionTimely refreshAll;
+
         public BattleForm()
         {
             InitializeComponent();
@@ -55,6 +57,7 @@ namespace FEGame.Forms
            
             textFlow = new TextFlowController();
             effectRun = new EffectRunController();
+            refreshAll = ActionTimely.Register(doubleBuffedPanel1.Invalidate, 0.05);
         }
 
         public override void Init(int width, int height)
@@ -78,27 +81,28 @@ namespace FEGame.Forms
         public override void OnFrame(int tick, float timePass)
         {
             if (chessMoveAnim.Update())
-                doubleBuffedPanel1.Invalidate();
+                refreshAll.Fire();
 
             effectRun.Update(doubleBuffedPanel1);
 
             textFlow.Update(doubleBuffedPanel1);
+
+            refreshAll.Update();
         }
 
         private void BattleForm_MouseMove(object sender, MouseEventArgs e)
         {
             if (mouseHold)
             {
-                if (MathTool.GetDistance(e.Location, dragStartPos)>3)
+                if (MathTool.GetDistance(e.Location, dragStartPos) > 3)
                 {
-                    baseX -= e.Location.X-dragStartPos.X;
+                    baseX -= e.Location.X - dragStartPos.X;
                     baseY -= e.Location.Y - dragStartPos.Y;
                     baseX = MathTool.Clamp(baseX, 0, tileManager.MapPixelWidth - doubleBuffedPanel1.Width);
                     baseY = MathTool.Clamp(baseY, 0, tileManager.MapPixelHeight - doubleBuffedPanel1.Height);
                     dragStartPos = e.Location;
-                    doubleBuffedPanel1.Invalidate();
+                    refreshAll.Fire();
                 }
-                dragStartPos = e.Location;
             }
             else
             {
@@ -108,14 +112,14 @@ namespace FEGame.Forms
                 if (newTarget != mouseOnId)
                 {
                     mouseOnId = newTarget;
-                    doubleBuffedPanel1.Invalidate();
+                    refreshAll.Fire();
                 }
 
                 var newCellPos = new Point((dragStartPos.X + baseX) / TileManager.CellSize, (dragStartPos.Y + baseY) / TileManager.CellSize);
                 if (newCellPos.X != selectCellPos.X || newCellPos.Y != selectCellPos.Y)
                 {
                     selectCellPos = newCellPos;
-                    doubleBuffedPanel1.Invalidate();
+                    refreshAll.Fire();
                 }
             }
         }
@@ -149,7 +153,7 @@ namespace FEGame.Forms
                     var adapter = new TileAdapter(tileManager.Width, tileManager.Height);
                     savedPath = adapter.GetPathMove(x, y, tileUnit.Mov, (byte)ConfigDatas.CampConfig.Indexer.Reborn);
                     stage = RoundStage.SelectMove;
-                    doubleBuffedPanel1.Invalidate();
+                    refreshAll.Fire();
                 }
             }
             else if (stage == RoundStage.SelectMove)
@@ -205,7 +209,7 @@ namespace FEGame.Forms
                         savedPath = null;
                         stage = RoundStage.None; //todo 先随便写一个攻击
 
-                        doubleBuffedPanel1.Invalidate();
+                        refreshAll.Fire();
                     }
                 }
             }
