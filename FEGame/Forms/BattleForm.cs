@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using FEGame.Controller.Battle;
+using FEGame.Controller.Battle.Units;
 using FEGame.Core;
 using FEGame.Core.Loader;
 using FEGame.DataType.Effects;
@@ -171,21 +172,29 @@ namespace FEGame.Forms
 
                     savedPath = null;
                     var tileUnit = battleManager.GetSam(moveId);
-                    roadPath.Push(new Point(tileUnit.X, tileUnit.Y));
-                    chessMoveAnim.Set(tileUnit.Cid, roadPath.ToArray());
-                    chessMoveAnim.FinishAction = delegate
+                    if (tileUnit.X == x && tileUnit.Y == y)//原地走
                     {
-                        tileManager.Leave(tileUnit.X, tileUnit.Y, moveId);
-                        tileUnit.X = (byte)x;
-                        tileUnit.Y = (byte)y;
-                        tileManager.Enter(tileUnit.X, tileUnit.Y, moveId, tileUnit.Camp);
                         attackId = moveId;
                         moveId = 0;
 
-                        var adapter = new TileAdapter(tileManager.Width, tileManager.Height);
-                        savedPath = adapter.GetPathAttack(x, y, tileUnit.Range, (byte)ConfigDatas.CampConfig.Indexer.Reborn);
+                        AfterMove(tileUnit, x, y);
                         stage = RoundStage.Attack;
-                    };
+                    }
+                    else
+                    {
+                        roadPath.Push(new Point(tileUnit.X, tileUnit.Y));
+                        chessMoveAnim.Set(tileUnit.Cid, roadPath.ToArray());
+                        chessMoveAnim.FinishAction = delegate
+                        {
+                            tileManager.Leave(tileUnit.X, tileUnit.Y, moveId);
+                            tileUnit.X = (byte)x;
+                            tileUnit.Y = (byte)y;
+                            tileManager.Enter(tileUnit.X, tileUnit.Y, moveId, tileUnit.Camp);
+                            AfterMove(tileUnit, x, y);
+                            stage = RoundStage.Attack;
+                        };
+                    }
+  
                 }
             }
             else if (stage == RoundStage.Attack)
@@ -224,6 +233,15 @@ namespace FEGame.Forms
 
                 refreshAll.Fire();
             }
+        }
+
+        private void AfterMove(BaseSam tileUnit, int x, int y)
+        {
+            attackId = moveId;
+            moveId = 0;
+
+            var adapter = new TileAdapter(tileManager.Width, tileManager.Height);
+            savedPath = adapter.GetPathAttack(x, y, tileUnit.Range, (byte) ConfigDatas.CampConfig.Indexer.Reborn);
         }
 
         private void buttonClose_Click(object sender, EventArgs e)
