@@ -68,24 +68,38 @@ namespace FEGame.DataType.Effects
             if (!ImageManager.HasImage(fname))
             {
                 Image image = PicLoader.Read("Effect", string.Format("{0}.png", name));
-                switch (type)
-                {
-                    case 1: image.RotateFlip(RotateFlipType.Rotate90FlipNone); break;
-                    case 2: image.RotateFlip(RotateFlipType.Rotate180FlipNone); break;
-                    case 3: image.RotateFlip(RotateFlipType.Rotate270FlipNone); break;
-                    case 4: image.RotateFlip(RotateFlipType.RotateNoneFlipX); break;
-                    case 5: image.RotateFlip(RotateFlipType.Rotate90FlipX); break;
-                    case 6: image.RotateFlip(RotateFlipType.Rotate180FlipX); break;
-                    case 7: image.RotateFlip(RotateFlipType.Rotate270FlipX); break;
-                    default: ImagePixelTool.Effect((Bitmap)image, (ImagePixelTool.ImagePixelEffects)(type / 10), type % 10); break;
-                }
-                if (flip)
-                {
-                    image.RotateFlip(RotateFlipType.RotateNoneFlipX);
-                }
+                ConvertImg(type, flip, image);
                 ImageManager.AddImage(fname, image);
             }
             return ImageManager.GetImage(fname);
+        }
+
+        public static Image GetEffectImage(Image img, int type, bool flip)
+        {
+            var newImg = (Image) img.Clone();
+            ConvertImg(type, flip, newImg);
+            return newImg;
+        }
+
+        private static void ConvertImg(int type, bool flip, Image image)
+        {
+            switch (type)
+            {
+                case 1: image.RotateFlip(RotateFlipType.Rotate90FlipNone); break;
+                case 2: image.RotateFlip(RotateFlipType.Rotate180FlipNone); break;
+                case 3: image.RotateFlip(RotateFlipType.Rotate270FlipNone); break;
+                case 4: image.RotateFlip(RotateFlipType.RotateNoneFlipX); break;
+                case 5: image.RotateFlip(RotateFlipType.Rotate90FlipX); break;
+                case 6: image.RotateFlip(RotateFlipType.Rotate180FlipX); break;
+                case 7: image.RotateFlip(RotateFlipType.Rotate270FlipX); break;
+                default: ImagePixelTool.Effect((Bitmap) image, (ImagePixelTool.ImagePixelEffects) (type / 10), type % 10);
+                    break;
+            }
+
+            if (flip)
+            {
+                image.RotateFlip(RotateFlipType.RotateNoneFlipX);
+            }
         }
     }
 }

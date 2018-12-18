@@ -28,5 +28,18 @@ namespace FEGame.DataType.Effects
                     g.DrawImage(img, x + efu.X * wp / 100, y + efu.Y * hp / 100, ewid, eheg);
             }
         }
+
+        public void Draw(Graphics g, int x, int y, int wp, int hp, Image simg)
+        {
+            for (int i = 0; i < Units.Length; i++)
+            {
+                EffectFrameUnit efu = Units[i];
+                int ewid = efu.Width * wp / 100;
+                int eheg = efu.Height * hp / 100;
+                var img = EffectBook.GetEffectImage(simg, efu.Effect, false);
+                if (img != null)
+                    g.DrawImage(img, x + efu.X * wp / 100, y + efu.Y * hp / 100, ewid, eheg);
+            }
+        }
     }
 }

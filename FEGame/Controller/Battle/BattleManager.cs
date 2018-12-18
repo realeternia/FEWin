@@ -25,6 +25,13 @@ namespace FEGame.Controller.Battle
             TileManager.Instance.Enter(bu.X, bu.Y, bu.Id, bu.Camp);
         }
 
+        public void RemoveUnit(BaseSam bu)
+        {
+            bu.OnRemove();
+            TileManager.Instance.Leave(bu.X, bu.Y, bu.Id);
+            unitList.Remove(bu);
+        }
+
         public BaseSam GetSam(int id)
         {
             return unitList.Find(u => u.Id == id);

@@ -17,6 +17,7 @@ namespace FEGame.DataType.Effects.Facts
 
         protected BaseEffect(Effect effect, bool isMute)
         {
+            Repeat = false;
             this.effect = effect;
             this.isMute = isMute;
             frameId = -1;

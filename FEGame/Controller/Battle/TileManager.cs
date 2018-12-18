@@ -66,6 +66,12 @@ namespace FEGame.Controller.Battle
             tileArray[x, y].Camp = 0;
         }
 
+        public void Move(byte sx, byte sy, byte tx, byte ty, int id, byte camp)
+        {
+            Leave(sx, sy, id);
+            Enter(tx, ty, id, camp);
+        }
+
         public void Init()
         {
             //50每格子

@@ -67,9 +67,21 @@ namespace FEGame.Controller.Battle.Units
             LeftHp = baseAttr.Hp;
         }
 
-        public void OnAttack(BaseSam attacker)
+        public void OnRemove()
+        {
+
+        }
+
+        public bool OnAttack(BaseSam attacker)
         {
             LeftHp -= attacker.Atk - Def;
+            if (LeftHp <= 0)
+            {
+                BattleManager.Instance.RemoveUnit(this);
+                return true;
+            }
+
+            return false;
         }
 
         public virtual void Draw(Graphics g, int baseX, int baseY)

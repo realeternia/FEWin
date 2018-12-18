@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
@@ -10,6 +11,7 @@ using FEGame.DataType.Effects;
 using FEGame.DataType.Effects.Facts;
 using FEGame.Forms.Items.Battle;
 using FEGame.Forms.Items.Core;
+using NarlonLib.Core;
 using NarlonLib.Math;
 
 namespace FEGame.Forms
@@ -18,7 +20,7 @@ namespace FEGame.Forms
     {
         enum RoundStage
         {
-            None, SelectMove, Move, Attack
+            None, SelectMove, Move, Attack, AttackAnim
         }
         private bool showImage;
         private int baseX = 900;
@@ -44,6 +46,8 @@ namespace FEGame.Forms
         private EffectRunController effectRun;
 
         private ActionTimely refreshAll;
+        private static NLTimerManager timerManager;
+        private static NLCoroutineManager coroutineManager;
 
         public BattleForm()
         {
@@ -59,6 +63,9 @@ namespace FEGame.Forms
             textFlow = new TextFlowController();
             effectRun = new EffectRunController();
             refreshAll = ActionTimely.Register(doubleBuffedPanel1.Invalidate, 0.05);
+
+            timerManager = new NLTimerManager();
+            coroutineManager = new NLCoroutineManager(timerManager);
         }
 
         public override void Init(int width, int height)
@@ -89,6 +96,8 @@ namespace FEGame.Forms
             textFlow.Update(doubleBuffedPanel1);
 
             refreshAll.Update();
+
+            timerManager.DoTimer();
         }
 
         private void BattleForm_MouseMove(object sender, MouseEventArgs e)
@@ -186,10 +195,11 @@ namespace FEGame.Forms
                         chessMoveAnim.Set(tileUnit.Cid, roadPath.ToArray());
                         chessMoveAnim.FinishAction = delegate
                         {
-                            tileManager.Leave(tileUnit.X, tileUnit.Y, moveId);
+                            tileManager.Move(tileUnit.X, tileUnit.Y, (byte)x, (byte)y, moveId, tileUnit.Camp);
+
                             tileUnit.X = (byte)x;
                             tileUnit.Y = (byte)y;
-                            tileManager.Enter(tileUnit.X, tileUnit.Y, moveId, tileUnit.Camp);
+
                             AfterMove(tileUnit, x, y);
                             stage = RoundStage.Attack;
                         };
@@ -209,30 +219,46 @@ namespace FEGame.Forms
                         {
                             var atkUnit = battleManager.GetSam(attackId);
                             var targetUnit = battleManager.GetSam(tileConfig.UnitId);
-                            targetUnit.OnAttack(atkUnit);
 
-                            var effect = new StaticUIEffect(EffectBook.GetEffect("hit1"), new Point(targetUnit.X * TileManager.CellSize - baseX,
-                                targetUnit.Y * TileManager.CellSize - baseY), new Size(TileManager.CellSize, TileManager.CellSize));
-                            effect.Repeat = false;
+                            var unitPos = new Point(targetUnit.X * TileManager.CellSize - baseX, targetUnit.Y * TileManager.CellSize - baseY);
+                            var unitSize = new Size(TileManager.CellSize, TileManager.CellSize);
+                            
+                            var effect = new StaticUIEffect(EffectBook.GetEffect("hit1"), unitPos, unitSize);
                             effectRun.AddEffect(effect);
+
+                            coroutineManager.StartCoroutine(DelayAttack(atkUnit, targetUnit));
+
+                            attackId = 0;
+                            savedPath = null;
+                            stage = RoundStage.AttackAnim;
+
+                            refreshAll.Fire();
                         }
-                        else
-                        {
-                            return;
-                        }
-                    }
-                    else
-                    {
-                        return;
                     }
                 }
+                else//右键取消攻击
+                {
+                    attackId = 0;
+                    savedPath = null;
+                    stage = RoundStage.None;
 
-                attackId = 0;
-                savedPath = null;
-                stage = RoundStage.None;
+                    refreshAll.Fire();
+                }
 
-                refreshAll.Fire();
             }
+        }
+
+        private IEnumerator DelayAttack(BaseSam atkUnit, BaseSam targetUnit)
+        {
+            yield return new NLWaitForSeconds(0.2f);
+            var unitPos = new Point(targetUnit.X * TileManager.CellSize - baseX, targetUnit.Y * TileManager.CellSize - baseY);
+            var unitSize = new Size(TileManager.CellSize, TileManager.CellSize);
+            if (targetUnit.OnAttack(atkUnit))
+            {
+                var effectDie = new StaticUIImageEffect(EffectBook.GetEffect("shrink"), HSIcons.GetImage("Samurai", targetUnit.Cid), unitPos, unitSize);
+                effectRun.AddEffect(effectDie);
+            }
+            stage = RoundStage.None;
         }
 
         private void AfterMove(BaseSam tileUnit, int x, int y)
