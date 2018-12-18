@@ -46,8 +46,8 @@ namespace FEGame.Forms
         private EffectRunController effectRun;
 
         private ActionTimely refreshAll;
-        private static NLTimerManager timerManager;
-        private static NLCoroutineManager coroutineManager;
+        private NLTimerManager timerManager;
+        private NLCoroutineManager coroutineManager;
 
         public BattleForm()
         {
@@ -291,7 +291,7 @@ namespace FEGame.Forms
                 return;
 
             tileManager.Draw(e.Graphics, baseX, baseY, doubleBuffedPanel1.Width, doubleBuffedPanel1.Height);
-            battleManager.Draw(e.Graphics, baseX, baseY, moveId);
+            battleManager.Draw(e.Graphics, baseX, baseY, stage == RoundStage.SelectMove ? 0 : moveId);//ws处理SelectMove阶段显示人物
 
             DrawMoveRegion(e);
 
@@ -305,11 +305,14 @@ namespace FEGame.Forms
                 if (stage == RoundStage.SelectMove)
                 {
                     var selectImg = HSIcons.GetImage("Samurai", battleManager.GetSam(moveId).Cid);
-                    if(savedPath.Find(node => node.NowCell.X == selectCellPos.X && node.NowCell.Y == selectCellPos.Y) != null)
-                        e.Graphics.DrawImage(selectImg, px, py, TileManager.CellSize, TileManager.CellSize);
-                    else
-                        e.Graphics.DrawImage(selectImg, new Rectangle( px, py, TileManager.CellSize, TileManager.CellSize), 0, 0, 
-                            selectImg.Width, selectImg.Height, GraphicsUnit.Pixel, HSImageAttributes.ToGray);
+
+                    e.Graphics.DrawImage(selectImg, new Rectangle(px, py, TileManager.CellSize, TileManager.CellSize), 0, 0,
+                        selectImg.Width, selectImg.Height, GraphicsUnit.Pixel, HSImageAttributes.ToAlphaHalf);
+
+                    if (savedPath.Find(node => node.NowCell.X == selectCellPos.X && node.NowCell.Y == selectCellPos.Y) == null)
+                    {
+                        e.Graphics.DrawImage(HSIcons.GetSystemImage("rgout"), px+5, py+5, TileManager.CellSize-10, TileManager.CellSize-10);
+                    }
                 }
                 else
                 {
