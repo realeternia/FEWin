@@ -20,7 +20,7 @@ namespace FEGame.Forms
     {
         enum RoundStage
         {
-            None, SelectMove, Move, Attack, AttackAnim
+            None, SelectMove, Move, Decide, Attack, AttackAnim
         }
         private bool showImage;
         private int baseX = 900;
@@ -41,6 +41,7 @@ namespace FEGame.Forms
         private List<TileManager.PathResult> savedPath;
         private RoundStage stage;
         private ChessMoveAnim chessMoveAnim; //移动控件
+        private BattleMenu battleMenu;
 
         private TextFlowController textFlow;
         private EffectRunController effectRun;
@@ -59,7 +60,8 @@ namespace FEGame.Forms
             battleManager = new BattleManager();
             tileManager = new TileManager();
             chessMoveAnim = new ChessMoveAnim();
-           
+            battleMenu = new BattleMenu();
+
             textFlow = new TextFlowController();
             effectRun = new EffectRunController();
             refreshAll = ActionTimely.Register(doubleBuffedPanel1.Invalidate, 0.05);
@@ -78,10 +80,10 @@ namespace FEGame.Forms
             baseY = MathTool.Clamp(baseY, 0, tileManager.MapPixelHeight - doubleBuffedPanel1.Height);
 
             //test code
-            battleManager.AddUnit(new Controller.Battle.Units.HeroSam(43020101, 15, 15, 1));
-            battleManager.AddUnit(new Controller.Battle.Units.HeroSam(43020102, 15, 13, 1));
-            battleManager.AddUnit(new Controller.Battle.Units.MonsterSam(43000005, 18, 18, 2));
-            battleManager.AddUnit(new Controller.Battle.Units.MonsterSam(43000005, 18, 21, 2));
+            battleManager.AddUnit(new HeroSam(43020101, 15, 15, 1));
+            battleManager.AddUnit(new HeroSam(43020102, 15, 13, 1));
+            battleManager.AddUnit(new MonsterSam(43000005, 18, 18, 2));
+            battleManager.AddUnit(new MonsterSam(43000005, 18, 21, 2));
 
             showImage = true;
         }
@@ -131,6 +133,11 @@ namespace FEGame.Forms
                     selectCellPos = newCellPos;
                     refreshAll.Fire();
                 }
+
+                if (battleMenu.OnMove(e.X, e.Y))
+                {
+                    refreshAll.Fire();
+                }
             }
         }
 
@@ -142,6 +149,9 @@ namespace FEGame.Forms
 
         private void BattleForm_MouseDown(object sender, MouseEventArgs e)
         {
+            if (stage == RoundStage.Decide)
+                return;
+
             mouseHold = true;
             myCursor.ChangeCursor("hand"); 
             dragStartPos = e.Location;
@@ -187,7 +197,7 @@ namespace FEGame.Forms
                         moveId = 0;
 
                         AfterMove(tileUnit, x, y);
-                        stage = RoundStage.Attack;
+                        stage = RoundStage.Decide;
                     }
                     else
                     {
@@ -201,7 +211,7 @@ namespace FEGame.Forms
                             tileUnit.Y = (byte)y;
 
                             AfterMove(tileUnit, x, y);
-                            stage = RoundStage.Attack;
+                            stage = RoundStage.Decide;
                         };
                     }
   
@@ -268,6 +278,11 @@ namespace FEGame.Forms
 
             var adapter = new TileAdapter(tileManager.Width, tileManager.Height);
             savedPath = adapter.GetPathAttack(x, y, tileUnit.Range, (byte) ConfigDatas.CampConfig.Indexer.Reborn);
+
+            battleMenu.Clear();
+            battleMenu.Add("stop", "待机");
+            battleMenu.Add("cancel", "取消");
+            battleMenu.Show(x * TileManager.CellSize - baseX + TileManager.CellSize, y * TileManager.CellSize - baseY);
         }
 
         private void buttonClose_Click(object sender, EventArgs e)
@@ -334,6 +349,8 @@ namespace FEGame.Forms
 
             effectRun.Draw(e.Graphics);
             textFlow.Draw(e.Graphics);
+
+            battleMenu.Draw(e.Graphics);
         }
 
         private void DrawMoveRegion(PaintEventArgs e)

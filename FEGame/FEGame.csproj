@@ -127,6 +127,7 @@
       <DependentUpon>ChangeAccountForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Core\ActionTimely.cs" />
+    <Compile Include="Forms\Items\Battle\BattleMenu.cs" />
     <Compile Include="Forms\Items\Battle\ChessMoveAnim.cs" />
     <Compile Include="Forms\Items\Core\EffectRunController.cs" />
     <Compile Include="Forms\Items\Core\TextFlowController.cs" />
