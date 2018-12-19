@@ -18,6 +18,8 @@ namespace FEGame.Controller.Battle.Units
         public byte Y { get; set; }
         public string Name { get; protected set; }
 
+        public bool IsFinished { get; set; } //回合结束
+
         protected SamAttr baseAttr; //基础属性
 
         public int Atk
@@ -92,13 +94,21 @@ namespace FEGame.Controller.Battle.Units
 
             var img = HSIcons.GetImage("Samurai", Cid);
 
-            g.DrawImage(img, cellX, cellY, cellSize, cellSize);
+            if (IsFinished)
+                g.DrawImage(img, new Rectangle(cellX, cellY, cellSize, cellSize), 0, 0, img.Width, img.Height, GraphicsUnit.Pixel, HSImageAttributes.ToGray);
+            else
+                g.DrawImage(img, cellX, cellY, cellSize, cellSize);
 
-            g.FillRectangle(Brushes.Black, cellX+5, cellY + cellSize - 10, cellSize-5, 10);
-            g.FillRectangle(Brushes.Lime, cellX+5+1, cellY + cellSize - 10+1, (cellSize-5-2)* LeftHp / baseAttr.Hp, 10-2);
+            g.FillRectangle(Brushes.Black, cellX+5, cellY + cellSize - 8, cellSize-5, 8);
+            g.FillRectangle(Brushes.Lime, cellX+5+1, cellY + cellSize - 8+1, (cellSize-5-2)* LeftHp / baseAttr.Hp, 8-2);
 
             var jobImg = HSIcons.GetImage("Job", Job);
             g.DrawImage(jobImg, cellX, cellY + cellSize - 16, 16, 16);
+
+            if (IsFinished)
+            {
+                g.DrawImage(HSIcons.GetSystemImage("rgmoved"), cellX + cellSize - 25, cellY + cellSize - 25, 21, 23);
+            }
         }
 
         public Image GetPreview()

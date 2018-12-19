@@ -170,8 +170,12 @@ namespace FEGame.Forms
                 if (mouseOnId <= 0)
                     return;
 
+                var targetUnit = battleManager.GetSam(mouseOnId);
+                if (targetUnit.IsFinished || targetUnit.Camp != ConfigDatas.CampConfig.Indexer.Reborn)
+                    return;
+
                 moveId = mouseOnId;
-                EnterSelectMove(moveId);
+                EnterSelectMove(targetUnit);
             }
             else if (stage == ControlStage.SelectMove)
             {
@@ -240,16 +244,12 @@ namespace FEGame.Forms
         }
 
 
-        private void EnterSelectMove(int unitId)
+        private void EnterSelectMove(BaseSam movingUnit)
         {
-            var tileUnit = battleManager.GetSam(unitId);
-            if (tileUnit.Camp == ConfigDatas.CampConfig.Indexer.Reborn)
-            {
-                var adapter = new TileAdapter(tileManager.Width, tileManager.Height);
-                savedPath = adapter.GetPathMove(tileUnit.X, tileUnit.Y, tileUnit.Mov, (byte) ConfigDatas.CampConfig.Indexer.Reborn);
-                stage = ControlStage.SelectMove;
-                refreshAll.Fire();
-            }
+            var adapter = new TileAdapter(tileManager.Width, tileManager.Height);
+            savedPath = adapter.GetPathMove(movingUnit.X, movingUnit.Y, movingUnit.Mov, (byte)ConfigDatas.CampConfig.Indexer.Reborn);
+            stage = ControlStage.SelectMove;
+            refreshAll.Fire();
         }
 
         private void AfterMove(int x, int y)
@@ -266,35 +266,35 @@ namespace FEGame.Forms
 
         private void BattleMenu_OnClick(string evt)
         {
+            var movingUnit = battleManager.GetSam(moveId);
             if (evt == "attack")
             {
                 stage = ControlStage.AttackSelect;
 
-                var tileUnit = battleManager.GetSam(moveId);
                 attackId = moveId;
                 moveId = 0;
 
                 var adapter = new TileAdapter(tileManager.Width, tileManager.Height);
-                savedPath = adapter.GetPathAttack(tileUnit.X, tileUnit.Y, tileUnit.Range, (byte)ConfigDatas.CampConfig.Indexer.Reborn);
+                savedPath = adapter.GetPathAttack(movingUnit.X, movingUnit.Y, movingUnit.Range, (byte)ConfigDatas.CampConfig.Indexer.Reborn);
             }
             else if (evt == "stop")
             {
                 attackId = 0;
                 savedPath = null;
                 stage = ControlStage.None;
+                movingUnit.IsFinished = true;//待机并结束回合
             }
             else if (evt == "cancel")
             {
-                var tileUnit = battleManager.GetSam(moveId);
-                if (tileUnit.X != (byte)savedMovePos.X || tileUnit.Y != (byte)savedMovePos.Y)
+                if (movingUnit.X != (byte)savedMovePos.X || movingUnit.Y != (byte)savedMovePos.Y)
                 {
-                    tileManager.Move(tileUnit.X, tileUnit.Y, (byte) savedMovePos.X, (byte) savedMovePos.Y, moveId, tileUnit.Camp); //退回
+                    tileManager.Move(movingUnit.X, movingUnit.Y, (byte) savedMovePos.X, (byte) savedMovePos.Y, moveId, movingUnit.Camp); //退回
 
-                    tileUnit.X = (byte) savedMovePos.X;
-                    tileUnit.Y = (byte) savedMovePos.Y;
+                    movingUnit.X = (byte) savedMovePos.X;
+                    movingUnit.Y = (byte) savedMovePos.Y;
                 }
 
-                EnterSelectMove(moveId);
+                EnterSelectMove(movingUnit);
             }
             refreshAll.Fire();
             battleMenu.Clear();
@@ -336,9 +336,9 @@ namespace FEGame.Forms
                 effectRun.AddEffect(effectDie);
             }
             stage = ControlStage.None;
+            atkUnit.IsFinished = true;//攻击并结束回合
         }
-
-
+        
         private void buttonClose_Click(object sender, EventArgs e)
         {
             Close();
