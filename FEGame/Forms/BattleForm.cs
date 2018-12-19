@@ -18,9 +18,9 @@ namespace FEGame.Forms
 {
     internal sealed partial class BattleForm : BasePanel
     {
-        enum RoundStage
+        enum ControlStage
         {
-            None, SelectMove, Move, Decide, Attack, AttackAnim
+            None, SelectMove, Move, Decide, AttackSelect, AttackAnim
         }
         private bool showImage;
         private int baseX = 900;
@@ -41,7 +41,7 @@ namespace FEGame.Forms
         private TileManager tileManager;
 
         private List<TileManager.PathResult> savedPath;
-        private RoundStage stage;
+        private ControlStage stage;
         private ChessMoveAnim chessMoveAnim; //移动控件
         private BattleMenu battleMenu;
 
@@ -153,7 +153,7 @@ namespace FEGame.Forms
 
         private void BattleForm_MouseDown(object sender, MouseEventArgs e)
         {
-            if (stage == RoundStage.Decide)
+            if (stage == ControlStage.Decide)
                 return;
 
             mouseHold = true;
@@ -165,7 +165,7 @@ namespace FEGame.Forms
         {
             var x = (dragStartPos.X + baseX) / TileManager.CellSize;
             var y = (dragStartPos.Y + baseY) / TileManager.CellSize;
-            if (stage == RoundStage.None)
+            if (stage == ControlStage.None)
             {
                 if (mouseOnId <= 0)
                     return;
@@ -173,12 +173,12 @@ namespace FEGame.Forms
                 moveId = mouseOnId;
                 EnterSelectMove(moveId);
             }
-            else if (stage == RoundStage.SelectMove)
+            else if (stage == ControlStage.SelectMove)
             {
                 var selectTarget = savedPath.Find(cell => cell.NowCell.X == x && cell.NowCell.Y == y);
                 if (selectTarget != null)
                 {
-                    stage = RoundStage.Move;
+                    stage = ControlStage.Move;
                     Stack<Point> roadPath = new Stack<Point>();
                     do
                     {
@@ -212,33 +212,14 @@ namespace FEGame.Forms
                     }
                 }
             }
-            else if (stage == RoundStage.Attack)
+            else if (stage == ControlStage.AttackSelect)
             {
                 if (e.Button == MouseButtons.Left)//only left key
                 {
                     var selectTarget = savedPath.Find(cell => cell.NowCell.X == x && cell.NowCell.Y == y);
                     if (selectTarget != null)
                     {
-                        var tileConfig = tileManager.GetTile(selectTarget.NowCell.X, selectTarget.NowCell.Y);
-                        if (tileConfig.Camp > 0)
-                        {
-                            var atkUnit = battleManager.GetSam(attackId);
-                            var targetUnit = battleManager.GetSam(tileConfig.UnitId);
-
-                            var unitPos = new Point(targetUnit.X * TileManager.CellSize - baseX, targetUnit.Y * TileManager.CellSize - baseY);
-                            var unitSize = new Size(TileManager.CellSize, TileManager.CellSize);
-                            
-                            var effect = new StaticUIEffect(EffectBook.GetEffect("hit1"), unitPos, unitSize);
-                            effectRun.AddEffect(effect);
-
-                            coroutineManager.StartCoroutine(DelayAttack(atkUnit, targetUnit));
-
-                            attackId = 0;
-                            savedPath = null;
-                            stage = RoundStage.AttackAnim;
-
-                            refreshAll.Fire();
-                        }
+                        EnterAttackAnim(selectTarget);
                     }
                 }
                 else//右键取消攻击
@@ -252,11 +233,12 @@ namespace FEGame.Forms
                 }
 
             }
-            else if (stage == RoundStage.Decide)
+            else if (stage == ControlStage.Decide)
             {
                 battleMenu.Click();
             }
         }
+
 
         private void EnterSelectMove(int unitId)
         {
@@ -265,16 +247,28 @@ namespace FEGame.Forms
             {
                 var adapter = new TileAdapter(tileManager.Width, tileManager.Height);
                 savedPath = adapter.GetPathMove(tileUnit.X, tileUnit.Y, tileUnit.Mov, (byte) ConfigDatas.CampConfig.Indexer.Reborn);
-                stage = RoundStage.SelectMove;
+                stage = ControlStage.SelectMove;
                 refreshAll.Fire();
             }
+        }
+
+        private void AfterMove(int x, int y)
+        {
+            stage = ControlStage.Decide;
+
+            savedPath = null;
+            battleMenu.Clear();
+            battleMenu.Add("attack", "攻击");
+            battleMenu.Add("stop", "待机");
+            battleMenu.Add("cancel", "取消");
+            battleMenu.Show(x * TileManager.CellSize - baseX + TileManager.CellSize, y * TileManager.CellSize - baseY);
         }
 
         private void BattleMenu_OnClick(string evt)
         {
             if (evt == "attack")
             {
-                stage = RoundStage.Attack;
+                stage = ControlStage.AttackSelect;
 
                 var tileUnit = battleManager.GetSam(moveId);
                 attackId = moveId;
@@ -287,7 +281,7 @@ namespace FEGame.Forms
             {
                 attackId = 0;
                 savedPath = null;
-                stage = RoundStage.None;
+                stage = ControlStage.None;
             }
             else if (evt == "cancel")
             {
@@ -306,6 +300,31 @@ namespace FEGame.Forms
             battleMenu.Clear();
         }
 
+        private void EnterAttackAnim(TileManager.PathResult selectTarget)
+        {
+            var tileConfig = tileManager.GetTile(selectTarget.NowCell.X, selectTarget.NowCell.Y);
+            if (tileConfig.Camp > 0)
+            {
+                var atkUnit = battleManager.GetSam(attackId);
+                var targetUnit = battleManager.GetSam(tileConfig.UnitId);
+
+                var unitPos = new Point(targetUnit.X * TileManager.CellSize - baseX,
+                    targetUnit.Y * TileManager.CellSize - baseY);
+                var unitSize = new Size(TileManager.CellSize, TileManager.CellSize);
+
+                var effect = new StaticUIEffect(EffectBook.GetEffect("hit1"), unitPos, unitSize);
+                effectRun.AddEffect(effect);
+
+                coroutineManager.StartCoroutine(DelayAttack(atkUnit, targetUnit));
+
+                attackId = 0;
+                savedPath = null;
+                stage = ControlStage.AttackAnim;
+
+                refreshAll.Fire();
+            }
+        }
+
         private IEnumerator DelayAttack(BaseSam atkUnit, BaseSam targetUnit)
         {
             yield return new NLWaitForSeconds(0.2f);
@@ -316,20 +335,9 @@ namespace FEGame.Forms
                 var effectDie = new StaticUIImageEffect(EffectBook.GetEffect("shrink"), HSIcons.GetImage("Samurai", targetUnit.Cid), unitPos, unitSize);
                 effectRun.AddEffect(effectDie);
             }
-            stage = RoundStage.None;
+            stage = ControlStage.None;
         }
 
-        private void AfterMove(int x, int y)
-        {
-            stage = RoundStage.Decide;
-
-            savedPath = null;
-            battleMenu.Clear();
-            battleMenu.Add("attack", "攻击");
-            battleMenu.Add("stop", "待机");
-            battleMenu.Add("cancel", "取消");
-            battleMenu.Show(x * TileManager.CellSize - baseX + TileManager.CellSize, y * TileManager.CellSize - baseY);
-        }
 
         private void buttonClose_Click(object sender, EventArgs e)
         {
@@ -352,7 +360,7 @@ namespace FEGame.Forms
                 return;
 
             tileManager.Draw(e.Graphics, baseX, baseY, doubleBuffedPanel1.Width, doubleBuffedPanel1.Height);
-            battleManager.Draw(e.Graphics, baseX, baseY, stage == RoundStage.Move ? moveId : 0);//ws处理SelectMove阶段显示人物
+            battleManager.Draw(e.Graphics, baseX, baseY, stage == ControlStage.Move ? moveId : 0);//ws处理SelectMove阶段显示人物
 
             DrawMoveRegion(e);
 
@@ -363,7 +371,7 @@ namespace FEGame.Forms
                 var px = selectCellPos.X * TileManager.CellSize - baseX;
                 var py = selectCellPos.Y * TileManager.CellSize - baseY;
 
-                if (stage == RoundStage.SelectMove)
+                if (stage == ControlStage.SelectMove)
                 {
                     var selectImg = HSIcons.GetImage("Samurai", battleManager.GetSam(moveId).Cid);
 
@@ -409,8 +417,8 @@ namespace FEGame.Forms
                 {
                     var px = pathResult.NowCell.X * TileManager.CellSize - baseX;
                     var py = pathResult.NowCell.Y * TileManager.CellSize - baseY;
-                    e.Graphics.DrawImage(HSIcons.GetSystemImage(stage == RoundStage.SelectMove ? "rgmove" : "rgattack"), px, py, TileManager.CellSize, TileManager.CellSize);
-                    if (stage == RoundStage.Attack)
+                    e.Graphics.DrawImage(HSIcons.GetSystemImage(stage == ControlStage.SelectMove ? "rgmove" : "rgattack"), px, py, TileManager.CellSize, TileManager.CellSize);
+                    if (stage == ControlStage.AttackSelect)
                     {
                         var tileConfig = tileManager.GetTile(pathResult.NowCell.X, pathResult.NowCell.Y);
                         if (tileConfig.Camp > 0 && tileConfig.Camp != (byte) ConfigDatas.CampConfig.Indexer.Reborn)
@@ -436,7 +444,7 @@ namespace FEGame.Forms
                 }
                 ft.Dispose();
 
-                if (stage == RoundStage.SelectMove && mouseTarget != null) //绘制移动路径
+                if (stage == ControlStage.SelectMove && mouseTarget != null) //绘制移动路径
                 {
                     while (mouseTarget.Parent.X >= 0)
                     {
