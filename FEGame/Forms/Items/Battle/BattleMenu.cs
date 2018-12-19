@@ -8,11 +8,13 @@ namespace FEGame.Forms.Items.Battle
 {
     public class BattleMenu
     {
+        public delegate void MenuClickEvent(string evt);
+
         private class MenuItemData
         {
             public int Id;
 
-            public string Type;
+            public string Command;
             public string Text;
             public string Color;
             public string Icon;
@@ -23,7 +25,7 @@ namespace FEGame.Forms.Items.Battle
             public MenuItemData(int id, string t, string tx, string cr, string icon)
             {
                 Id = id;
-                Type = t;
+                Command = t;
                 Text = tx;
                 Color = cr;
                 Icon = icon;
@@ -38,14 +40,16 @@ namespace FEGame.Forms.Items.Battle
         private int CellWidth = 18;
         private int columnCount = 1;
 
-        public void Add(string type, string text)
+        public event MenuClickEvent OnClick;
+
+        public void Add(string cmd, string text)
         {
-            datas.Add(new MenuItemData(datas.Count + 1, type, text, "white", ""));
+            datas.Add(new MenuItemData(datas.Count + 1, cmd, text, "white", ""));
         }
 
-        public void Add(string type, string text, string color)
+        public void Add(string cmd, string text, string color)
         {
-            datas.Add(new MenuItemData(datas.Count + 1, type, text, color, ""));
+            datas.Add(new MenuItemData(datas.Count + 1, cmd, text, color, ""));
         }
 
         public void Clear()
@@ -106,6 +110,15 @@ namespace FEGame.Forms.Items.Battle
 
          //   Width = columnCount * CellWidth;
        //     Height = ((index + columnCount - 1) / columnCount) * CellHeight;
+        }
+
+        public void Click()
+        {
+            if (selectIndex < 0)
+                return;
+
+            if (OnClick != null)
+                OnClick(datas[selectIndex].Command);
         }
 
         public void Draw(Graphics g)

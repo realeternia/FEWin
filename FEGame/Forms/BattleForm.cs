@@ -33,6 +33,8 @@ namespace FEGame.Forms
         private Point dragStartPos; //像素
         private Point selectCellPos; //地图格
 
+        private Point savedMovePos; //存储玩家单位移动前的坐标
+
         private HSCursor myCursor;
 
         private BattleManager battleManager;
@@ -61,6 +63,7 @@ namespace FEGame.Forms
             tileManager = new TileManager();
             chessMoveAnim = new ChessMoveAnim();
             battleMenu = new BattleMenu();
+            battleMenu.OnClick += BattleMenu_OnClick;
 
             textFlow = new TextFlowController();
             effectRun = new EffectRunController();
@@ -69,6 +72,7 @@ namespace FEGame.Forms
             timerManager = new NLTimerManager();
             coroutineManager = new NLCoroutineManager(timerManager);
         }
+
 
         public override void Init(int width, int height)
         {
@@ -167,14 +171,7 @@ namespace FEGame.Forms
                     return;
 
                 moveId = mouseOnId;
-                var tileUnit = battleManager.GetSam(mouseOnId);
-                if (tileUnit.Camp == ConfigDatas.CampConfig.Indexer.Reborn)
-                {
-                    var adapter = new TileAdapter(tileManager.Width, tileManager.Height);
-                    savedPath = adapter.GetPathMove(x, y, tileUnit.Mov, (byte)ConfigDatas.CampConfig.Indexer.Reborn);
-                    stage = RoundStage.SelectMove;
-                    refreshAll.Fire();
-                }
+                EnterSelectMove(moveId);
             }
             else if (stage == RoundStage.SelectMove)
             {
@@ -193,10 +190,9 @@ namespace FEGame.Forms
                     var tileUnit = battleManager.GetSam(moveId);
                     if (tileUnit.X == x && tileUnit.Y == y)//原地走
                     {
-                        attackId = moveId;
-                        moveId = 0;
+                        savedMovePos = new Point(tileUnit.X, tileUnit.Y);
 
-                        AfterMove(tileUnit, x, y);
+                        AfterMove(x, y);
                         stage = RoundStage.Decide;
                     }
                     else
@@ -205,16 +201,16 @@ namespace FEGame.Forms
                         chessMoveAnim.Set(tileUnit.Cid, roadPath.ToArray());
                         chessMoveAnim.FinishAction = delegate
                         {
+                            savedMovePos = new Point(tileUnit.X, tileUnit.Y);
                             tileManager.Move(tileUnit.X, tileUnit.Y, (byte)x, (byte)y, moveId, tileUnit.Camp);
 
                             tileUnit.X = (byte)x;
                             tileUnit.Y = (byte)y;
 
-                            AfterMove(tileUnit, x, y);
+                            AfterMove(x, y);
                             stage = RoundStage.Decide;
                         };
                     }
-  
                 }
             }
             else if (stage == RoundStage.Attack)
@@ -256,6 +252,56 @@ namespace FEGame.Forms
                 }
 
             }
+            else if (stage == RoundStage.Decide)
+            {
+                battleMenu.Click();
+            }
+        }
+
+        private void EnterSelectMove(int unitId)
+        {
+            var tileUnit = battleManager.GetSam(unitId);
+            if (tileUnit.Camp == ConfigDatas.CampConfig.Indexer.Reborn)
+            {
+                var adapter = new TileAdapter(tileManager.Width, tileManager.Height);
+                savedPath = adapter.GetPathMove(tileUnit.X, tileUnit.Y, tileUnit.Mov, (byte) ConfigDatas.CampConfig.Indexer.Reborn);
+                stage = RoundStage.SelectMove;
+                refreshAll.Fire();
+            }
+        }
+
+        private void BattleMenu_OnClick(string evt)
+        {
+            if (evt == "attack")
+            {
+                var tileUnit = battleManager.GetSam(moveId);
+                attackId = moveId;
+                moveId = 0;
+
+                var adapter = new TileAdapter(tileManager.Width, tileManager.Height);
+                savedPath = adapter.GetPathAttack(tileUnit.X, tileUnit.Y, tileUnit.Range, (byte)ConfigDatas.CampConfig.Indexer.Reborn);
+            }
+            else if (evt == "stop")
+            {
+                attackId = 0;
+                savedPath = null;
+                stage = RoundStage.None;
+            }
+            else if (evt == "cancel")
+            {
+                var tileUnit = battleManager.GetSam(moveId);
+                if (tileUnit.X != (byte)savedMovePos.X || tileUnit.Y != (byte)savedMovePos.Y)
+                {
+                    tileManager.Move(tileUnit.X, tileUnit.Y, (byte) savedMovePos.X, (byte) savedMovePos.Y, moveId, tileUnit.Camp); //退回
+
+                    tileUnit.X = (byte) savedMovePos.X;
+                    tileUnit.Y = (byte) savedMovePos.Y;
+                }
+
+                EnterSelectMove(moveId);
+            }
+            refreshAll.Fire();
+            battleMenu.Clear();
         }
 
         private IEnumerator DelayAttack(BaseSam atkUnit, BaseSam targetUnit)
@@ -271,15 +317,10 @@ namespace FEGame.Forms
             stage = RoundStage.None;
         }
 
-        private void AfterMove(BaseSam tileUnit, int x, int y)
+        private void AfterMove(int x, int y)
         {
-            attackId = moveId;
-            moveId = 0;
-
-            var adapter = new TileAdapter(tileManager.Width, tileManager.Height);
-            savedPath = adapter.GetPathAttack(x, y, tileUnit.Range, (byte) ConfigDatas.CampConfig.Indexer.Reborn);
-
             battleMenu.Clear();
+            battleMenu.Add("attack", "攻击");
             battleMenu.Add("stop", "待机");
             battleMenu.Add("cancel", "取消");
             battleMenu.Show(x * TileManager.CellSize - baseX + TileManager.CellSize, y * TileManager.CellSize - baseY);
@@ -306,7 +347,7 @@ namespace FEGame.Forms
                 return;
 
             tileManager.Draw(e.Graphics, baseX, baseY, doubleBuffedPanel1.Width, doubleBuffedPanel1.Height);
-            battleManager.Draw(e.Graphics, baseX, baseY, stage == RoundStage.SelectMove ? 0 : moveId);//ws处理SelectMove阶段显示人物
+            battleManager.Draw(e.Graphics, baseX, baseY, stage == RoundStage.Move ? moveId : 0);//ws处理SelectMove阶段显示人物
 
             DrawMoveRegion(e);
 
