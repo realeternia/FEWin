@@ -84,7 +84,7 @@ namespace FEGame.Forms.Items.Battle
             baseY = y;
 
             float maxCellWidth = 0;
-            Font fontsong = new Font("宋体", 9 * 1.33f, FontStyle.Regular, GraphicsUnit.Pixel);
+            Font fontsong = new Font("宋体", 10 * 1.33f, FontStyle.Regular, GraphicsUnit.Pixel);
             Bitmap tempImg = new Bitmap(3, 3);
             Graphics g = Graphics.FromImage(tempImg);
             foreach (var menuItemData in datas)
@@ -123,7 +123,7 @@ namespace FEGame.Forms.Items.Battle
 
         public void Draw(Graphics g)
         {
-            Font fontsong = new Font("宋体", 9 * 1.33f, FontStyle.Regular, GraphicsUnit.Pixel);
+            Font fontsong = new Font("宋体", 10 * 1.33f, FontStyle.Regular, GraphicsUnit.Pixel);
             int index = 0;
             foreach (var menuItemData in datas)
             {
