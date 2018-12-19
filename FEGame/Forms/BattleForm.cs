@@ -193,7 +193,7 @@ namespace FEGame.Forms
                         savedMovePos = new Point(tileUnit.X, tileUnit.Y);
 
                         AfterMove(x, y);
-                        stage = RoundStage.Decide;
+
                     }
                     else
                     {
@@ -208,7 +208,6 @@ namespace FEGame.Forms
                             tileUnit.Y = (byte)y;
 
                             AfterMove(x, y);
-                            stage = RoundStage.Decide;
                         };
                     }
                 }
@@ -244,9 +243,10 @@ namespace FEGame.Forms
                 }
                 else//右键取消攻击
                 {
+                    var atkUnit = battleManager.GetSam(attackId);
+                    AfterMove(atkUnit.X, atkUnit.Y);
+                    moveId = attackId;
                     attackId = 0;
-                    savedPath = null;
-                    stage = RoundStage.None;
 
                     refreshAll.Fire();
                 }
@@ -274,6 +274,8 @@ namespace FEGame.Forms
         {
             if (evt == "attack")
             {
+                stage = RoundStage.Attack;
+
                 var tileUnit = battleManager.GetSam(moveId);
                 attackId = moveId;
                 moveId = 0;
@@ -319,6 +321,9 @@ namespace FEGame.Forms
 
         private void AfterMove(int x, int y)
         {
+            stage = RoundStage.Decide;
+
+            savedPath = null;
             battleMenu.Clear();
             battleMenu.Add("attack", "攻击");
             battleMenu.Add("stop", "待机");
