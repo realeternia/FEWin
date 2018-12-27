@@ -179,41 +179,17 @@ namespace FEGame.Forms
             }
             else if (stage == ControlStage.SelectMove)
             {
-                var selectTarget = savedPath.Find(cell => cell.NowCell.X == x && cell.NowCell.Y == y);
-                if (selectTarget != null)
+                if (e.Button == MouseButtons.Left) //only left key
                 {
-                    stage = ControlStage.Move;
-                    Stack<Point> roadPath = new Stack<Point>();
-                    do
-                    {
-                        roadPath.Push(selectTarget.NowCell);
-                        selectTarget = savedPath.Find(cell => cell.NowCell.X == selectTarget.Parent.X && cell.NowCell.Y == selectTarget.Parent.Y);
-                    } while (selectTarget != null && selectTarget.Parent.X >= 0);
-
+                    SelectAndMove(x, y);
+                }
+                else
+                {
+                    moveId = 0;
+                    stage = ControlStage.None;
                     savedPath = null;
-                    var tileUnit = battleManager.GetSam(moveId);
-                    if (tileUnit.X == x && tileUnit.Y == y)//原地走
-                    {
-                        savedMovePos = new Point(tileUnit.X, tileUnit.Y);
 
-                        AfterMove(x, y);
-
-                    }
-                    else
-                    {
-                        roadPath.Push(new Point(tileUnit.X, tileUnit.Y));
-                        chessMoveAnim.Set(tileUnit.Cid, roadPath.ToArray());
-                        chessMoveAnim.FinishAction = delegate
-                        {
-                            savedMovePos = new Point(tileUnit.X, tileUnit.Y);
-                            tileManager.Move(tileUnit.X, tileUnit.Y, (byte)x, (byte)y, moveId, tileUnit.Camp);
-
-                            tileUnit.X = (byte)x;
-                            tileUnit.Y = (byte)y;
-
-                            AfterMove(x, y);
-                        };
-                    }
+                    refreshAll.Fire();
                 }
             }
             else if (stage == ControlStage.AttackSelect)
@@ -240,6 +216,45 @@ namespace FEGame.Forms
             else if (stage == ControlStage.Decide)
             {
                 battleMenu.Click();
+            }
+        }
+
+        private void SelectAndMove(int x, int y)
+        {
+            var selectTarget = savedPath.Find(cell => cell.NowCell.X == x && cell.NowCell.Y == y);
+            if (selectTarget != null)
+            {
+                stage = ControlStage.Move;
+                Stack<Point> roadPath = new Stack<Point>();
+                do
+                {
+                    roadPath.Push(selectTarget.NowCell);
+                    selectTarget = savedPath.Find(cell =>
+                        cell.NowCell.X == selectTarget.Parent.X && cell.NowCell.Y == selectTarget.Parent.Y);
+                } while (selectTarget != null && selectTarget.Parent.X >= 0);
+
+                savedPath = null;
+                var tileUnit = battleManager.GetSam(moveId);
+                if (tileUnit.X == x && tileUnit.Y == y) //原地走
+                {
+                    savedMovePos = new Point(tileUnit.X, tileUnit.Y);
+                    AfterMove(x, y);
+                }
+                else
+                {
+                    roadPath.Push(new Point(tileUnit.X, tileUnit.Y));
+                    chessMoveAnim.Set(tileUnit.Cid, roadPath.ToArray());
+                    chessMoveAnim.FinishAction = delegate
+                    {
+                        savedMovePos = new Point(tileUnit.X, tileUnit.Y);
+                        tileManager.Move(tileUnit.X, tileUnit.Y, (byte) x, (byte) y, moveId, tileUnit.Camp);
+
+                        tileUnit.X = (byte) x;
+                        tileUnit.Y = (byte) y;
+
+                        AfterMove(x, y);
+                    };
+                }
             }
         }
 
