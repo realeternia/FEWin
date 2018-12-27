@@ -59,8 +59,8 @@ namespace FEGame.Controller.Battle
                 var enemyUnits = battleManager.GetAllUnits(ConfigDatas.CampConfig.Indexer.Reborn);
                 foreach (var enemy in enemyUnits)
                 {
-                    var dis = enemy.GetDistanceFrom(unit.X, unit.Y);
-                    if (enemy.GetDistanceFrom(unit.X, unit.Y) <= unit.Range) //射程内
+                    var dis = enemy.GetDistanceFrom(pathResult.NowCell.X, pathResult.NowCell.Y);
+                    if (dis <= unit.Range) //射程内
                     {
                         var nowDanger = 10000 / (enemy.Level * enemy.LeftHp);
                         if (enemy.Id == mostDangerId)
@@ -78,7 +78,7 @@ namespace FEGame.Controller.Battle
 
                     if (!tileDangerDict.ContainsKey(tileId))
                         tileDangerDict[tileId] = 0;
-                    tileDangerDict[tileId] += 10000 / (enemy.Level * enemy.LeftHp + dis*dis);
+                    tileDangerDict[tileId] += 10000 / (enemy.Level * enemy.LeftHp + dis*dis*3);
                 }
             }
 
