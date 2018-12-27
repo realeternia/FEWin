@@ -18,6 +18,12 @@ namespace FEGame.Forms
 {
     internal sealed partial class BattleForm : BasePanel
     {
+        internal delegate void MoveToAction(int x, int y);
+        internal delegate void AttackAction(int atkId, int targetId);
+
+        internal delegate void MoveAction(int unitId, int x, int y, List<TileManager.PathResult> path, MoveToAction action);
+        internal delegate void StopAction(int unitId);
+
         enum ControlStage
         {
             None, SelectMove, Move, Decide, AttackSelect, AttackAnim
@@ -74,7 +80,7 @@ namespace FEGame.Forms
 
             timerManager = new NLTimerManager();
             coroutineManager = new NLCoroutineManager(timerManager);
-            aiRobot = new AiRobot(battleManager);
+            aiRobot = new AiRobot(battleManager, DoMove, DoAttack, DoStop);
         }
 
 
@@ -90,10 +96,11 @@ namespace FEGame.Forms
             //test code
             battleManager.AddUnit(new HeroSam(43020101, 15, 15, 1));
             battleManager.AddUnit(new HeroSam(43020102, 15, 13, 1));
-            battleManager.AddUnit(new MonsterSam(43000005, 18, 18, 2));
-            battleManager.AddUnit(new MonsterSam(43000005, 18, 21, 2));
+            battleManager.AddUnit(new MonsterSam(43000005, 18, 18, 4));
+            battleManager.AddUnit(new MonsterSam(43000005, 18, 21, 4));
 
             showImage = true;
+            isPlayerRound = true;
         }
 
         public override void OnFrame(int tick, float timePass)
@@ -212,7 +219,11 @@ namespace FEGame.Forms
                     var selectTarget = savedPath.Find(cell => cell.NowCell.X == x && cell.NowCell.Y == y);
                     if (selectTarget != null)
                     {
-                        EnterAttackAnim(selectTarget);
+                        var tileConfig = tileManager.GetTile(selectTarget.NowCell.X, selectTarget.NowCell.Y);
+                        if (tileConfig.Camp > 0)
+                        {
+                            DoAttack(attackId, tileConfig.UnitId);
+                        }
                     }
                 }
                 else//右键取消攻击
@@ -238,36 +249,43 @@ namespace FEGame.Forms
             if (selectTarget != null)
             {
                 stage = ControlStage.Move;
-                Stack<Point> roadPath = new Stack<Point>();
-                do
-                {
-                    roadPath.Push(selectTarget.NowCell);
-                    selectTarget = savedPath.Find(cell =>
-                        cell.NowCell.X == selectTarget.Parent.X && cell.NowCell.Y == selectTarget.Parent.Y);
-                } while (selectTarget != null && selectTarget.Parent.X >= 0);
-
+                DoMove(moveId, x, y, savedPath, AfterMove);
                 savedPath = null;
-                var tileUnit = battleManager.GetSam(moveId);
-                if (tileUnit.X == x && tileUnit.Y == y) //原地走
+            }
+        }
+
+        private void DoMove(int unitId, int x, int y, List<TileManager.PathResult> path, MoveToAction action)
+        {
+            var selectTarget = path.Find(cell => cell.NowCell.X == x && cell.NowCell.Y == y);
+            Stack<Point> roadPath = new Stack<Point>();
+            do
+            {
+                roadPath.Push(selectTarget.NowCell);
+                selectTarget = path.Find(cell =>
+                    cell.NowCell.X == selectTarget.Parent.X && cell.NowCell.Y == selectTarget.Parent.Y);
+            } while (selectTarget != null && selectTarget.Parent.X >= 0);
+
+        
+            var tileUnit = battleManager.GetSam(unitId);
+            if (tileUnit.X == x && tileUnit.Y == y) //原地走
+            {
+                savedMovePos = new Point(tileUnit.X, tileUnit.Y);
+                action(x, y);
+            }
+            else
+            {
+                roadPath.Push(new Point(tileUnit.X, tileUnit.Y));
+                chessMoveAnim.Set(tileUnit.Cid, roadPath.ToArray());
+                chessMoveAnim.FinishAction = delegate
                 {
                     savedMovePos = new Point(tileUnit.X, tileUnit.Y);
-                    AfterMove(x, y);
-                }
-                else
-                {
-                    roadPath.Push(new Point(tileUnit.X, tileUnit.Y));
-                    chessMoveAnim.Set(tileUnit.Cid, roadPath.ToArray());
-                    chessMoveAnim.FinishAction = delegate
-                    {
-                        savedMovePos = new Point(tileUnit.X, tileUnit.Y);
-                        tileManager.Move(tileUnit.X, tileUnit.Y, (byte) x, (byte) y, moveId, tileUnit.Camp);
+                    tileManager.Move(tileUnit.X, tileUnit.Y, (byte) x, (byte) y, unitId, tileUnit.Camp);
 
-                        tileUnit.X = (byte) x;
-                        tileUnit.Y = (byte) y;
+                    tileUnit.X = (byte) x;
+                    tileUnit.Y = (byte) y;
 
-                        AfterMove(x, y);
-                    };
-                }
+                    action(x, y);
+                };
             }
         }
 
@@ -310,8 +328,7 @@ namespace FEGame.Forms
                 attackId = 0;
                 savedPath = null;
                 stage = ControlStage.None;
-                movingUnit.IsFinished = true;//待机并结束回合
-                OnUnitFinish();
+                DoStop(moveId);
             }
             else if (evt == "cancel")
             {
@@ -329,29 +346,35 @@ namespace FEGame.Forms
             battleMenu.Clear();
         }
 
-        private void EnterAttackAnim(TileManager.PathResult selectTarget)
+        private void DoStop(int unitId)
         {
-            var tileConfig = tileManager.GetTile(selectTarget.NowCell.X, selectTarget.NowCell.Y);
-            if (tileConfig.Camp > 0)
+            var movingUnit = battleManager.GetSam(unitId);
+            movingUnit.IsFinished = true; //待机并结束回合
+            OnUnitFinish();
+        }
+
+        private void DoAttack(int atkId, int targetId)
+        {
+            var atkUnit = battleManager.GetSam(atkId);
+            var targetUnit = battleManager.GetSam(targetId);
+
+            var unitPos = new Point(targetUnit.X * TileManager.CellSize - baseX,
+                targetUnit.Y * TileManager.CellSize - baseY);
+            var unitSize = new Size(TileManager.CellSize, TileManager.CellSize);
+
+            var effect = new StaticUIEffect(EffectBook.GetEffect("hit1"), unitPos, unitSize);
+            effectRun.AddEffect(effect);
+
+            coroutineManager.StartCoroutine(DelayAttack(atkUnit, targetUnit));
+
+            if (atkUnit.Camp == (byte) ConfigDatas.CampConfig.Indexer.Reborn) //todo 略ws
             {
-                var atkUnit = battleManager.GetSam(attackId);
-                var targetUnit = battleManager.GetSam(tileConfig.UnitId);
-
-                var unitPos = new Point(targetUnit.X * TileManager.CellSize - baseX,
-                    targetUnit.Y * TileManager.CellSize - baseY);
-                var unitSize = new Size(TileManager.CellSize, TileManager.CellSize);
-
-                var effect = new StaticUIEffect(EffectBook.GetEffect("hit1"), unitPos, unitSize);
-                effectRun.AddEffect(effect);
-
-                coroutineManager.StartCoroutine(DelayAttack(atkUnit, targetUnit));
-
                 attackId = 0;
                 savedPath = null;
                 stage = ControlStage.AttackAnim;
-
-                refreshAll.Fire();
             }
+
+            refreshAll.Fire();
         }
 
         private IEnumerator DelayAttack(BaseSam atkUnit, BaseSam targetUnit)
@@ -364,7 +387,10 @@ namespace FEGame.Forms
                 var effectDie = new StaticUIImageEffect(EffectBook.GetEffect("shrink"), HSIcons.GetImage("Samurai", targetUnit.Cid), unitPos, unitSize);
                 effectRun.AddEffect(effectDie);
             }
-            stage = ControlStage.None;
+
+            if (atkUnit.Camp == (byte)ConfigDatas.CampConfig.Indexer.Reborn) //todo 略ws
+                stage = ControlStage.None;
+
             atkUnit.IsFinished = true;//攻击并结束回合
             OnUnitFinish();
         }
@@ -373,6 +399,10 @@ namespace FEGame.Forms
         {
             if (battleManager.IsAllUnitsFinsh(isPlayerRound ? ConfigDatas.CampConfig.Indexer.Reborn : ConfigDatas.CampConfig.Indexer.Wild))
             {
+                foreach (var finishSideUnit in battleManager.GetAllUnits(isPlayerRound ? ConfigDatas.CampConfig.Indexer.Reborn : ConfigDatas.CampConfig.Indexer.Wild))
+                {
+                    finishSideUnit.IsFinished = false;
+                }
                 isPlayerRound = !isPlayerRound;
             }
         }
