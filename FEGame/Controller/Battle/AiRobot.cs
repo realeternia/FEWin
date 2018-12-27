@@ -29,18 +29,22 @@ namespace FEGame.Controller.Battle
                 var actUnit = battleManager.GetSam(actionUnitId);
                 if (actUnit.IsFinished)
                     actionUnitId = 0;
-                else
-                    return;
+
+                return;
             }
 
             var checkOne = battleManager.GetOneActive(ConfigDatas.CampConfig.Indexer.Wild);
             if (checkOne == null)
                 return;
 
-            mostDangerId = 0;
             actionUnitId = checkOne.Id;
 
             CheckUnitAction(checkOne);
+        }
+
+        public void OnRoundOver()
+        {
+            actionUnitId = 0;
         }
 
         public void CheckUnitAction(BaseSam unit)
@@ -105,13 +109,11 @@ namespace FEGame.Controller.Battle
         public void OnUnitMoved(int x, int y)
         {
             actStop(actionUnitId);
-            actionUnitId = 0;
         }
 
         public void OnUnitMovedAndAttack(int x, int y)
         {
             actAttack(actionUnitId, mostDangerId);
-            actionUnitId = 0;
         }
     }
 }

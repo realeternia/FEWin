@@ -404,6 +404,7 @@ namespace FEGame.Forms
                     finishSideUnit.IsFinished = false;
                 }
                 isPlayerRound = !isPlayerRound;
+                aiRobot.OnRoundOver();
             }
         }
         

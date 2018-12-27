@@ -37,7 +37,7 @@ namespace FEGame.Controller.Battle.Units
         }
         public int Range
         {
-            get { return 2; }
+            get { return 1; }
         }
         public int LeftHp { get; set; }
 
