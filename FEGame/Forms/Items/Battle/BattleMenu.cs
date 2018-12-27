@@ -40,6 +40,9 @@ namespace FEGame.Forms.Items.Battle
         private int CellWidth = 18;
         private int columnCount = 1;
 
+        private int width;
+        private int height;
+
         public event MenuClickEvent OnClick;
 
         public void Add(string cmd, string text)
@@ -108,8 +111,8 @@ namespace FEGame.Forms.Items.Battle
                 index++;
             }
 
-         //   Width = columnCount * CellWidth;
-       //     Height = ((index + columnCount - 1) / columnCount) * CellHeight;
+            width = columnCount * CellWidth;
+            height = ((index + columnCount - 1) / columnCount) * CellHeight;
         }
 
         public void Click()
@@ -123,6 +126,9 @@ namespace FEGame.Forms.Items.Battle
 
         public void Draw(Graphics g)
         {
+            if (datas.Count <= 0)
+                return;
+
             Font fontsong = new Font("宋体", 10 * 1.33f, FontStyle.Regular, GraphicsUnit.Pixel);
             int index = 0;
             foreach (var menuItemData in datas)
@@ -144,6 +150,8 @@ namespace FEGame.Forms.Items.Battle
                 index++;
             }
             fontsong.Dispose();
+
+            g.DrawRectangle(Pens.DimGray, baseX, baseY, width, height);
         }
     }
 }
