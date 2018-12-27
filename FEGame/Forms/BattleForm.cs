@@ -52,6 +52,9 @@ namespace FEGame.Forms
         private NLTimerManager timerManager;
         private NLCoroutineManager coroutineManager;
 
+        private bool isPlayerRound;
+        private AiRobot aiRobot;
+
         public BattleForm()
         {
             InitializeComponent();
@@ -71,6 +74,7 @@ namespace FEGame.Forms
 
             timerManager = new NLTimerManager();
             coroutineManager = new NLCoroutineManager(timerManager);
+            aiRobot = new AiRobot(battleManager);
         }
 
 
@@ -104,6 +108,9 @@ namespace FEGame.Forms
             refreshAll.Update();
 
             timerManager.DoTimer();
+
+            if (!isPlayerRound)
+                aiRobot.OnTick();
         }
 
         private void BattleForm_MouseMove(object sender, MouseEventArgs e)
@@ -153,6 +160,9 @@ namespace FEGame.Forms
 
         private void BattleForm_MouseDown(object sender, MouseEventArgs e)
         {
+            if (!isPlayerRound)
+                return;
+
             if (stage == ControlStage.Decide)
                 return;
 
@@ -163,6 +173,9 @@ namespace FEGame.Forms
 
         private void doubleBuffedPanel1_MouseClick(object sender, MouseEventArgs e)
         {
+            if (!isPlayerRound)
+                return;
+
             var x = (dragStartPos.X + baseX) / TileManager.CellSize;
             var y = (dragStartPos.Y + baseY) / TileManager.CellSize;
             if (stage == ControlStage.None)
@@ -261,7 +274,7 @@ namespace FEGame.Forms
 
         private void EnterSelectMove(BaseSam movingUnit)
         {
-            var adapter = new TileAdapter(tileManager.Width, tileManager.Height);
+            var adapter = new TileAdapter();
             savedPath = adapter.GetPathMove(movingUnit.X, movingUnit.Y, movingUnit.Mov, (byte)ConfigDatas.CampConfig.Indexer.Reborn);
             stage = ControlStage.SelectMove;
             refreshAll.Fire();
@@ -289,7 +302,7 @@ namespace FEGame.Forms
                 attackId = moveId;
                 moveId = 0;
 
-                var adapter = new TileAdapter(tileManager.Width, tileManager.Height);
+                var adapter = new TileAdapter();
                 savedPath = adapter.GetPathAttack(movingUnit.X, movingUnit.Y, movingUnit.Range, (byte)ConfigDatas.CampConfig.Indexer.Reborn);
             }
             else if (evt == "stop")
@@ -298,6 +311,7 @@ namespace FEGame.Forms
                 savedPath = null;
                 stage = ControlStage.None;
                 movingUnit.IsFinished = true;//待机并结束回合
+                OnUnitFinish();
             }
             else if (evt == "cancel")
             {
@@ -352,6 +366,15 @@ namespace FEGame.Forms
             }
             stage = ControlStage.None;
             atkUnit.IsFinished = true;//攻击并结束回合
+            OnUnitFinish();
+        }
+
+        public void OnUnitFinish()
+        {
+            if (battleManager.IsAllUnitsFinsh(isPlayerRound ? ConfigDatas.CampConfig.Indexer.Reborn : ConfigDatas.CampConfig.Indexer.Wild))
+            {
+                isPlayerRound = !isPlayerRound;
+            }
         }
         
         private void buttonClose_Click(object sender, EventArgs e)

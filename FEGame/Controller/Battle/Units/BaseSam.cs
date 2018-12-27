@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using ConfigDatas;
 using FEGame.Controller.Battle.Units.Frags;
 using FEGame.Core;
@@ -84,6 +85,11 @@ namespace FEGame.Controller.Battle.Units
             }
 
             return false;
+        }
+
+        public int GetDistanceFrom(int tx, int ty)
+        {
+            return Math.Abs(X - tx) + Math.Abs(Y - ty);
         }
 
         public virtual void Draw(Graphics g, int baseX, int baseY)

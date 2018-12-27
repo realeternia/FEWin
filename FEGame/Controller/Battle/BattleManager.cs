@@ -49,6 +49,20 @@ namespace FEGame.Controller.Battle
             return 0;
         }
 
+        public bool IsAllUnitsFinsh(int camp)
+        {
+            return unitList.Find(u => u.Camp == camp && !u.IsFinished) == null;
+        }
+
+        public BaseSam GetOneActive(int camp)
+        {
+            return unitList.Find(u => u.Camp == camp && !u.IsFinished);
+        }
+        public List<BaseSam> GetAllUnits(int camp)
+        {
+            return unitList.FindAll(u => u.Camp == camp);
+        }
+
         public void Draw(Graphics g, int baseX, int baseY, int movingId)
         {
             foreach (var baseUnit in unitList)

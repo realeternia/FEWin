@@ -98,6 +98,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controller\Battle\AiRobot.cs" />
     <Compile Include="Controller\Battle\BattleManager.cs" />
     <Compile Include="Controller\Battle\TileAdapter.cs" />
     <Compile Include="Controller\Battle\TileManager.cs" />

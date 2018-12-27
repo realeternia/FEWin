@@ -120,8 +120,7 @@ namespace FEGame.Controller.Battle
 
         public void Draw(Graphics g, int baseX, int baseY, int panelW, int panelH)
         {
-            g.DrawImage(cachedMap, new Rectangle(0, 0, panelW, panelH),
-                new Rectangle(baseX, baseY, panelW, panelH), GraphicsUnit.Pixel);
+            g.DrawImage(cachedMap, new Rectangle(0, 0, panelW, panelH), new Rectangle(baseX, baseY, panelW, panelH), GraphicsUnit.Pixel);
         }
     }
 }

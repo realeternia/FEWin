@@ -8,10 +8,10 @@ namespace FEGame.Controller.Battle
         private int width;
         private int height;
 
-        public TileAdapter(int w, int h)
+        public TileAdapter()
         {
-            width = w;
-            height = h;
+            width = TileManager.Instance.Width;
+            height = TileManager.Instance.Height;
         }
 
         public List<TileManager.PathResult> GetPathAttack(int x, int y, int atkCount, byte myCamp)
