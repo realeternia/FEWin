@@ -251,6 +251,8 @@ namespace FEGame.Forms
                 stage = ControlStage.Move;
                 DoMove(moveId, x, y, savedPath, AfterMove);
                 savedPath = null;
+
+                refreshAll.Fire();
             }
         }
 
