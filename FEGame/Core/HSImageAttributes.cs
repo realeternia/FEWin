@@ -8,6 +8,7 @@ namespace FEGame.Core
     {
         public static ImageAttributes ToGray { get; private set; }
         public static ImageAttributes ToRed { get; private set; }
+        public static ImageAttributes ToGreen { get; private set; }
         public static ImageAttributes ToAlphaHalf { get; private set; }
 
         private static Dictionary<Color, ImageAttributes> attrCache = new Dictionary<Color, ImageAttributes>();
@@ -31,15 +32,26 @@ namespace FEGame.Core
             ToGray.SetColorMatrix(cm);
 
             matrix = new float[][] { 
-            new   float[]   {1,   0,   0,   0,   0},                
-            new   float[]   {0,  0.6f,   0,   0,   0},                
-            new   float[]   {0,   0,  0.6f,   0,   0},                
+            new   float[]   {255,   0,   0,   0,   0},                
+            new   float[]   {0,  0,   0,   0,   0},                
+            new   float[]   {0,   0,  0,   0,   0},                
             new   float[]   {0,   0,   0,   1,   0},                  
             new   float[]   {0,   0,   0,   0,   1}
             };
             cm = new ColorMatrix(matrix);
             ToRed = new ImageAttributes();
             ToRed.SetColorMatrix(cm);
+
+            matrix = new float[][] {
+                new   float[]   {0,   0,   0,   0,   0},
+                new   float[]   {0,  255,   0,   0,   0},
+                new   float[]   {0,   0,  0,   0,   0},
+                new   float[]   {0,   0,   0,   1,   0},
+                new   float[]   {0,   0,   0,   0,   1}
+            };
+            cm = new ColorMatrix(matrix);
+            ToGreen = new ImageAttributes();
+            ToGreen.SetColorMatrix(cm);
 
             matrix = new float[][]{
                 new float[] {1, 0, 0, 0, 0},

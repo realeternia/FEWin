@@ -100,10 +100,13 @@ namespace FEGame.Controller.Battle.Units
 
             var img = HSIcons.GetImage("Samurai", Cid);
 
+            g.DrawImage(img, new Rectangle(cellX, cellY, cellSize, cellSize), 0, 0, 
+                img.Width, img.Height, GraphicsUnit.Pixel, Camp == CampConfig.Indexer.Reborn ? HSImageAttributes.ToGreen : HSImageAttributes.ToRed);
+
             if (IsFinished)
-                g.DrawImage(img, new Rectangle(cellX, cellY, cellSize, cellSize), 0, 0, img.Width, img.Height, GraphicsUnit.Pixel, HSImageAttributes.ToGray);
+                g.DrawImage(img, new Rectangle(cellX+2, cellY+2, cellSize-4, cellSize-4), 0, 0, img.Width, img.Height, GraphicsUnit.Pixel, HSImageAttributes.ToGray);
             else
-                g.DrawImage(img, cellX, cellY, cellSize, cellSize);
+                g.DrawImage(img, cellX+2, cellY+2, cellSize-4, cellSize-4);
 
             g.FillRectangle(Brushes.Black, cellX+5, cellY + cellSize - 8, cellSize-5, 8);
             g.FillRectangle(Brushes.Lime, cellX+5+1, cellY + cellSize - 8+1, (cellSize-5-2)* LeftHp / baseAttr.Hp, 8-2);
@@ -119,10 +122,24 @@ namespace FEGame.Controller.Battle.Units
 
         public Image GetPreview()
         {
-            ControlPlus.TipImage tipData = new ControlPlus.TipImage(PaintTool.GetTalkColor);
-            tipData.AddTextNewLine(Name, "Lime", 20);
-            tipData.AddTextNewLine(Level.ToString(), "Lime", 20);
-            //   tipData.AddTextNewLine(string.Format("区域: {0}", ConfigData.GetSceneRegionConfig(sceneConfig.RegionId).Name), "White", 20);
+            ControlPlus.TipImage tipData = new ControlPlus.TipImage(160);
+            tipData.AddTextNewLine(string.Format("{0} Lv{1}", Name, Level.ToString()), Camp == CampConfig.Indexer.Reborn ? "Lime" : "Red", 20);
+
+            tipData.AddTextNewLine("", "White", 20);
+            tipData.AddImageXY(HSIcons.GetIconsByEName("hatt1"), 0, 0, 32, 32, 5, 20, 20, 20);
+            tipData.AddTextOff(Atk.ToString(), "White", 30);
+            tipData.AddImageXY(HSIcons.GetIconsByEName("hatt2"), 0, 0, 32, 32, 5+80, 20, 20, 20);
+            tipData.AddTextOff(Def.ToString(), "White", 30+80);
+
+            tipData.AddTextNewLine("", "White", 20);
+            tipData.AddImageXY(HSIcons.GetIconsByEName("hatt5"), 0, 0, 32, 32, 5, 40, 20, 20);
+            tipData.AddTextOff(Mov.ToString(), "White", 30);
+            tipData.AddImageXY(HSIcons.GetIconsByEName("hatt8"), 0, 0, 32, 32, 5 + 80, 40, 20, 20);
+            tipData.AddTextOff(Range.ToString(), "White", 30 + 80);
+
+            tipData.AddTextNewLine("", "White", 20);
+            tipData.AddImageXY(HSIcons.GetIconsByEName("hatt7"), 0, 0, 32, 32, 5, 60, 20, 20);
+            tipData.AddTextOff(string.Format("{0}/{1}", LeftHp, baseAttr.Hp), "White", 30);
 
             return tipData.Image;
         }
